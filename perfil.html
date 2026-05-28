@@ -285,10 +285,26 @@
 
     const IMG = 'https://image.tmdb.org/t/p/w185';
     const avatares = [
-        'Felix','Loki','Sasha','Milo','Bella',
-        'Luna','Max','Zoe','Charlie','Lily',
-        'Thor','Nova','Kira','Rex','Aria',
-        'Dex','Maya','Ash','Quinn','River'
+        "https://api.dicebear.com/9.x/avataaars/svg?seed=Felix",
+        "https://api.dicebear.com/9.x/avataaars/svg?seed=Loki",
+        "https://api.dicebear.com/9.x/avataaars/svg?seed=Sasha",
+        "https://api.dicebear.com/9.x/avataaars/svg?seed=Milo",
+        "https://api.dicebear.com/9.x/avataaars/svg?seed=Bella",
+        "https://api.dicebear.com/9.x/avataaars/svg?seed=Luna",
+        "https://api.dicebear.com/9.x/avataaars/svg?seed=Max",
+        "https://api.dicebear.com/9.x/avataaars/svg?seed=Zoe",
+        "https://api.dicebear.com/9.x/avataaars/svg?seed=Charlie",
+        "https://api.dicebear.com/9.x/avataaars/svg?seed=Lily",
+        "https://api.dicebear.com/9.x/avataaars/svg?seed=Thor",
+        "https://api.dicebear.com/9.x/avataaars/svg?seed=Nova",
+        "https://api.dicebear.com/9.x/avataaars/svg?seed=Kira",
+        "https://api.dicebear.com/9.x/avataaars/svg?seed=Rex",
+        "https://api.dicebear.com/9.x/avataaars/svg?seed=Aria",
+        "https://api.dicebear.com/9.x/avataaars/svg?seed=Dex",
+        "https://api.dicebear.com/9.x/avataaars/svg?seed=Maya",
+        "https://api.dicebear.com/9.x/avataaars/svg?seed=Ash",
+        "https://api.dicebear.com/9.x/avataaars/svg?seed=Quinn",
+        "https://api.dicebear.com/9.x/avataaars/svg?seed=River"
     ];
 
     let usuarioAtual = null;
@@ -303,7 +319,7 @@
         if (!user) { window.location.href = 'login.html'; return; }
         usuarioAtual = user;
         if (!perfilUID) perfilUID = user.uid;
-        document.getElementById('nav-avatar').src = user.photoURL || `https://api.dicebear.com/7.x/avataaars/svg?seed=${user.uid}`;
+        document.getElementById('nav-avatar').src = user.photoURL || `https://api.dicebear.com/9.x/avataaars/svg?seed=${user.uid}`;
         await carregarPerfil();
         await carregarResenhas();
         carregarFavoritos();
@@ -314,7 +330,7 @@
         if (!snap.exists()) return;
         const u = snap.data();
 
-        document.getElementById('perfil-avatar').src = u.avatar || `https://api.dicebear.com/7.x/avataaars/svg?seed=${perfilUID}`;
+        document.getElementById('perfil-avatar').src = u.avatar || `https://api.dicebear.com/9.x/avataaars/svg?seed=${perfilUID}`;
         document.getElementById('perfil-nome').textContent  = u.nome || 'Sem nome';
         document.getElementById('perfil-bio').textContent   = u.bio  || '';
         document.getElementById('stat-seguidores').textContent = (u.seguidores || []).length;
@@ -325,10 +341,11 @@
             acoes.innerHTML = `<button class="btn-editar" onclick="abrirEditar()">✏️ Editar perfil</button>`;
             // Pré-preenche avatares no modal
             const editOpcoes = document.getElementById('avatar-opcoes-edit');
+            editOpcoes.innerHTML = '';
             avatares.forEach(av => {
                 const img = document.createElement('img');
                 img.className = 'avatar-op-edit';
-                img.src = `https://api.dicebear.com/7.x/${av.style}/svg?seed=${av.seed}`;
+                img.src = av;
                 if (img.src === u.avatar) { img.classList.add('selected'); avatarEditSelecionado = img.src; }
                 img.onclick = () => {
                     document.querySelectorAll('.avatar-op-edit').forEach(a => a.classList.remove('selected'));
