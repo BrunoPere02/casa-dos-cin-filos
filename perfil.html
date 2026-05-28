@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perfil — Casa dos Cinéfilos</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Arial', sans-serif; background: #141414; color: #fff; }
+
+        nav {
+            background: rgba(0,0,0,0.95);
+            padding: 15px 40px;
+            display: flex; align-items: center; gap: 20px;
+            position: fixed; top: 0; width: 100%; z-index: 1000;
+            backdrop-filter: blur(5px);
+        }
+
+        nav h1 { color: #e50914; font-size: 1.5em; font-weight: bold; cursor: pointer; }
+        .nav-right { margin-left: auto; display: flex; gap: 10px; align-items: center; }
+
+        .nav-btn {
+            background: none; border: 1px solid #555; color: #fff;
+            padding: 7px 15px; border-radius: 20px; cursor: pointer; transition: all 0.3s;
+        }
+        .nav-btn:hover { border-color: #e50914; color: #e50914; }
+        .nav-btn.primary { background: #e50914; border-color: #e50914; }
+        .nav-btn.primary:hover { background: #b00610; }
+
+        .nav-avatar {
+            width: 35px; height: 35px; border-radius: 50%;
+            border: 2px solid #e50914; cursor: pointer; object-fit: cover;
+        }
+
+        .perfil-hero {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            padding: 100px 40px 40px;
+            display: flex; align-items: flex-end; gap: 30px;
+        }
+
+        .perfil-avatar {
+            width: 120px; height: 120px; border-radius: 50%;
+            border: 4px solid #e50914; object-fit: cover; flex-shrink: 0;
+        }
+
+        .perfil-info { flex: 1; }
+        .perfil-nome { font-size: 2em; font-weight: bold; margin-bottom: 5px; }
+        .perfil-bio { color: #aaa; margin-bottom: 15px; }
+
+        .perfil-stats {
+            display: flex; gap: 30px; margin-bottom: 15px;
+        }
+
+        .stat { text-align: center; }
+        .stat-num { font-size: 1.4em; font-weight: bold; color: #e50914; }
+        .stat-label { font-size: 0.75em; color: #aaa; }
+
+        .perfil-acoes { display: flex; gap: 10px; }
+
+        .btn-seguir {
+            background: #e50914; border: none; color: #fff;
+            padding: 10px 25px; border-radius: 20px; cursor: pointer;
+            font-weight: bold; transition: all 0.3s;
+        }
+        .btn-seguir:hover { background: #b00610; }
+        .btn-seguir.seguindo { background: #2a2a2a; border: 1px solid #555; }
+
+        .btn-editar {
+            background: none; border: 1px solid #555; color: #fff;
+            padding: 10px 25px; border-radius: 20px; cursor: pointer; transition: all 0.3s;
+        }
+        .btn-editar:hover { border-color: #e50914; }
+
+        .container { max-width: 900px; margin: 0 auto; padding: 30px 20px; }
+
+        .tabs-perfil { display: flex; gap: 5px; margin-bottom: 25px; border-bottom: 1px solid #333; }
+
+        .tab-p {
+            padding: 12px 20px; cursor: pointer; color: #aaa;
+            border-bottom: 2px solid transparent; margin-bottom: -1px;
+            transition: all 0.3s; font-weight: bold;
+        }
+        .tab-p:hover { color: #fff; }
+        .tab-p.active { color: #fff; border-bottom-color: #e50914; }
+
+        .tab-conteudo { display: none; }
+        .tab-conteudo.active { display: block; }
+
+        /* Resenhas */
+        .resenha-card {
+            background: #1f1f1f; border-radius: 12px;
+            padding: 20px; margin-bottom: 15px;
+        }
+
+        .resenha-header {
+            display: flex; align-items: center; gap: 12px; margin-bottom: 12px;
+        }
+
+        .resenha-avatar { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; }
+
+        .resenha-user-info { flex: 1; }
+        .resenha-user-nome { font-weight: bold; font-size: 0.95em; }
+        .resenha-data { font-size: 0.75em; color: #aaa; }
+
+        .resenha-filme {
+            display: flex; gap: 12px; margin-bottom: 12px;
+            background: #2a2a2a; border-radius: 8px; padding: 10px;
+            cursor: pointer; transition: background 0.2s;
+        }
+        .resenha-filme:hover { background: #333; }
+
+        .resenha-poster { width: 45px; height: 65px; border-radius: 5px; object-fit: cover; }
+        .resenha-filme-info { flex: 1; }
+        .resenha-filme-titulo { font-weight: bold; font-size: 0.9em; }
+        .resenha-filme-ano { font-size: 0.75em; color: #aaa; }
+        .resenha-estrelas { color: #f5c518; font-size: 0.9em; margin-top: 3px; }
+
+        .resenha-texto { line-height: 1.6; color: #ddd; margin-bottom: 15px; }
+
+        .resenha-acoes {
+            display: flex; gap: 20px; padding-top: 12px;
+            border-top: 1px solid #2a2a2a;
+        }
+
+        .acao-btn {
+            background: none; border: none; color: #aaa;
+            cursor: pointer; font-size: 0.9em; transition: color 0.2s;
+            display: flex; align-items: center; gap: 5px;
+        }
+        .acao-btn:hover { color: #fff; }
+        .acao-btn.curtido { color: #e50914; }
+
+        /* Favoritos grid */
+        .fav-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: 12px;
+        }
+
+        .fav-card {
+            border-radius: 8px; overflow: hidden; cursor: pointer;
+            transition: transform 0.2s;
+        }
+        .fav-card:hover { transform: scale(1.05); }
+        .fav-card img { width: 100%; height: 180px; object-fit: cover; }
+        .fav-card-titulo {
+            font-size: 0.75em; padding: 6px; background: #1f1f1f;
+            white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+        }
+
+        /* Modal editar perfil */
+        .modal-overlay {
+            position: fixed; inset: 0;
+            background: rgba(0,0,0,0.85); z-index: 2000;
+            display: none; justify-content: center; align-items: center;
+        }
+        .modal-overlay.show { display: flex; }
+
+        .modal-edit {
+            background: #1f1f1f; border-radius: 12px;
+            width: 450px; max-width: 95%; padding: 30px; position: relative;
+        }
+
+        .modal-edit h3 { font-size: 1.3em; margin-bottom: 20px; }
+
+        .modal-close {
+            position: absolute; top: 15px; right: 15px;
+            background: none; border: none; color: #fff;
+            font-size: 1.3em; cursor: pointer;
+        }
+
+        .edit-field { margin-bottom: 15px; }
+        .edit-field label { display: block; font-size: 0.85em; color: #aaa; margin-bottom: 5px; }
+        .edit-field input, .edit-field textarea {
+            width: 100%; background: #2a2a2a; border: 1px solid #444;
+            color: #fff; padding: 10px 12px; border-radius: 8px; font-size: 0.95em;
+        }
+        .edit-field textarea { height: 80px; resize: none; font-family: Arial; }
+        .edit-field input:focus, .edit-field textarea:focus { outline: none; border-color: #e50914; }
+
+        .avatar-opcoes-edit {
+            display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px;
+        }
+        .avatar-op-edit {
+            width: 40px; height: 40px; border-radius: 50%;
+            cursor: pointer; border: 2px solid transparent; transition: all 0.2s;
+        }
+        .avatar-op-edit:hover, .avatar-op-edit.selected { border-color: #e50914; }
+
+        .btn-salvar {
+            width: 100%; background: #e50914; border: none; color: #fff;
+            padding: 12px; border-radius: 8px; font-size: 1em;
+            font-weight: bold; cursor: pointer; margin-top: 10px;
+        }
+        .btn-salvar:hover { background: #b00610; }
+
+        .empty-state { text-align: center; padding: 50px; color: #aaa; }
+
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #141414; }
+        ::-webkit-scrollbar-thumb { background: #e50914; border-radius: 3px; }
+    </style>
+</head>
+<body>
+
+<nav>
+    <h1 onclick="window.location.href='index.html'">🎬 Casa dos Cinéfilos</h1>
+    <div class="nav-right">
+        <button class="nav-btn" onclick="window.location.href='index.html'">← Início</button>
+        <button class="nav-btn" onclick="window.location.href='feed.html'">📰 Feed</button>
+        <img class="nav-avatar" id="nav-avatar" src="" alt="perfil" onclick="window.location.href='perfil.html'">
+        <button class="nav-btn" id="btn-sair" onclick="sair()">Sair</button>
+    </div>
+</nav>
+
+<!-- PERFIL HERO -->
+<div class="perfil-hero" id="perfil-hero">
+    <img class="perfil-avatar" id="perfil-avatar" src="" alt="">
+    <div class="perfil-info">
+        <div class="perfil-nome" id="perfil-nome">Carregando...</div>
+        <div class="perfil-bio" id="perfil-bio"></div>
+        <div class="perfil-stats">
+            <div class="stat"><div class="stat-num" id="stat-resenhas">0</div><div class="stat-label">Resenhas</div></div>
+            <div class="stat"><div class="stat-num" id="stat-seguidores">0</div><div class="stat-label">Seguidores</div></div>
+            <div class="stat"><div class="stat-num" id="stat-seguindo">0</div><div class="stat-label">Seguindo</div></div>
+        </div>
+        <div class="perfil-acoes" id="perfil-acoes"></div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="tabs-perfil">
+        <div class="tab-p active" onclick="trocarTabPerfil('resenhas', this)">📝 Resenhas</div>
+        <div class="tab-p" onclick="trocarTabPerfil('favoritos', this)">❤️ Favoritos</div>
+    </div>
+
+    <div class="tab-conteudo active" id="tab-resenhas">
+        <div id="lista-resenhas"><div class="empty-state">Carregando resenhas...</div></div>
+    </div>
+
+    <div class="tab-conteudo" id="tab-favoritos">
+        <div class="fav-grid" id="lista-favoritos"></div>
+    </div>
+</div>
+
+<!-- MODAL EDITAR PERFIL -->
+<div class="modal-overlay" id="modal-editar">
+    <div class="modal-edit">
+        <button class="modal-close" onclick="fecharEditar()">✕</button>
+        <h3>✏️ Editar Perfil</h3>
+        <div class="edit-field">
+            <label>Avatar</label>
+            <div class="avatar-opcoes-edit" id="avatar-opcoes-edit"></div>
+        </div>
+        <div class="edit-field">
+            <label>Nome</label>
+            <input type="text" id="edit-nome" placeholder="Seu nome">
+        </div>
+        <div class="edit-field">
+            <label>Bio</label>
+            <textarea id="edit-bio" placeholder="Fale sobre você..."></textarea>
+        </div>
+        <button class="btn-salvar" onclick="salvarPerfil()">Salvar alterações</button>
+    </div>
+</div>
+
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+    import { getAuth, onAuthStateChanged, signOut, updateProfile } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+    import { getFirestore, doc, getDoc, updateDoc, collection, query, where, orderBy, getDocs, addDoc, deleteDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyDS0ZNDyRDiq4xOKTzbeMnIZIdR1dI1q6s",
+        authDomain: "casa-dos-cinefilos.firebaseapp.com",
+        projectId: "casa-dos-cinefilos",
+        storageBucket: "casa-dos-cinefilos.firebasestorage.app",
+        messagingSenderId: "77381886629",
+        appId: "1:77381886629:web:335bb10ba7cf83b86be34c"
+    };
+
+    const app  = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db   = getFirestore(app);
+
+    const IMG = 'https://image.tmdb.org/t/p/w185';
+    const seeds = ['Felix','Loki','Sasha','Milo','Bella','Luna','Max','Zoe','Charlie','Lily'];
+
+    let usuarioAtual = null;
+    let perfilUID    = null;
+    let avatarEditSelecionado = null;
+
+    // Pega UID da URL ou do usuário logado
+    const params = new URLSearchParams(window.location.search);
+    perfilUID = params.get('uid');
+
+    onAuthStateChanged(auth, async (user) => {
+        if (!user) { window.location.href = 'login.html'; return; }
+        usuarioAtual = user;
+        if (!perfilUID) perfilUID = user.uid;
+        document.getElementById('nav-avatar').src = user.photoURL || `https://api.dicebear.com/7.x/avataaars/svg?seed=${user.uid}`;
+        await carregarPerfil();
+        await carregarResenhas();
+        carregarFavoritos();
+    });
+
+    async function carregarPerfil() {
+        const snap = await getDoc(doc(db, 'usuarios', perfilUID));
+        if (!snap.exists()) return;
+        const u = snap.data();
+
+        document.getElementById('perfil-avatar').src = u.avatar || `https://api.dicebear.com/7.x/avataaars/svg?seed=${perfilUID}`;
+        document.getElementById('perfil-nome').textContent  = u.nome || 'Sem nome';
+        document.getElementById('perfil-bio').textContent   = u.bio  || '';
+        document.getElementById('stat-seguidores').textContent = (u.seguidores || []).length;
+        document.getElementById('stat-seguindo').textContent   = (u.seguindo   || []).length;
+
+        const acoes = document.getElementById('perfil-acoes');
+        if (perfilUID === usuarioAtual.uid) {
+            acoes.innerHTML = `<button class="btn-editar" onclick="abrirEditar()">✏️ Editar perfil</button>`;
+            // Pré-preenche avatares no modal
+            const editOpcoes = document.getElementById('avatar-opcoes-edit');
+            seeds.forEach(s => {
+                const img = document.createElement('img');
+                img.className = 'avatar-op-edit';
+                img.src = `https://api.dicebear.com/7.x/avataaars/svg?seed=${s}`;
+                if (img.src === u.avatar) { img.classList.add('selected'); avatarEditSelecionado = img.src; }
+                img.onclick = () => {
+                    document.querySelectorAll('.avatar-op-edit').forEach(a => a.classList.remove('selected'));
+                    img.classList.add('selected');
+                    avatarEditSelecionado = img.src;
+                };
+                editOpcoes.appendChild(img);
+            });
+            document.getElementById('edit-nome').value = u.nome || '';
+            document.getElementById('edit-bio').value  = u.bio  || '';
+            avatarEditSelecionado = u.avatar;
+        } else {
+            const jaSeguindo = (u.seguidores || []).includes(usuarioAtual.uid);
+            acoes.innerHTML = `<button class="btn-seguir ${jaSeguindo ? 'seguindo' : ''}" id="btn-seguir" onclick="toggleSeguir('${perfilUID}')">
+                ${jaSeguindo ? '✓ Seguindo' : '+ Seguir'}
+            </button>`;
+        }
+    }
+
+    async function carregarResenhas() {
+        const lista = document.getElementById('lista-resenhas');
+        try {
+            const q = query(collection(db, 'resenhas'), where('autorId', '==', perfilUID), orderBy('criadoEm', 'desc'));
+            const snap = await getDocs(q);
+            document.getElementById('stat-resenhas').textContent = snap.size;
+            if (snap.empty) { lista.innerHTML = '<div class="empty-state">Nenhuma resenha ainda.</div>'; return; }
+            lista.innerHTML = snap.docs.map(d => renderResenha(d.id, d.data())).join('');
+        } catch(e) {
+            lista.innerHTML = '<div class="empty-state">Carregando resenhas...</div>';
+        }
+    }
+
+    function renderResenha(id, r) {
+        const estrelas = '★'.repeat(r.nota || 0) + '☆'.repeat(5 - (r.nota || 0));
+        const data = r.criadoEm?.toDate ? r.criadoEm.toDate().toLocaleDateString('pt-BR') : '';
+        const curtido = (r.curtidas || []).includes(usuarioAtual?.uid);
+        return `
+        <div class="resenha-card" id="res-${id}">
+            <div class="resenha-header">
+                <img class="resenha-avatar" src="${r.autorAvatar || ''}" alt="">
+                <div class="resenha-user-info">
+                    <div class="resenha-user-nome">${r.autorNome || ''}</div>
+                    <div class="resenha-data">${data}</div>
+                </div>
+            </div>
+            <div class="resenha-filme" onclick="window.location.href='index.html#${r.tipoFilme}/${r.filmeId}'">
+                <img class="resenha-poster" src="${r.filmePoster ? 'https://image.tmdb.org/t/p/w92' + r.filmePoster : ''}" alt="">
+                <div class="resenha-filme-info">
+                    <div class="resenha-filme-titulo">${r.filmeTitulo || ''}</div>
+                    <div class="resenha-filme-ano">${r.filmeAno || ''}</div>
+                    <div class="resenha-estrelas">${estrelas}</div>
+                </div>
+            </div>
+            <p class="resenha-texto">${r.texto || ''}</p>
+            <div class="resenha-acoes">
+                <button class="acao-btn ${curtido ? 'curtido' : ''}" onclick="curtirResenha('${id}', this)">
+                    ❤️ ${(r.curtidas || []).length}
+                </button>
+                <button class="acao-btn" onclick="verComentarios('${id}')">💬 Comentar</button>
+                ${r.autorId === usuarioAtual?.uid ? `<button class="acao-btn" onclick="deletarResenha('${id}')">🗑️ Deletar</button>` : ''}
+            </div>
+        </div>`;
+    }
+
+    function carregarFavoritos() {
+        const favs = JSON.parse(localStorage.getItem('favoritos') || '[]');
+        const grid = document.getElementById('lista-favoritos');
+        if (favs.length === 0) { grid.innerHTML = '<div class="empty-state">Nenhum favorito ainda.</div>'; return; }
+        grid.innerHTML = favs.map(f => `
+            <div class="fav-card" onclick="window.location.href='index.html#${f.tipo === 'movie' ? 'filme' : 'serie'}/${f.id}'">
+                <img src="${f.poster}" alt="${f.titulo}">
+                <div class="fav-card-titulo">${f.titulo}</div>
+            </div>`).join('');
+    }
+
+    window.trocarTabPerfil = (tab, el) => {
+        document.querySelectorAll('.tab-p').forEach(t => t.classList.remove('active'));
+        document.querySelectorAll('.tab-conteudo').forEach(t => t.classList.remove('active'));
+        el.classList.add('active');
+        document.getElementById(`tab-${tab}`).classList.add('active');
+    };
+
+    window.abrirEditar  = () => document.getElementById('modal-editar').classList.add('show');
+    window.fecharEditar = () => document.getElementById('modal-editar').classList.remove('show');
+
+    window.salvarPerfil = async () => {
+        const nome = document.getElementById('edit-nome').value.trim();
+        const bio  = document.getElementById('edit-bio').value.trim();
+        if (!nome) return;
+        await updateDoc(doc(db, 'usuarios', usuarioAtual.uid), { nome, bio, avatar: avatarEditSelecionado });
+        await updateProfile(usuarioAtual, { displayName: nome, photoURL: avatarEditSelecionado });
+        fecharEditar();
+        await carregarPerfil();
+    };
+
+    window.curtirResenha = async (id, btn) => {
+        const ref  = doc(db, 'resenhas', id);
+        const snap = await getDoc(ref);
+        if (!snap.exists()) return;
+        const curtidas = snap.data().curtidas || [];
+        const idx = curtidas.indexOf(usuarioAtual.uid);
+        if (idx === -1) curtidas.push(usuarioAtual.uid);
+        else curtidas.splice(idx, 1);
+        await updateDoc(ref, { curtidas });
+        btn.className = `acao-btn ${curtidas.includes(usuarioAtual.uid) ? 'curtido' : ''}`;
+        btn.innerHTML = `❤️ ${curtidas.length}`;
+    };
+
+    window.deletarResenha = async (id) => {
+        if (!confirm('Deletar esta resenha?')) return;
+        await deleteDoc(doc(db, 'resenhas', id));
+        document.getElementById(`res-${id}`)?.remove();
+    };
+
+    window.verComentarios = (id) => {
+        window.location.href = `feed.html#resenha-${id}`;
+    };
+
+    window.toggleSeguir = async (uid) => {
+        const ref  = doc(db, 'usuarios', uid);
+        const snap = await getDoc(ref);
+        const seguidores = snap.data().seguidores || [];
+        const idx = seguidores.indexOf(usuarioAtual.uid);
+        if (idx === -1) seguidores.push(usuarioAtual.uid);
+        else seguidores.splice(idx, 1);
+        await updateDoc(ref, { seguidores });
+        const btn = document.getElementById('btn-seguir');
+        const jaSeguindo = seguidores.includes(usuarioAtual.uid);
+        btn.className = `btn-seguir ${jaSeguindo ? 'seguindo' : ''}`;
+        btn.textContent = jaSeguindo ? '✓ Seguindo' : '+ Seguir';
+        document.getElementById('stat-seguidores').textContent = seguidores.length;
+    };
+
+    window.sair = async () => {
+        await signOut(auth);
+        window.location.href = 'login.html';
+    };
+</script>
+</body>
+</html>
