@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Feed — Casa dos Cinéfilos</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Arial', sans-serif; background: #141414; color: #fff; }
+
+        nav {
+            background: rgba(0,0,0,0.95);
+            padding: 15px 40px;
+            display: flex; align-items: center; gap: 20px;
+            position: fixed; top: 0; width: 100%; z-index: 1000;
+        }
+        nav h1 { color: #e50914; font-size: 1.5em; font-weight: bold; cursor: pointer; }
+        .nav-right { margin-left: auto; display: flex; gap: 10px; align-items: center; }
+        .nav-btn {
+            background: none; border: 1px solid #555; color: #fff;
+            padding: 7px 15px; border-radius: 20px; cursor: pointer; transition: all 0.3s;
+        }
+        .nav-btn:hover { border-color: #e50914; color: #e50914; }
+        .nav-avatar {
+            width: 35px; height: 35px; border-radius: 50%;
+            border: 2px solid #e50914; cursor: pointer; object-fit: cover;
+        }
+
+        .layout {
+            max-width: 1100px; margin: 0 auto;
+            padding: 80px 20px 40px;
+            display: grid; grid-template-columns: 1fr 340px; gap: 30px;
+        }
+
+        /* FEED */
+        .feed-header {
+            display: flex; justify-content: space-between; align-items: center;
+            margin-bottom: 20px;
+        }
+        .feed-header h2 { font-size: 1.3em; border-left: 4px solid #e50914; padding-left: 10px; }
+
+        .feed-tabs { display: flex; gap: 5px; margin-bottom: 20px; }
+        .feed-tab {
+            background: #2a2a2a; border: none; color: #aaa;
+            padding: 8px 18px; border-radius: 20px; cursor: pointer; transition: all 0.3s;
+        }
+        .feed-tab.active, .feed-tab:hover { background: #e50914; color: #fff; }
+
+        /* CARD RESENHA */
+        .resenha-card {
+            background: #1f1f1f; border-radius: 12px;
+            padding: 20px; margin-bottom: 15px;
+            transition: box-shadow 0.2s;
+        }
+        .resenha-card:hover { box-shadow: 0 4px 20px rgba(229,9,20,0.15); }
+
+        .resenha-header { display: flex; align-items: center; gap: 12px; margin-bottom: 15px; }
+        .resenha-avatar {
+            width: 42px; height: 42px; border-radius: 50%;
+            object-fit: cover; cursor: pointer; border: 2px solid #333;
+        }
+        .resenha-avatar:hover { border-color: #e50914; }
+        .resenha-user-nome { font-weight: bold; cursor: pointer; }
+        .resenha-user-nome:hover { color: #e50914; }
+        .resenha-data { font-size: 0.75em; color: #aaa; }
+
+        .resenha-filme {
+            display: flex; gap: 12px; margin-bottom: 12px;
+            background: #2a2a2a; border-radius: 8px; padding: 10px;
+            cursor: pointer; transition: background 0.2s;
+        }
+        .resenha-filme:hover { background: #333; }
+        .resenha-poster { width: 45px; height: 65px; border-radius: 5px; object-fit: cover; }
+        .resenha-filme-titulo { font-weight: bold; font-size: 0.9em; }
+        .resenha-filme-ano { font-size: 0.75em; color: #aaa; }
+        .resenha-estrelas { color: #f5c518; font-size: 0.9em; margin-top: 3px; }
+        .resenha-texto { line-height: 1.6; color: #ddd; margin-bottom: 15px; }
+
+        .resenha-acoes {
+            display: flex; gap: 20px; padding-top: 12px;
+            border-top: 1px solid #2a2a2a;
+        }
+        .acao-btn {
+            background: none; border: none; color: #aaa;
+            cursor: pointer; font-size: 0.9em; transition: color 0.2s;
+            display: flex; align-items: center; gap: 5px;
+        }
+        .acao-btn:hover { color: #fff; }
+        .acao-btn.curtido { color: #e50914; }
+
+        /* Comentários */
+        .comentarios-wrap { margin-top: 15px; display: none; }
+        .comentarios-wrap.show { display: block; }
+
+        .comentario {
+            display: flex; gap: 10px; margin-bottom: 10px;
+            padding: 10px; background: #2a2a2a; border-radius: 8px;
+        }
+        .com-avatar { width: 30px; height: 30px; border-radius: 50%; object-fit: cover; }
+        .com-nome { font-weight: bold; font-size: 0.85em; margin-bottom: 2px; }
+        .com-texto { font-size: 0.85em; color: #ccc; }
+
+        .comentario-form { display: flex; gap: 8px; margin-top: 10px; }
+        .comentario-form input {
+            flex: 1; background: #2a2a2a; border: 1px solid #444;
+            color: #fff; padding: 8px 12px; border-radius: 20px; font-size: 0.9em;
+        }
+        .comentario-form input:focus { outline: none; border-color: #e50914; }
+        .comentario-form button {
+            background: #e50914; border: none; color: #fff;
+            padding: 8px 15px; border-radius: 20px; cursor: pointer; font-weight: bold;
+        }
+
+        /* SIDEBAR */
+        .sidebar-card {
+            background: #1f1f1f; border-radius: 12px; padding: 20px; margin-bottom: 20px;
+        }
+        .sidebar-card h3 { font-size: 1em; margin-bottom: 15px; color: #e50914; }
+
+        /* Nova Resenha */
+        .nova-resenha-btn {
+            width: 100%; background: #e50914; border: none; color: #fff;
+            padding: 12px; border-radius: 8px; font-size: 1em;
+            font-weight: bold; cursor: pointer; margin-bottom: 20px; transition: all 0.3s;
+        }
+        .nova-resenha-btn:hover { background: #b00610; }
+
+        .busca-filme-input {
+            width: 100%; background: #2a2a2a; border: 1px solid #444;
+            color: #fff; padding: 10px 12px; border-radius: 8px;
+            font-size: 0.9em; margin-bottom: 10px;
+        }
+        .busca-filme-input:focus { outline: none; border-color: #e50914; }
+
+        .busca-resultado {
+            background: #2a2a2a; border-radius: 8px; overflow: hidden;
+            max-height: 200px; overflow-y: auto; margin-bottom: 10px;
+        }
+        .busca-item {
+            display: flex; gap: 10px; padding: 8px 12px;
+            cursor: pointer; transition: background 0.2s; align-items: center;
+        }
+        .busca-item:hover { background: #333; }
+        .busca-item img { width: 30px; height: 45px; object-fit: cover; border-radius: 3px; }
+        .busca-item-titulo { font-size: 0.85em; font-weight: bold; }
+        .busca-item-ano { font-size: 0.75em; color: #aaa; }
+
+        .filme-selecionado {
+            display: none; background: #2a2a2a; border-radius: 8px;
+            padding: 10px; margin-bottom: 10px; align-items: center; gap: 10px;
+        }
+        .filme-selecionado.show { display: flex; }
+        .filme-selecionado img { width: 35px; height: 50px; object-fit: cover; border-radius: 3px; }
+
+        .nota-select { display: flex; gap: 5px; margin-bottom: 10px; }
+        .nota-star {
+            font-size: 1.8em; cursor: pointer; color: #555; transition: color 0.2s;
+        }
+        .nota-star.ativo { color: #f5c518; }
+
+        .resenha-textarea {
+            width: 100%; background: #2a2a2a; border: 1px solid #444;
+            color: #fff; padding: 10px 12px; border-radius: 8px;
+            font-size: 0.9em; height: 100px; resize: none; margin-bottom: 10px;
+            font-family: Arial;
+        }
+        .resenha-textarea:focus { outline: none; border-color: #e50914; }
+
+        .btn-publicar {
+            width: 100%; background: #e50914; border: none; color: #fff;
+            padding: 10px; border-radius: 8px; font-weight: bold; cursor: pointer;
+        }
+        .btn-publicar:hover { background: #b00610; }
+        .btn-publicar:disabled { background: #555; cursor: not-allowed; }
+
+        /* Usuários sugeridos */
+        .usuario-item {
+            display: flex; align-items: center; gap: 10px; margin-bottom: 12px;
+        }
+        .usuario-avatar { width: 38px; height: 38px; border-radius: 50%; object-fit: cover; cursor: pointer; }
+        .usuario-nome { font-size: 0.9em; font-weight: bold; flex: 1; cursor: pointer; }
+        .usuario-nome:hover { color: #e50914; }
+        .btn-seguir-mini {
+            background: none; border: 1px solid #555; color: #aaa;
+            padding: 4px 10px; border-radius: 12px; cursor: pointer; font-size: 0.8em;
+            transition: all 0.2s;
+        }
+        .btn-seguir-mini:hover { border-color: #e50914; color: #e50914; }
+
+        .loading { text-align: center; padding: 40px; color: #aaa; }
+        .empty-state { text-align: center; padding: 40px; color: #aaa; }
+
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #141414; }
+        ::-webkit-scrollbar-thumb { background: #e50914; border-radius: 3px; }
+    </style>
+</head>
+<body>
+
+<nav>
+    <h1 onclick="window.location.href='index.html'">🎬 Casa dos Cinéfilos</h1>
+    <div class="nav-right">
+        <button class="nav-btn" onclick="window.location.href='index.html'">🎬 Catálogo</button>
+        <img class="nav-avatar" id="nav-avatar" src="" onclick="window.location.href='perfil.html'">
+        <button class="nav-btn" onclick="sair()">Sair</button>
+    </div>
+</nav>
+
+<div class="layout">
+    <!-- FEED PRINCIPAL -->
+    <div>
+        <div class="feed-header">
+            <h2>📰 Feed</h2>
+        </div>
+        <div class="feed-tabs">
+            <button class="feed-tab active" onclick="trocarFeed('global', this)">🌍 Global</button>
+            <button class="feed-tab" onclick="trocarFeed('seguindo', this)">👥 Seguindo</button>
+        </div>
+        <div id="feed-lista"><div class="loading">Carregando...</div></div>
+    </div>
+
+    <!-- SIDEBAR -->
+    <div>
+        <!-- Formulário nova resenha -->
+        <div class="sidebar-card">
+            <h3>✍️ Nova Resenha</h3>
+            <input class="busca-filme-input" id="busca-filme" placeholder="Buscar filme ou série..." oninput="buscarFilme()">
+            <div class="busca-resultado" id="busca-resultado" style="display:none;"></div>
+            <div class="filme-selecionado" id="filme-selecionado">
+                <img id="filme-sel-poster" src="" alt="">
+                <div>
+                    <div id="filme-sel-titulo" style="font-weight:bold;font-size:0.9em;"></div>
+                    <div id="filme-sel-ano" style="font-size:0.75em;color:#aaa;"></div>
+                </div>
+            </div>
+            <div class="nota-select" id="nota-select">
+                <span class="nota-star" onclick="selecionarNota(1)">★</span>
+                <span class="nota-star" onclick="selecionarNota(2)">★</span>
+                <span class="nota-star" onclick="selecionarNota(3)">★</span>
+                <span class="nota-star" onclick="selecionarNota(4)">★</span>
+                <span class="nota-star" onclick="selecionarNota(5)">★</span>
+            </div>
+            <textarea class="resenha-textarea" id="resenha-texto" placeholder="Escreva sua resenha..."></textarea>
+            <button class="btn-publicar" onclick="publicarResenha()" id="btn-publicar">Publicar</button>
+        </div>
+
+        <!-- Sugestões -->
+        <div class="sidebar-card">
+            <h3>👥 Cinéfilos para seguir</h3>
+            <div id="sugestoes-lista"><div class="loading">Carregando...</div></div>
+        </div>
+    </div>
+</div>
+
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+    import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+    import { getFirestore, collection, query, orderBy, limit, getDocs, addDoc, updateDoc, doc, getDoc, serverTimestamp, where } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyDS0ZNDyRDiq4xOKTzbeMnIZIdR1dI1q6s",
+        authDomain: "casa-dos-cinefilos.firebaseapp.com",
+        projectId: "casa-dos-cinefilos",
+        storageBucket: "casa-dos-cinefilos.firebasestorage.app",
+        messagingSenderId: "77381886629",
+        appId: "1:77381886629:web:335bb10ba7cf83b86be34c"
+    };
+
+    const app  = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db   = getFirestore(app);
+
+    const API_KEY = 'add4acf69f7d6a6cd5ba7278914fb58a';
+    const BASE    = 'https://api.themoviedb.org/3';
+
+    let usuarioAtual  = null;
+    let filmeSelecionado = null;
+    let notaSelecionada  = 0;
+    let feedAtual = 'global';
+    let buscaTimeout = null;
+
+    onAuthStateChanged(auth, async (user) => {
+        if (!user) { window.location.href = 'login.html'; return; }
+        usuarioAtual = user;
+        document.getElementById('nav-avatar').src = user.photoURL || `https://api.dicebear.com/7.x/avataaars/svg?seed=${user.uid}`;
+        await carregarFeed('global');
+        await carregarSugestoes();
+    });
+
+    // ===== FEED =====
+    window.trocarFeed = async (tipo, btn) => {
+        document.querySelectorAll('.feed-tab').forEach(t => t.classList.remove('active'));
+        btn.classList.add('active');
+        feedAtual = tipo;
+        await carregarFeed(tipo);
+    };
+
+    async function carregarFeed(tipo) {
+        const lista = document.getElementById('feed-lista');
+        lista.innerHTML = '<div class="loading">Carregando...</div>';
+        try {
+            let q;
+            if (tipo === 'global') {
+                q = query(collection(db, 'resenhas'), orderBy('criadoEm', 'desc'), limit(30));
+            } else {
+                const snap = await getDoc(doc(db, 'usuarios', usuarioAtual.uid));
+                const seguindo = snap.data()?.seguindo || [];
+                if (seguindo.length === 0) {
+                    lista.innerHTML = '<div class="empty-state">Siga outros cinéfilos para ver o feed deles!</div>';
+                    return;
+                }
+                q = query(collection(db, 'resenhas'), where('autorId', 'in', seguindo.slice(0,10)), orderBy('criadoEm', 'desc'), limit(30));
+            }
+            const snap = await getDocs(q);
+            if (snap.empty) { lista.innerHTML = '<div class="empty-state">Nenhuma resenha ainda. Seja o primeiro!</div>'; return; }
+            lista.innerHTML = snap.docs.map(d => renderResenha(d.id, d.data())).join('');
+        } catch(e) {
+            lista.innerHTML = '<div class="empty-state">Erro ao carregar feed.</div>';
+        }
+    }
+
+    function renderResenha(id, r) {
+        const estrelas = '★'.repeat(r.nota || 0) + '☆'.repeat(5 - (r.nota || 0));
+        const data = r.criadoEm?.toDate ? r.criadoEm.toDate().toLocaleDateString('pt-BR') : '';
+        const curtido = (r.curtidas || []).includes(usuarioAtual?.uid);
+        return `
+        <div class="resenha-card" id="res-${id}">
+            <div class="resenha-header">
+                <img class="resenha-avatar" src="${r.autorAvatar || ''}" onclick="window.location.href='perfil.html?uid=${r.autorId}'">
+                <div style="flex:1">
+                    <div class="resenha-user-nome" onclick="window.location.href='perfil.html?uid=${r.autorId}'">${r.autorNome || ''}</div>
+                    <div class="resenha-data">${data}</div>
+                </div>
+            </div>
+            <div class="resenha-filme" onclick="window.location.href='index.html#${r.tipoFilme}/${r.filmeId}'">
+                <img class="resenha-poster" src="${r.filmePoster ? 'https://image.tmdb.org/t/p/w92' + r.filmePoster : ''}" alt="">
+                <div>
+                    <div class="resenha-filme-titulo">${r.filmeTitulo || ''}</div>
+                    <div class="resenha-filme-ano">${r.filmeAno || ''}</div>
+                    <div class="resenha-estrelas">${estrelas}</div>
+                </div>
+            </div>
+            <p class="resenha-texto">${r.texto || ''}</p>
+            <div class="resenha-acoes">
+                <button class="acao-btn ${curtido ? 'curtido' : ''}" onclick="curtirResenha('${id}', this)">❤️ ${(r.curtidas||[]).length}</button>
+                <button class="acao-btn" onclick="toggleComentarios('${id}')">💬 Comentários</button>
+            </div>
+            <div class="comentarios-wrap" id="coms-${id}">
+                <div id="lista-coms-${id}"></div>
+                <div class="comentario-form">
+                    <input type="text" placeholder="Comentar..." id="input-com-${id}" onkeypress="if(event.key==='Enter') comentar('${id}')">
+                    <button onclick="comentar('${id}')">→</button>
+                </div>
+            </div>
+        </div>`;
+    }
+
+    window.curtirResenha = async (id, btn) => {
+        const ref  = doc(db, 'resenhas', id);
+        const snap = await getDoc(ref);
+        if (!snap.exists()) return;
+        const curtidas = snap.data().curtidas || [];
+        const idx = curtidas.indexOf(usuarioAtual.uid);
+        if (idx === -1) curtidas.push(usuarioAtual.uid);
+        else curtidas.splice(idx, 1);
+        await updateDoc(ref, { curtidas });
+        btn.className = `acao-btn ${curtidas.includes(usuarioAtual.uid) ? 'curtido' : ''}`;
+        btn.innerHTML = `❤️ ${curtidas.length}`;
+    };
+
+    window.toggleComentarios = async (id) => {
+        const wrap = document.getElementById(`coms-${id}`);
+        wrap.classList.toggle('show');
+        if (wrap.classList.contains('show')) await carregarComentarios(id);
+    };
+
+    async function carregarComentarios(resId) {
+        const lista = document.getElementById(`lista-coms-${resId}`);
+        const q = query(collection(db, 'resenhas', resId, 'comentarios'), orderBy('criadoEm', 'asc'));
+        const snap = await getDocs(q);
+        lista.innerHTML = snap.docs.map(d => {
+            const c = d.data();
+            return `<div class="comentario">
+                <img class="com-avatar" src="${c.autorAvatar || ''}">
+                <div><div class="com-nome">${c.autorNome}</div><div class="com-texto">${c.texto}</div></div>
+            </div>`;
+        }).join('') || '<div style="color:#aaa;font-size:0.85em;padding:8px;">Nenhum comentário ainda.</div>';
+    }
+
+    window.comentar = async (resId) => {
+        const input = document.getElementById(`input-com-${resId}`);
+        const texto = input.value.trim();
+        if (!texto) return;
+        await addDoc(collection(db, 'resenhas', resId, 'comentarios'), {
+            texto,
+            autorId: usuarioAtual.uid,
+            autorNome: usuarioAtual.displayName || 'Anônimo',
+            autorAvatar: usuarioAtual.photoURL || '',
+            criadoEm: serverTimestamp()
+        });
+        input.value = '';
+        await carregarComentarios(resId);
+    };
+
+    // ===== BUSCA DE FILME =====
+    window.buscarFilme = () => {
+        clearTimeout(buscaTimeout);
+        const q = document.getElementById('busca-filme').value.trim();
+        if (!q) { document.getElementById('busca-resultado').style.display = 'none'; return; }
+        buscaTimeout = setTimeout(async () => {
+            const res = await fetch(`${BASE}/search/multi?api_key=${API_KEY}&language=pt-BR&query=${encodeURIComponent(q)}`);
+            const data = await res.json();
+            const itens = (data.results || []).filter(i => i.media_type !== 'person').slice(0, 6);
+            const box = document.getElementById('busca-resultado');
+            if (!itens.length) { box.style.display = 'none'; return; }
+            box.style.display = 'block';
+            box.innerHTML = itens.map(i => `
+                <div class="busca-item" onclick="selecionarFilme(${JSON.stringify(i).replace(/"/g,'&quot;')})">
+                    <img src="${i.poster_path ? 'https://image.tmdb.org/t/p/w92' + i.poster_path : ''}" alt="">
+                    <div>
+                        <div class="busca-item-titulo">${i.title || i.name}</div>
+                        <div class="busca-item-ano">${(i.release_date || i.first_air_date || '').substring(0,4)}</div>
+                    </div>
+                </div>`).join('');
+        }, 400);
+    };
+
+    window.selecionarFilme = (item) => {
+        filmeSelecionado = item;
+        document.getElementById('busca-resultado').style.display = 'none';
+        document.getElementById('busca-filme').value = '';
+        const sel = document.getElementById('filme-selecionado');
+        sel.classList.add('show');
+        document.getElementById('filme-sel-poster').src = item.poster_path ? `https://image.tmdb.org/t/p/w92${item.poster_path}` : '';
+        document.getElementById('filme-sel-titulo').textContent = item.title || item.name;
+        document.getElementById('filme-sel-ano').textContent = (item.release_date || item.first_air_date || '').substring(0,4);
+    };
+
+    window.selecionarNota = (n) => {
+        notaSelecionada = n;
+        document.querySelectorAll('.nota-star').forEach((s, i) => {
+            s.classList.toggle('ativo', i < n);
+        });
+    };
+
+    // ===== PUBLICAR RESENHA =====
+    window.publicarResenha = async () => {
+        const texto = document.getElementById('resenha-texto').value.trim();
+        if (!filmeSelecionado) { alert('Selecione um filme ou série!'); return; }
+        if (!texto) { alert('Escreva sua resenha!'); return; }
+        const btn = document.getElementById('btn-publicar');
+        btn.disabled = true; btn.textContent = 'Publicando...';
+        try {
+            await addDoc(collection(db, 'resenhas'), {
+                filmeId:     filmeSelecionado.id,
+                filmeTitulo: filmeSelecionado.title || filmeSelecionado.name,
+                filmePoster: filmeSelecionado.poster_path || '',
+                filmeAno:    (filmeSelecionado.release_date || filmeSelecionado.first_air_date || '').substring(0,4),
+                tipoFilme:   filmeSelecionado.media_type === 'movie' ? 'filme' : 'serie',
+                texto,
+                nota:        notaSelecionada,
+                autorId:     usuarioAtual.uid,
+                autorNome:   usuarioAtual.displayName || 'Anônimo',
+                autorAvatar: usuarioAtual.photoURL    || '',
+                curtidas:    [],
+                criadoEm:    serverTimestamp()
+            });
+            document.getElementById('resenha-texto').value = '';
+            document.getElementById('filme-selecionado').classList.remove('show');
+            filmeSelecionado = null; notaSelecionada = 0;
+            document.querySelectorAll('.nota-star').forEach(s => s.classList.remove('ativo'));
+            await carregarFeed(feedAtual);
+        } catch(e) { alert('Erro ao publicar. Tente novamente.'); }
+        btn.disabled = false; btn.textContent = 'Publicar';
+    };
+
+    // ===== SUGESTÕES =====
+    async function carregarSugestoes() {
+        const lista = document.getElementById('sugestoes-lista');
+        try {
+            const snap = await getDocs(query(collection(db, 'usuarios'), limit(5)));
+            const outros = snap.docs.filter(d => d.id !== usuarioAtual.uid).slice(0, 4);
+            if (!outros.length) { lista.innerHTML = '<div style="color:#aaa;font-size:0.85em;">Nenhum usuário ainda.</div>'; return; }
+            lista.innerHTML = outros.map(d => {
+                const u = d.data();
+                return `<div class="usuario-item">
+                    <img class="usuario-avatar" src="${u.avatar || ''}" onclick="window.location.href='perfil.html?uid=${d.id}'">
+                    <div class="usuario-nome" onclick="window.location.href='perfil.html?uid=${d.id}'">${u.nome || 'Anônimo'}</div>
+                    <button class="btn-seguir-mini" onclick="seguirUsuario('${d.id}', this)">+ Seguir</button>
+                </div>`;
+            }).join('');
+        } catch(e) { lista.innerHTML = ''; }
+    }
+
+    window.seguirUsuario = async (uid, btn) => {
+        const ref  = doc(db, 'usuarios', uid);
+        const snap = await getDoc(ref);
+        const seguidores = snap.data()?.seguidores || [];
+        if (!seguidores.includes(usuarioAtual.uid)) {
+            seguidores.push(usuarioAtual.uid);
+            await updateDoc(ref, { seguidores });
+            // Atualiza seguindo do usuário atual
+            const meRef  = doc(db, 'usuarios', usuarioAtual.uid);
+            const meSnap = await getDoc(meRef);
+            const seguindo = meSnap.data()?.seguindo || [];
+            if (!seguindo.includes(uid)) { seguindo.push(uid); await updateDoc(meRef, { seguindo }); }
+            btn.textContent = '✓ Seguindo';
+            btn.style.color = '#2ecc71';
+        }
+    };
+
+    window.sair = async () => {
+        await signOut(auth);
+        window.location.href = 'login.html';
+    };
+</script>
+</body>
+</html>
