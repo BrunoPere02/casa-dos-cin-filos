@@ -7,13 +7,8 @@
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
-        body {
-            font-family: 'Arial', sans-serif;
-            background: #141414;
-            color: #fff;
-        }
+        body { font-family: 'Arial', sans-serif; background: #141414; color: #fff; }
 
-        /* NAVBAR */
         nav {
             background: linear-gradient(to bottom, #000 0%, transparent 100%);
             padding: 20px 40px;
@@ -24,261 +19,220 @@
             top: 0;
             width: 100%;
             z-index: 1000;
+            backdrop-filter: blur(5px);
         }
 
-        nav h1 {
-            color: #e50914;
-            font-size: 1.8em;
-            font-weight: bold;
-            cursor: pointer;
-        }
+        nav h1 { color: #e50914; font-size: 1.8em; font-weight: bold; cursor: pointer; }
 
         .nav-links { display: flex; gap: 20px; }
 
         .nav-links button {
-            background: none;
-            border: none;
-            color: #fff;
-            font-size: 1em;
-            cursor: pointer;
-            padding: 5px 10px;
-            border-radius: 5px;
-            transition: all 0.3s;
+            background: none; border: none; color: #fff;
+            font-size: 1em; cursor: pointer; padding: 5px 10px;
+            border-radius: 5px; transition: all 0.3s;
         }
 
-        .nav-links button:hover, .nav-links button.active {
-            background: #e50914;
-        }
+        .nav-links button:hover, .nav-links button.active { background: #e50914; }
 
-        .search-bar {
-            margin-left: auto;
-            display: flex;
-            gap: 10px;
-        }
+        .nav-right { margin-left: auto; display: flex; gap: 10px; align-items: center; }
+
+        .search-bar { display: flex; gap: 10px; }
 
         .search-bar input {
             background: rgba(255,255,255,0.1);
             border: 1px solid rgba(255,255,255,0.3);
-            color: #fff;
-            padding: 8px 15px;
-            border-radius: 20px;
-            width: 250px;
-            font-size: 0.9em;
+            color: #fff; padding: 8px 15px;
+            border-radius: 20px; width: 250px; font-size: 0.9em;
         }
 
         .search-bar input::placeholder { color: rgba(255,255,255,0.5); }
 
         .search-bar button {
-            background: #e50914;
-            border: none;
-            color: #fff;
-            padding: 8px 20px;
-            border-radius: 20px;
-            cursor: pointer;
-            font-weight: bold;
+            background: #e50914; border: none; color: #fff;
+            padding: 8px 20px; border-radius: 20px; cursor: pointer; font-weight: bold;
         }
 
-        /* HERO */
-        .hero {
-            height: 500px;
-            background: linear-gradient(to right, #000 30%, transparent),
-                        linear-gradient(to top, #141414 0%, transparent 50%),
-                        url('https://image.tmdb.org/t/p/original/') center/cover;
-            display: flex;
-            align-items: center;
-            padding: 0 40px;
-            margin-top: 60px;
+        .fav-btn-nav {
+            background: none; border: 2px solid #e50914;
+            color: #e50914; padding: 8px 15px;
+            border-radius: 20px; cursor: pointer; font-weight: bold;
+            transition: all 0.3s;
         }
 
-        /* SECTIONS */
-        .section {
-            padding: 20px 40px;
-            display: none;
-        }
+        .fav-btn-nav:hover { background: #e50914; color: #fff; }
 
+        .section { padding: 20px 40px; display: none; }
         .section.active { display: block; }
 
         .section h2 {
-            font-size: 1.5em;
-            margin-bottom: 20px;
-            color: #fff;
-            border-left: 4px solid #e50914;
-            padding-left: 10px;
+            font-size: 1.5em; margin-bottom: 15px; color: #fff;
+            border-left: 4px solid #e50914; padding-left: 10px;
         }
 
-        /* GRID */
+        .filters {
+            display: flex; gap: 15px; margin-bottom: 20px;
+            flex-wrap: wrap; align-items: center;
+        }
+
+        .filters select, .filters input {
+            background: #2a2a2a; border: 1px solid #444;
+            color: #fff; padding: 8px 15px; border-radius: 8px;
+            font-size: 0.9em; cursor: pointer;
+        }
+
+        .filters button {
+            background: #e50914; border: none; color: #fff;
+            padding: 8px 20px; border-radius: 8px; cursor: pointer; font-weight: bold;
+        }
+
         .grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
             gap: 15px;
         }
 
-        /* CARD */
         .card {
-            background: #1f1f1f;
-            border-radius: 8px;
-            overflow: hidden;
-            cursor: pointer;
-            transition: transform 0.3s, box-shadow 0.3s;
+            background: #1f1f1f; border-radius: 8px; overflow: hidden;
+            cursor: pointer; transition: transform 0.3s, box-shadow 0.3s;
             position: relative;
         }
 
-        .card:hover {
-            transform: scale(1.05);
-            box-shadow: 0 8px 25px rgba(229, 9, 20, 0.4);
-        }
+        .card:hover { transform: scale(1.05); box-shadow: 0 8px 25px rgba(229,9,20,0.4); }
 
-        .card img {
-            width: 100%;
-            height: 270px;
-            object-fit: cover;
-        }
+        .card img { width: 100%; height: 270px; object-fit: cover; }
 
         .card-info { padding: 10px; }
 
         .card-title {
-            font-size: 0.85em;
-            font-weight: bold;
-            margin-bottom: 5px;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
+            font-size: 0.85em; font-weight: bold; margin-bottom: 5px;
+            white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
         }
 
         .card-date { font-size: 0.75em; color: #aaa; }
-
         .stars { color: #f5c518; font-size: 0.8em; margin-top: 5px; }
+
+        .badge {
+            position: absolute; top: 10px; right: 10px;
+            background: #e50914; color: #fff;
+            padding: 3px 8px; border-radius: 5px; font-size: 0.7em; font-weight: bold;
+        }
+
+        .fav-icon {
+            position: absolute; top: 10px; left: 10px;
+            background: rgba(0,0,0,0.7); border: none; color: #f5c518;
+            width: 30px; height: 30px; border-radius: 50%;
+            cursor: pointer; font-size: 1em; display: flex;
+            align-items: center; justify-content: center;
+            transition: all 0.3s;
+        }
+
+        .fav-icon:hover { background: #e50914; color: #fff; }
+
+        .load-more {
+            display: block; margin: 30px auto; background: #e50914;
+            border: none; color: #fff; padding: 12px 40px;
+            border-radius: 25px; cursor: pointer; font-size: 1em;
+            font-weight: bold; transition: all 0.3s;
+        }
+
+        .load-more:hover { background: #b00610; transform: scale(1.05); }
+
+        .tabs { display: flex; gap: 5px; margin-bottom: 20px; flex-wrap: wrap; }
+
+        .tab-btn {
+            background: #2a2a2a; border: none; color: #aaa;
+            padding: 8px 20px; border-radius: 20px; cursor: pointer; transition: all 0.3s;
+        }
+
+        .tab-btn:hover, .tab-btn.active { background: #e50914; color: #fff; }
+
+        .loading { text-align: center; padding: 50px; color: #aaa; font-size: 1.2em; }
 
         /* MODAL */
         .modal-overlay {
-            position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            background: rgba(0,0,0,0.85);
-            z-index: 2000;
-            display: none;
-            justify-content: center;
-            align-items: center;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.85); z-index: 2000;
+            display: none; justify-content: center; align-items: center;
         }
 
         .modal-overlay.show { display: flex; }
 
         .modal {
-            background: #1f1f1f;
-            border-radius: 12px;
-            width: 700px;
-            max-width: 90%;
-            max-height: 85vh;
-            overflow-y: auto;
+            background: #1f1f1f; border-radius: 12px;
+            width: 800px; max-width: 95%; max-height: 90vh; overflow-y: auto;
             position: relative;
         }
 
-        .modal-banner {
-            width: 100%;
-            height: 300px;
-            object-fit: cover;
-            border-radius: 12px 12px 0 0;
-        }
+        .modal-banner { width: 100%; height: 300px; object-fit: cover; border-radius: 12px 12px 0 0; }
 
         .modal-body { padding: 25px; }
-
         .modal-body h2 { font-size: 1.8em; margin-bottom: 10px; }
 
-        .modal-meta {
-            display: flex;
-            gap: 15px;
-            margin-bottom: 15px;
-            font-size: 0.85em;
-            color: #aaa;
-        }
-
+        .modal-meta { display: flex; gap: 15px; margin-bottom: 15px; font-size: 0.85em; color: #aaa; flex-wrap: wrap; }
         .modal-meta span { color: #f5c518; }
 
-        .modal-overview {
-            line-height: 1.6;
-            color: #ccc;
-            margin-bottom: 20px;
-        }
+        .modal-overview { line-height: 1.6; color: #ccc; margin-bottom: 20px; }
 
         .modal-close {
-            position: absolute;
-            top: 15px; right: 15px;
-            background: rgba(0,0,0,0.7);
-            border: none;
-            color: #fff;
-            width: 35px; height: 35px;
-            border-radius: 50%;
-            cursor: pointer;
-            font-size: 1.2em;
+            position: absolute; top: 15px; right: 15px;
+            background: rgba(0,0,0,0.7); border: none; color: #fff;
+            width: 35px; height: 35px; border-radius: 50%;
+            cursor: pointer; font-size: 1.2em;
         }
 
-        /* RATING */
+        .modal-actions { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
+
+        .modal-actions button {
+            padding: 10px 20px; border: none; border-radius: 8px;
+            cursor: pointer; font-weight: bold; transition: all 0.3s;
+        }
+
+        .btn-trailer { background: #e50914; color: #fff; }
+        .btn-trailer:hover { background: #b00610; }
+
+        .btn-fav { background: #f5c518; color: #000; }
+        .btn-fav:hover { background: #d4a800; }
+
+        .where-to-watch { margin-bottom: 20px; }
+        .where-to-watch h4 { margin-bottom: 10px; color: #fff; }
+
+        .streaming-logos { display: flex; gap: 10px; flex-wrap: wrap; }
+
+        .streaming-logo {
+            background: #2a2a2a; padding: 8px 15px; border-radius: 8px;
+            font-size: 0.85em; color: #fff; font-weight: bold;
+        }
+
         .rating-section { margin-top: 15px; }
         .rating-section h4 { margin-bottom: 10px; color: #fff; }
 
         .star-rating { display: flex; gap: 5px; margin-bottom: 10px; }
 
         .star-rating span {
-            font-size: 2em;
-            cursor: pointer;
-            color: #555;
-            transition: color 0.2s;
+            font-size: 2em; cursor: pointer; color: #555; transition: color 0.2s;
         }
 
         .star-rating span.active { color: #f5c518; }
 
-        /* TABS */
-        .tabs {
-            display: flex;
-            gap: 5px;
-            margin-bottom: 30px;
-            flex-wrap: wrap;
+        /* TRAILER */
+        .trailer-container {
+            position: relative; width: 100%; padding-bottom: 56.25%; margin-bottom: 20px;
         }
 
-        .tab-btn {
-            background: #2a2a2a;
-            border: none;
-            color: #aaa;
-            padding: 8px 20px;
-            border-radius: 20px;
-            cursor: pointer;
-            transition: all 0.3s;
+        .trailer-container iframe {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%; border-radius: 8px;
         }
 
-        .tab-btn:hover, .tab-btn.active {
-            background: #e50914;
-            color: #fff;
-        }
-
-        /* LOADING */
-        .loading {
-            text-align: center;
-            padding: 50px;
-            color: #aaa;
-            font-size: 1.2em;
-        }
-
-        /* BADGE */
-        .badge {
-            position: absolute;
-            top: 10px; right: 10px;
-            background: #e50914;
-            color: #fff;
-            padding: 3px 8px;
-            border-radius: 5px;
-            font-size: 0.7em;
-            font-weight: bold;
-        }
-
-        /* SCROLLBAR */
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: #141414; }
         ::-webkit-scrollbar-thumb { background: #e50914; border-radius: 3px; }
+
+        .empty-state { text-align: center; padding: 60px; color: #aaa; }
+        .empty-state p { font-size: 1.2em; margin-top: 15px; }
     </style>
 </head>
 <body>
 
-<!-- NAVBAR -->
 <nav>
     <h1 onclick="showSection('home')">🎬 Casa dos Cinéfilos</h1>
     <div class="nav-links">
@@ -287,59 +241,86 @@
         <button onclick="showSection('series')">Séries</button>
         <button onclick="showSection('em-breve')">Em Breve</button>
     </div>
-    <div class="search-bar">
-        <input type="text" id="searchInput" placeholder="Buscar filmes e séries..." 
-               onkeypress="if(event.key==='Enter') buscar()">
-        <button onclick="buscar()">Buscar</button>
+    <div class="nav-right">
+        <button class="fav-btn-nav" onclick="showSection('favoritos')">❤️ Favoritos</button>
+        <div class="search-bar">
+            <input type="text" id="searchInput" placeholder="Buscar filmes e séries..."
+                   onkeypress="if(event.key==='Enter') buscar()">
+            <button onclick="buscar()">Buscar</button>
+        </div>
     </div>
 </nav>
 
-<!-- SECTIONS -->
 <div id="home" class="section active" style="padding-top: 80px;">
     <h2>🔥 Tendências</h2>
     <div class="tabs">
-        <button class="tab-btn active" onclick="carregarTendencias('all')">Tudo</button>
-        <button class="tab-btn" onclick="carregarTendencias('movie')">Filmes</button>
-        <button class="tab-btn" onclick="carregarTendencias('tv')">Séries</button>
+        <button class="tab-btn active" onclick="carregarTendencias('all', event)">Tudo</button>
+        <button class="tab-btn" onclick="carregarTendencias('movie', event)">Filmes</button>
+        <button class="tab-btn" onclick="carregarTendencias('tv', event)">Séries</button>
     </div>
-    <div class="grid" id="tendencias-grid">
-        <div class="loading">Carregando...</div>
-    </div>
+    <div class="grid" id="tendencias-grid"><div class="loading">Carregando...</div></div>
 
-    <h2 style="margin-top: 40px;">⭐ Mais Bem Avaliados</h2>
-    <div class="grid" id="top-grid">
-        <div class="loading">Carregando...</div>
-    </div>
+    <h2 style="margin-top:40px;">⭐ Mais Bem Avaliados</h2>
+    <div class="grid" id="top-grid"><div class="loading">Carregando...</div></div>
 </div>
 
 <div id="filmes" class="section" style="padding-top: 80px;">
-    <h2>🎬 Filmes Populares</h2>
+    <h2>🎬 Filmes</h2>
     <div class="tabs" id="generos-filmes"></div>
-    <div class="grid" id="filmes-grid">
-        <div class="loading">Carregando...</div>
+    <div class="filters">
+        <select id="filtro-ano-filmes">
+            <option value="">Todos os anos</option>
+        </select>
+        <select id="filtro-nota-filmes">
+            <option value="">Qualquer nota</option>
+            <option value="9">9+ ⭐</option>
+            <option value="8">8+ ⭐</option>
+            <option value="7">7+ ⭐</option>
+            <option value="6">6+ ⭐</option>
+        </select>
+        <button onclick="aplicarFiltrosFilmes()">Filtrar</button>
     </div>
+    <div class="grid" id="filmes-grid"><div class="loading">Carregando...</div></div>
+    <button class="load-more" id="load-more-filmes" onclick="carregarMaisFilmes()" style="display:none;">
+        Carregar Mais
+    </button>
 </div>
 
 <div id="series" class="section" style="padding-top: 80px;">
-    <h2>📺 Séries Populares</h2>
+    <h2>📺 Séries</h2>
     <div class="tabs" id="generos-series"></div>
-    <div class="grid" id="series-grid">
-        <div class="loading">Carregando...</div>
+    <div class="filters">
+        <select id="filtro-ano-series">
+            <option value="">Todos os anos</option>
+        </select>
+        <select id="filtro-nota-series">
+            <option value="">Qualquer nota</option>
+            <option value="9">9+ ⭐</option>
+            <option value="8">8+ ⭐</option>
+            <option value="7">7+ ⭐</option>
+            <option value="6">6+ ⭐</option>
+        </select>
+        <button onclick="aplicarFiltrosSeries()">Filtrar</button>
     </div>
+    <div class="grid" id="series-grid"><div class="loading">Carregando...</div></div>
+    <button class="load-more" id="load-more-series" onclick="carregarMaisSeries()" style="display:none;">
+        Carregar Mais
+    </button>
 </div>
 
 <div id="em-breve" class="section" style="padding-top: 80px;">
     <h2>🗓️ Em Breve nos Cinemas</h2>
-    <div class="grid" id="embreve-grid">
-        <div class="loading">Carregando...</div>
-    </div>
+    <div class="grid" id="embreve-grid"><div class="loading">Carregando...</div></div>
+</div>
+
+<div id="favoritos" class="section" style="padding-top: 80px;">
+    <h2>❤️ Meus Favoritos</h2>
+    <div class="grid" id="favoritos-grid"></div>
 </div>
 
 <div id="busca" class="section" style="padding-top: 80px;">
     <h2>🔍 Resultados da Busca</h2>
-    <div class="grid" id="busca-grid">
-        <div class="loading">Buscando...</div>
-    </div>
+    <div class="grid" id="busca-grid"><div class="loading">Buscando...</div></div>
 </div>
 
 <!-- MODAL -->
@@ -353,8 +334,20 @@
                 <span id="modal-rating">⭐</span>
                 <span id="modal-date"></span>
                 <span id="modal-type"></span>
+                <span id="modal-runtime"></span>
             </div>
             <p class="modal-overview" id="modal-overview"></p>
+            <div class="modal-actions">
+                <button class="btn-trailer" id="btn-trailer" onclick="verTrailer()">▶ Ver Trailer</button>
+                <button class="btn-fav" id="btn-fav" onclick="toggleFavorito()">❤️ Favoritar</button>
+            </div>
+            <div id="trailer-container" style="display:none;" class="trailer-container">
+                <iframe id="trailer-iframe" src="" allowfullscreen></iframe>
+            </div>
+            <div class="where-to-watch" id="where-to-watch" style="display:none;">
+                <h4>📺 Onde Assistir:</h4>
+                <div class="streaming-logos" id="streaming-logos"></div>
+            </div>
             <div class="rating-section">
                 <h4>Sua avaliação:</h4>
                 <div class="star-rating" id="starRating">
@@ -364,7 +357,7 @@
                     <span onclick="avaliar(4)">★</span>
                     <span onclick="avaliar(5)">★</span>
                 </div>
-                <p id="avaliacaoMsg" style="color:#aaa; font-size:0.85em;"></p>
+                <p id="avaliacaoMsg" style="color:#aaa;font-size:0.85em;"></p>
             </div>
         </div>
     </div>
@@ -372,179 +365,353 @@
 
 <script>
     const API_KEY = 'add4acf69f7d6a6cd5ba7278914fb58a';
-    const BASE_URL = 'https://api.themoviedb.org/3';
-    const IMG_URL = 'https://image.tmdb.org/t/p/w500';
-    const BANNER_URL = 'https://image.tmdb.org/t/p/w1280';
+    const BASE = 'https://api.themoviedb.org/3';
+    const IMG = 'https://image.tmdb.org/t/p/w500';
+    const BANNER = 'https://image.tmdb.org/t/p/w1280';
     const LANG = 'pt-BR';
 
     let avaliacoes = JSON.parse(localStorage.getItem('avaliacoes') || '{}');
+    let favoritos = JSON.parse(localStorage.getItem('favoritos') || '[]');
     let itemAtual = null;
+    let trailerKey = null;
+    let paginaFilmes = 1, paginaSeries = 1;
+    let generoFilmeAtual = '', generoSerieAtual = '';
 
-    // ========== NAVEGAÇÃO ==========
+    // Anos para filtro
+    const anoAtual = new Date().getFullYear();
+    ['filtro-ano-filmes', 'filtro-ano-series'].forEach(id => {
+        const sel = document.getElementById(id);
+        for (let a = anoAtual; a >= 1990; a--) {
+            sel.innerHTML += `<option value="${a}">${a}</option>`;
+        }
+    });
+
+    async function fetchAPI(endpoint) {
+        const sep = endpoint.includes('?') ? '&' : '?';
+        const res = await fetch(`${BASE}${endpoint}${sep}api_key=${API_KEY}&language=${LANG}`);
+        return res.json();
+    }
+
     function showSection(id) {
         document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
         document.querySelectorAll('.nav-links button').forEach(b => b.classList.remove('active'));
         document.getElementById(id).classList.add('active');
-
         if (id === 'home') { carregarTendencias('all'); carregarTop(); }
-        if (id === 'filmes') carregarFilmes();
-        if (id === 'series') carregarSeries();
+        if (id === 'filmes') { paginaFilmes = 1; carregarFilmes(); }
+        if (id === 'series') { paginaSeries = 1; carregarSeries(); }
         if (id === 'em-breve') carregarEmBreve();
-    }
-
-    // ========== FETCH ==========
-    async function fetchAPI(endpoint) {
-        const res = await fetch(`${BASE_URL}${endpoint}&api_key=${API_KEY}&language=${LANG}`);
-        return res.json();
-    }
-
-    // ========== CARD ==========
-    function criarCard(item, tipo) {
-        const titulo = item.title || item.name;
-        const data = item.release_date || item.first_air_date || '';
-        const ano = data ? data.substring(0, 4) : 'N/A';
-        const poster = item.poster_path ? `${IMG_URL}${item.poster_path}` : 'https://via.placeholder.com/180x270/1f1f1f/aaa?text=Sem+Poster';
-        const nota = item.vote_average ? item.vote_average.toFixed(1) : 'N/A';
-        const stars = notaParaStars(nota);
-        const minhaAvaliacao = avaliacoes[item.id] ? `⭐ Minha nota: ${avaliacoes[item.id]}/5` : '';
-        const badge = tipo === 'movie' ? 'FILME' : 'SÉRIE';
-
-        return `
-            <div class="card" onclick="abrirModal(${item.id}, '${tipo}')">
-                <span class="badge">${badge}</span>
-                <img src="${poster}" alt="${titulo}" loading="lazy">
-                <div class="card-info">
-                    <div class="card-title">${titulo}</div>
-                    <div class="card-date">${ano}</div>
-                    <div class="stars">${stars} ${nota}</div>
-                    ${minhaAvaliacao ? `<div style="font-size:0.75em;color:#f5c518;margin-top:3px;">${minhaAvaliacao}</div>` : ''}
-                </div>
-            </div>
-        `;
+        if (id === 'favoritos') renderizarFavoritos();
     }
 
     function notaParaStars(nota) {
         const n = parseFloat(nota);
         if (isNaN(n)) return '☆☆☆☆☆';
-        const estrelas = Math.round(n / 2);
-        return '★'.repeat(estrelas) + '☆'.repeat(5 - estrelas);
+        const e = Math.round(n / 2);
+        return '★'.repeat(e) + '☆'.repeat(5 - e);
     }
 
-    // ========== TENDÊNCIAS ==========
-    async function carregarTendencias(tipo) {
+    function ehFavorito(id) {
+        return favoritos.some(f => f.id === id);
+    }
+
+    function criarCard(item, tipo) {
+        const titulo = item.title || item.name;
+        const data = item.release_date || item.first_air_date || '';
+        const ano = data ? data.substring(0, 4) : 'N/A';
+        const poster = item.poster_path ? `${IMG}${item.poster_path}` :
+            'https://via.placeholder.com/180x270/1f1f1f/aaa?text=Sem+Poster';
+        const nota = item.vote_average ? item.vote_average.toFixed(1) : 'N/A';
+        const stars = notaParaStars(nota);
+        const badge = tipo === 'movie' ? 'FILME' : 'SÉRIE';
+        const favIcon = ehFavorito(item.id) ? '❤️' : '🤍';
+
+        return `
+            <div class="card" onclick="abrirModal(${item.id}, '${tipo}')">
+                <span class="badge">${badge}</span>
+                <button class="fav-icon" onclick="event.stopPropagation(); toggleFavCard(${item.id}, '${tipo}', '${titulo.replace(/'/g, "\\'")}', '${poster}', this)">
+                    ${favIcon}
+                </button>
+                <img src="${poster}" alt="${titulo}" loading="lazy">
+                <div class="card-info">
+                    <div class="card-title">${titulo}</div>
+                    <div class="card-date">${ano}</div>
+                    <div class="stars">${stars} ${nota}</div>
+                </div>
+            </div>
+        `;
+    }
+
+    function toggleFavCard(id, tipo, titulo, poster, btn) {
+        const idx = favoritos.findIndex(f => f.id === id);
+        if (idx === -1) {
+            favoritos.push({ id, tipo, titulo, poster });
+            btn.textContent = '❤️';
+        } else {
+            favoritos.splice(idx, 1);
+            btn.textContent = '🤍';
+        }
+        localStorage.setItem('favoritos', JSON.stringify(favoritos));
+    }
+
+    function renderizarFavoritos() {
+        const grid = document.getElementById('favoritos-grid');
+        if (favoritos.length === 0) {
+            grid.innerHTML = '<div class="empty-state"><p>🎬 Você ainda não favoritou nada!</p><p>Clique no ❤️ nos cards para favoritar.</p></div>';
+            return;
+        }
+        grid.innerHTML = favoritos.map(f => `
+            <div class="card" onclick="abrirModal(${f.id}, '${f.tipo}')">
+                <span class="badge">${f.tipo === 'movie' ? 'FILME' : 'SÉRIE'}</span>
+                <button class="fav-icon" onclick="event.stopPropagation(); removerFavorito(${f.id})">❤️</button>
+                <img src="${f.poster}" alt="${f.titulo}" loading="lazy">
+                <div class="card-info">
+                    <div class="card-title">${f.titulo}</div>
+                </div>
+            </div>
+        `).join('');
+    }
+
+    function removerFavorito(id) {
+        favoritos = favoritos.filter(f => f.id !== id);
+        localStorage.setItem('favoritos', JSON.stringify(favoritos));
+        renderizarFavoritos();
+    }
+
+    async function carregarTendencias(tipo, event) {
         document.querySelectorAll('.tabs .tab-btn').forEach(b => b.classList.remove('active'));
-        event?.target?.classList.add('active');
+        if (event?.target) event.target.classList.add('active');
         document.getElementById('tendencias-grid').innerHTML = '<div class="loading">Carregando...</div>';
         const data = await fetchAPI(`/trending/${tipo}/week?`);
-        document.getElementById('tendencias-grid').innerHTML = 
+        document.getElementById('tendencias-grid').innerHTML =
             data.results.map(i => criarCard(i, i.media_type || tipo)).join('');
     }
 
-    // ========== TOP RATED ==========
     async function carregarTop() {
         const data = await fetchAPI('/movie/top_rated?');
-        document.getElementById('top-grid').innerHTML = 
+        document.getElementById('top-grid').innerHTML =
             data.results.slice(0, 12).map(i => criarCard(i, 'movie')).join('');
     }
 
-    // ========== FILMES ==========
-    async function carregarFilmes(genero = '') {
-        document.getElementById('filmes-grid').innerHTML = '<div class="loading">Carregando...</div>';
-        const endpoint = genero ? `/discover/movie?with_genres=${genero}&` : '/movie/popular?';
+    async function carregarFilmes(genero = generoFilmeAtual, pagina = 1) {
+        if (pagina === 1) document.getElementById('filmes-grid').innerHTML = '<div class="loading">Carregando...</div>';
+        const endpoint = genero
+            ? `/discover/movie?with_genres=${genero}&page=${pagina}`
+            : `/movie/popular?page=${pagina}`;
         const data = await fetchAPI(endpoint);
-        document.getElementById('filmes-grid').innerHTML = 
-            data.results.map(i => criarCard(i, 'movie')).join('');
+        const html = data.results.map(i => criarCard(i, 'movie')).join('');
+        if (pagina === 1) {
+            document.getElementById('filmes-grid').innerHTML = html;
+        } else {
+            document.getElementById('filmes-grid').innerHTML += html;
+        }
+        document.getElementById('load-more-filmes').style.display = 'block';
+        if (pagina === 1) carregarGenerosFilmes();
+    }
 
-        if (!genero) carregarGenerosFilmes();
+    function carregarMaisFilmes() {
+        paginaFilmes++;
+        carregarFilmes(generoFilmeAtual, paginaFilmes);
+    }
+
+    async function aplicarFiltrosFilmes() {
+        const ano = document.getElementById('filtro-ano-filmes').value;
+        const nota = document.getElementById('filtro-nota-filmes').value;
+        document.getElementById('filmes-grid').innerHTML = '<div class="loading">Filtrando...</div>';
+        let endpoint = `/discover/movie?sort_by=popularity.desc&page=1`;
+        if (generoFilmeAtual) endpoint += `&with_genres=${generoFilmeAtual}`;
+        if (ano) endpoint += `&primary_release_year=${ano}`;
+        if (nota) endpoint += `&vote_average.gte=${nota}`;
+        const data = await fetchAPI(endpoint);
+        document.getElementById('filmes-grid').innerHTML =
+            data.results.map(i => criarCard(i, 'movie')).join('') ||
+            '<div class="loading">Nenhum resultado encontrado.</div>';
     }
 
     async function carregarGenerosFilmes() {
         const data = await fetchAPI('/genre/movie/list?');
-        const html = `<button class="tab-btn active" onclick="carregarFilmes()">Todos</button>` +
-            data.genres.slice(0, 8).map(g => 
-                `<button class="tab-btn" onclick="carregarFilmes(${g.id})">${g.name}</button>`
+        document.getElementById('generos-filmes').innerHTML =
+            `<button class="tab-btn active" onclick="selecionarGeneroFilme('', this)">Todos</button>` +
+            data.genres.slice(0, 8).map(g =>
+                `<button class="tab-btn" onclick="selecionarGeneroFilme(${g.id}, this)">${g.name}</button>`
             ).join('');
-        document.getElementById('generos-filmes').innerHTML = html;
     }
 
-    // ========== SÉRIES ==========
-    async function carregarSeries(genero = '') {
-        document.getElementById('series-grid').innerHTML = '<div class="loading">Carregando...</div>';
-        const endpoint = genero ? `/discover/tv?with_genres=${genero}&` : '/tv/popular?';
-        const data = await fetchAPI(endpoint);
-        document.getElementById('series-grid').innerHTML = 
-            data.results.map(i => criarCard(i, 'tv')).join('');
+    function selecionarGeneroFilme(id, btn) {
+        document.querySelectorAll('#generos-filmes .tab-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        generoFilmeAtual = id;
+        paginaFilmes = 1;
+        carregarFilmes(id, 1);
+    }
 
-        if (!genero) carregarGenerosSeries();
+    async function carregarSeries(genero = generoSerieAtual, pagina = 1) {
+        if (pagina === 1) document.getElementById('series-grid').innerHTML = '<div class="loading">Carregando...</div>';
+        const endpoint = genero
+            ? `/discover/tv?with_genres=${genero}&page=${pagina}`
+            : `/tv/popular?page=${pagina}`;
+        const data = await fetchAPI(endpoint);
+        const html = data.results.map(i => criarCard(i, 'tv')).join('');
+        if (pagina === 1) {
+            document.getElementById('series-grid').innerHTML = html;
+        } else {
+            document.getElementById('series-grid').innerHTML += html;
+        }
+        document.getElementById('load-more-series').style.display = 'block';
+        if (pagina === 1) carregarGenerosSeries();
+    }
+
+    function carregarMaisSeries() {
+        paginaSeries++;
+        carregarSeries(generoSerieAtual, paginaSeries);
+    }
+
+    async function aplicarFiltrosSeries() {
+        const ano = document.getElementById('filtro-ano-series').value;
+        const nota = document.getElementById('filtro-nota-series').value;
+        document.getElementById('series-grid').innerHTML = '<div class="loading">Filtrando...</div>';
+        let endpoint = `/discover/tv?sort_by=popularity.desc&page=1`;
+        if (generoSerieAtual) endpoint += `&with_genres=${generoSerieAtual}`;
+        if (ano) endpoint += `&first_air_date_year=${ano}`;
+        if (nota) endpoint += `&vote_average.gte=${nota}`;
+        const data = await fetchAPI(endpoint);
+        document.getElementById('series-grid').innerHTML =
+            data.results.map(i => criarCard(i, 'tv')).join('') ||
+            '<div class="loading">Nenhum resultado encontrado.</div>';
     }
 
     async function carregarGenerosSeries() {
         const data = await fetchAPI('/genre/tv/list?');
-        const html = `<button class="tab-btn active" onclick="carregarSeries()">Todos</button>` +
-            data.genres.slice(0, 8).map(g => 
-                `<button class="tab-btn" onclick="carregarSeries(${g.id})">${g.name}</button>`
+        document.getElementById('generos-series').innerHTML =
+            `<button class="tab-btn active" onclick="selecionarGeneroSerie('', this)">Todos</button>` +
+            data.genres.slice(0, 8).map(g =>
+                `<button class="tab-btn" onclick="selecionarGeneroSerie(${g.id}, this)">${g.name}</button>`
             ).join('');
-        document.getElementById('generos-series').innerHTML = html;
     }
 
-    // ========== EM BREVE ==========
+    function selecionarGeneroSerie(id, btn) {
+        document.querySelectorAll('#generos-series .tab-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        generoSerieAtual = id;
+        paginaSeries = 1;
+        carregarSeries(id, 1);
+    }
+
     async function carregarEmBreve() {
         document.getElementById('embreve-grid').innerHTML = '<div class="loading">Carregando...</div>';
         const data = await fetchAPI('/movie/upcoming?');
-        document.getElementById('embreve-grid').innerHTML = 
+        document.getElementById('embreve-grid').innerHTML =
             data.results.map(i => criarCard(i, 'movie')).join('');
     }
 
-    // ========== BUSCA ==========
     async function buscar() {
         const query = document.getElementById('searchInput').value.trim();
         if (!query) return;
         showSection('busca');
         document.getElementById('busca-grid').innerHTML = '<div class="loading">Buscando...</div>';
-        const data = await fetchAPI(`/search/multi?query=${encodeURIComponent(query)}&`);
+        const data = await fetchAPI(`/search/multi?query=${encodeURIComponent(query)}`);
         const resultados = data.results.filter(i => i.media_type !== 'person');
         document.getElementById('busca-grid').innerHTML = resultados.length > 0
             ? resultados.map(i => criarCard(i, i.media_type)).join('')
             : '<div class="loading">Nenhum resultado encontrado.</div>';
     }
 
-    // ========== MODAL ==========
     async function abrirModal(id, tipo) {
         itemAtual = { id, tipo };
-        const endpoint = tipo === 'movie' ? `/movie/${id}?` : `/tv/${id}?`;
+        trailerKey = null;
+        document.getElementById('trailer-container').style.display = 'none';
+        document.getElementById('trailer-iframe').src = '';
+        document.getElementById('where-to-watch').style.display = 'none';
+
+        const endpoint = tipo === 'movie' ? `/movie/${id}?append_to_response=videos,watch/providers` : `/tv/${id}?append_to_response=videos,watch/providers`;
         const data = await fetchAPI(endpoint);
 
         const titulo = data.title || data.name;
-        const banner = data.backdrop_path ? `${BANNER_URL}${data.backdrop_path}` : 
-                       data.poster_path ? `${IMG_URL}${data.poster_path}` : '';
+        const banner = data.backdrop_path ? `${BANNER}${data.backdrop_path}` :
+            data.poster_path ? `${IMG}${data.poster_path}` : '';
         const overview = data.overview || 'Sinopse não disponível.';
         const nota = data.vote_average ? data.vote_average.toFixed(1) : 'N/A';
-        const data_lancamento = data.release_date || data.first_air_date || 'N/A';
+        const dataLanc = data.release_date || data.first_air_date || 'N/A';
         const tipoLabel = tipo === 'movie' ? '🎬 Filme' : '📺 Série';
+        const runtime = data.runtime ? `⏱️ ${data.runtime} min` : data.episode_run_time?.[0] ? `⏱️ ${data.episode_run_time[0]} min/ep` : '';
 
         document.getElementById('modal-banner').src = banner;
         document.getElementById('modal-title').textContent = titulo;
         document.getElementById('modal-rating').textContent = `⭐ ${nota}/10`;
-        document.getElementById('modal-date').textContent = `📅 ${data_lancamento}`;
+        document.getElementById('modal-date').textContent = `📅 ${dataLanc}`;
         document.getElementById('modal-type').textContent = tipoLabel;
+        document.getElementById('modal-runtime').textContent = runtime;
         document.getElementById('modal-overview').textContent = overview;
 
-        // Mostra avaliação salva
+        // Trailer
+        const videos = data.videos?.results || [];
+        const trailer = videos.find(v => v.type === 'Trailer' && v.site === 'YouTube') || videos[0];
+        if (trailer) {
+            trailerKey = trailer.key;
+            document.getElementById('btn-trailer').style.display = 'block';
+        } else {
+            document.getElementById('btn-trailer').style.display = 'none';
+        }
+
+        // Onde assistir
+        const providers = data['watch/providers']?.results?.BR;
+        if (providers) {
+            const plataformas = providers.flatrate || providers.rent || providers.buy || [];
+            if (plataformas.length > 0) {
+                document.getElementById('where-to-watch').style.display = 'block';
+                document.getElementById('streaming-logos').innerHTML = plataformas.map(p =>
+                    `<span class="streaming-logo">${p.provider_name}</span>`
+                ).join('');
+            }
+        }
+
+        // Favorito
+        const isFav = ehFavorito(id);
+        document.getElementById('btn-fav').textContent = isFav ? '💔 Desfavoritar' : '❤️ Favoritar';
+
+        // Avaliação
         const minhaAvaliacao = avaliacoes[id];
         atualizarStars(minhaAvaliacao || 0);
-        document.getElementById('avaliacaoMsg').textContent = minhaAvaliacao 
+        document.getElementById('avaliacaoMsg').textContent = minhaAvaliacao
             ? `Você avaliou com ${minhaAvaliacao} estrela(s)` : 'Clique nas estrelas para avaliar';
 
         document.getElementById('modalOverlay').classList.add('show');
     }
 
-    function fecharModal(event) {
-        if (!event || event.target === document.getElementById('modalOverlay')) {
-            document.getElementById('modalOverlay').classList.remove('show');
+    function verTrailer() {
+        const container = document.getElementById('trailer-container');
+        if (container.style.display === 'none') {
+            document.getElementById('trailer-iframe').src = `https://www.youtube.com/embed/${trailerKey}?autoplay=1`;
+            container.style.display = 'block';
+        } else {
+            container.style.display = 'none';
+            document.getElementById('trailer-iframe').src = '';
         }
     }
 
-    // ========== AVALIAÇÃO ==========
+    function toggleFavorito() {
+        if (!itemAtual) return;
+        const { id, tipo } = itemAtual;
+        const titulo = document.getElementById('modal-title').textContent;
+        const poster = document.getElementById('modal-banner').src;
+        const idx = favoritos.findIndex(f => f.id === id);
+        if (idx === -1) {
+            favoritos.push({ id, tipo, titulo, poster });
+            document.getElementById('btn-fav').textContent = '💔 Desfavoritar';
+        } else {
+            favoritos.splice(idx, 1);
+            document.getElementById('btn-fav').textContent = '❤️ Favoritar';
+        }
+        localStorage.setItem('favoritos', JSON.stringify(favoritos));
+    }
+
+    function fecharModal(event) {
+        if (!event || event.target === document.getElementById('modalOverlay')) {
+            document.getElementById('modalOverlay').classList.remove('show');
+            document.getElementById('trailer-iframe').src = '';
+            document.getElementById('trailer-container').style.display = 'none';
+        }
+    }
+
     function avaliar(nota) {
         if (!itemAtual) return;
         avaliacoes[itemAtual.id] = nota;
@@ -559,7 +726,6 @@
         });
     }
 
-    // ========== INIT ==========
     carregarTendencias('all');
     carregarTop();
 </script>
