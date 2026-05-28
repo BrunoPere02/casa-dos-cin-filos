@@ -188,7 +188,7 @@
     <div class="form" id="form-cadastro">
         <div class="field">
             <label>Escolha seu avatar</label>
-            <img class="avatar-preview" id="avatar-preview" src="https://api.dicebear.com/7.x/avataaars/svg?seed=1" alt="avatar">
+            <img class="avatar-preview" id="avatar-preview" src="https://api.dicebear.com/7.x/adventurer/svg?seed=Felix" alt="avatar">
             <div class="avatar-opcoes" id="avatar-opcoes"></div>
         </div>
         <div class="field">
@@ -232,21 +232,42 @@
     const db   = getFirestore(app);
 
     // Avatares
-    const seeds = ['Felix','Loki','Sasha','Milo','Bella','Luna','Max','Zoe','Charlie','Lily'];
-    let avatarSelecionado = `https://api.dicebear.com/7.x/avataaars/svg?seed=${seeds[0]}`;
+    const avatares = [
+        { style: 'adventurer',  seed: 'Felix',   label: '🧙 Aventureiro' },
+        { style: 'avataaars',   seed: 'Loki',    label: '🦸 Herói' },
+        { style: 'bottts',      seed: 'R2D2',    label: '🤖 Robô' },
+        { style: 'pixel-art',   seed: 'Link',    label: '👾 Pixel' },
+        { style: 'micah',       seed: 'Aurora',  label: '🎨 Arte' },
+        { style: 'lorelei',     seed: 'Zara',    label: '🎭 Cinema' },
+        { style: 'adventurer',  seed: 'Kira',    label: '⚔️ Guerreira' },
+        { style: 'avataaars',   seed: 'Nova',    label: '🚀 Espacial' },
+        { style: 'bottts',      seed: 'HAL',     label: '🔮 Mágico' },
+        { style: 'pixel-art',   seed: 'Mario',   label: '🎮 Gamer' },
+        { style: 'micah',       seed: 'Atlas',   label: '🌌 Cósmico' },
+        { style: 'lorelei',     seed: 'Phantom', label: '👻 Misterioso' },
+    ];
+    let avatarSelecionado = `https://api.dicebear.com/7.x/${avatares[0].style}/svg?seed=${avatares[0].seed}`;
 
     const opcoes = document.getElementById('avatar-opcoes');
-    seeds.forEach((s, i) => {
+    avatares.forEach((av, i) => {
+        const wrap = document.createElement('div');
+        wrap.style.cssText = 'display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;';
         const img = document.createElement('img');
         img.className = 'avatar-op' + (i === 0 ? ' selected' : '');
-        img.src = `https://api.dicebear.com/7.x/avataaars/svg?seed=${s}`;
-        img.onclick = () => {
+        img.src = `https://api.dicebear.com/7.x/${av.style}/svg?seed=${av.seed}`;
+        img.title = av.label;
+        const label = document.createElement('span');
+        label.textContent = av.label;
+        label.style.cssText = 'font-size:0.55em;color:#aaa;white-space:nowrap;';
+        wrap.appendChild(img);
+        wrap.appendChild(label);
+        wrap.onclick = () => {
             document.querySelectorAll('.avatar-op').forEach(a => a.classList.remove('selected'));
             img.classList.add('selected');
             avatarSelecionado = img.src;
             document.getElementById('avatar-preview').src = img.src;
         };
-        opcoes.appendChild(img);
+        opcoes.appendChild(wrap);
     });
 
     // Tab
