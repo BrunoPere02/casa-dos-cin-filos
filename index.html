@@ -383,7 +383,7 @@
     </div>
     <div class="nav-right">
         <button class="fav-btn-nav" onclick="showSection('favoritos')">❤️ Favoritos</button>
-        <a href="feed.html" style="border:2px solid #f5c518;color:#f5c518;padding:8px 15px;border-radius:20px;font-weight:bold;text-decoration:none;">📰 Feed</a>
+        <button onclick="window.open('https://brunopere02.github.io/casa-dos-cin-filos/feed.html','_self')" style="border:2px solid #f5c518;color:#f5c518;background:none;padding:8px 15px;border-radius:20px;font-weight:bold;cursor:pointer;">📰 Feed</button>
         <div class="search-bar">
             <input type="text" id="searchInput" placeholder="Buscar filmes e séries..."
                    onkeypress="if(event.key==='Enter') buscar()">
@@ -1074,7 +1074,7 @@
         const area = document.getElementById('nav-user-area');
         if (!area) return;
         if (user) {
-            area.innerHTML = `<img src="${user.photoURL || 'https://api.dicebear.com/7.x/avataaars/svg?seed=' + user.uid}"
+            area.innerHTML = `<img src="${user.photoURL || 'https://api.dicebear.com/9.x/avataaars/svg?seed=' + user.uid}"
                 style="width:35px;height:35px;border-radius:50%;border:2px solid #e50914;cursor:pointer;object-fit:cover;"
                 onclick="window.location.href='perfil.html'" title="${user.displayName || 'Perfil'}">`;
         } else {
