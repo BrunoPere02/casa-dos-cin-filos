@@ -188,7 +188,7 @@
     <div class="form" id="form-cadastro">
         <div class="field">
             <label>Escolha seu avatar</label>
-            <img class="avatar-preview" id="avatar-preview" src="https://api.dicebear.com/7.x/adventurer/svg?seed=Felix" alt="avatar">
+            <img class="avatar-preview" id="avatar-preview" src="https://api.dicebear.com/7.x/avataaars/svg?seed=Felix" alt="avatar">
             <div class="avatar-opcoes" id="avatar-opcoes"></div>
         </div>
         <div class="field">
@@ -233,34 +233,18 @@
 
     // Avatares
     const avatares = [
-        { style: 'avataaars', seed: 'Felix' },
-        { style: 'avataaars', seed: 'Loki' },
-        { style: 'avataaars', seed: 'Sasha' },
-        { style: 'avataaars', seed: 'Milo' },
-        { style: 'avataaars', seed: 'Bella' },
-        { style: 'avataaars', seed: 'Luna' },
-        { style: 'avataaars', seed: 'Max' },
-        { style: 'avataaars', seed: 'Zoe' },
-        { style: 'avataaars', seed: 'Charlie' },
-        { style: 'avataaars', seed: 'Lily' },
-        { style: 'avataaars', seed: 'Thor' },
-        { style: 'avataaars', seed: 'Nova' },
-        { style: 'avataaars', seed: 'Kira' },
-        { style: 'avataaars', seed: 'Rex' },
-        { style: 'avataaars', seed: 'Aria' },
-        { style: 'avataaars', seed: 'Dex' },
-        { style: 'avataaars', seed: 'Maya' },
-        { style: 'avataaars', seed: 'Ash' },
-        { style: 'avataaars', seed: 'Quinn' },
-        { style: 'avataaars', seed: 'River' },
+        'Felix','Loki','Sasha','Milo','Bella',
+        'Luna','Max','Zoe','Charlie','Lily',
+        'Thor','Nova','Kira','Rex','Aria',
+        'Dex','Maya','Ash','Quinn','River'
     ];
     let avatarSelecionado = `https://api.dicebear.com/7.x/avataaars/svg?seed=Felix`;
 
     const opcoes = document.getElementById('avatar-opcoes');
-    avatares.forEach((av, i) => {
+    avatares.forEach((s, i) => {
         const img = document.createElement('img');
         img.className = 'avatar-op' + (i === 0 ? ' selected' : '');
-        img.src = `https://api.dicebear.com/7.x/${av.style}/svg?seed=${av.seed}`;
+        img.src = `https://api.dicebear.com/7.x/avataaars/svg?seed=${s}`;
         img.onclick = () => {
             document.querySelectorAll('.avatar-op').forEach(a => a.classList.remove('selected'));
             img.classList.add('selected');
