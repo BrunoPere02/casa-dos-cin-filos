@@ -383,7 +383,7 @@
     </div>
     <div class="nav-right">
         <button class="fav-btn-nav" onclick="showSection('favoritos')">❤️ Favoritos</button>
-        <button class="fav-btn-nav" onclick="window.location.href='feed.html'" style="border-color:#f5c518;color:#f5c518;">📰 Feed</button>
+        <button class="fav-btn-nav" onclick="window.location.assign('feed.html')" style="border-color:#f5c518;color:#f5c518;">📰 Feed</button>
         <div class="search-bar">
             <input type="text" id="searchInput" placeholder="Buscar filmes e séries..."
                    onkeypress="if(event.key==='Enter') buscar()">
@@ -393,7 +393,7 @@
     </div>
 </nav>
 
-<div id="home" class="section active" style="padding-top: 110px;">
+<div id="home" class="section active" style="padding-top: 140px;">
     <h2>🔥 Tendências</h2>
     <div class="tabs">
         <button class="tab-btn active" onclick="carregarTendencias('all', event)">Tudo</button>
@@ -406,7 +406,7 @@
     <div class="grid" id="top-grid"><div class="loading">Carregando...</div></div>
 </div>
 
-<div id="filmes" class="section" style="padding-top: 110px;">
+<div id="filmes" class="section" style="padding-top: 140px;">
     <h2>🎬 Filmes</h2>
     <div class="tabs" id="generos-filmes"></div>
     <div class="filters">
@@ -424,7 +424,7 @@
     <button class="load-more" id="load-more-filmes" onclick="carregarMaisFilmes()" style="display:none;">Carregar Mais</button>
 </div>
 
-<div id="series" class="section" style="padding-top: 110px;">
+<div id="series" class="section" style="padding-top: 140px;">
     <h2>📺 Séries</h2>
     <div class="tabs" id="generos-series"></div>
     <div class="filters">
@@ -442,17 +442,17 @@
     <button class="load-more" id="load-more-series" onclick="carregarMaisSeries()" style="display:none;">Carregar Mais</button>
 </div>
 
-<div id="em-breve" class="section" style="padding-top: 110px;">
+<div id="em-breve" class="section" style="padding-top: 140px;">
     <h2>🗓️ Em Breve nos Cinemas</h2>
     <div class="grid" id="embreve-grid"><div class="loading">Carregando...</div></div>
 </div>
 
-<div id="favoritos" class="section" style="padding-top: 110px;">
+<div id="favoritos" class="section" style="padding-top: 140px;">
     <h2>❤️ Meus Favoritos</h2>
     <div class="grid" id="favoritos-grid"></div>
 </div>
 
-<div id="busca" class="section" style="padding-top: 110px;">
+<div id="busca" class="section" style="padding-top: 140px;">
     <h2>🔍 Resultados da Busca</h2>
     <div class="grid" id="busca-grid"><div class="loading">Buscando...</div></div>
 </div>
