@@ -384,11 +384,13 @@
     </div>
     <div class="nav-right">
         <button class="fav-btn-nav" onclick="showSection('favoritos')">❤️ Favoritos</button>
+        <button class="fav-btn-nav" onclick="window.location.href='feed.html'" style="border-color:#f5c518;color:#f5c518;">📰 Feed</button>
         <div class="search-bar">
             <input type="text" id="searchInput" placeholder="Buscar filmes e séries..."
                    onkeypress="if(event.key==='Enter') buscar()">
             <button onclick="buscar()">Buscar</button>
         </div>
+        <div id="nav-user-area"></div>
     </div>
 </nav>
 
@@ -1052,3 +1054,34 @@
 </script>
 </body>
 </html>
+
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyDS0ZNDyRDiq4xOKTzbeMnIZIdR1dI1q6s",
+        authDomain: "casa-dos-cinefilos.firebaseapp.com",
+        projectId: "casa-dos-cinefilos",
+        storageBucket: "casa-dos-cinefilos.firebasestorage.app",
+        messagingSenderId: "77381886629",
+        appId: "1:77381886629:web:335bb10ba7cf83b86be34c"
+    };
+
+    const app  = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+
+    onAuthStateChanged(auth, (user) => {
+        const area = document.getElementById('nav-user-area');
+        if (!area) return;
+        if (user) {
+            area.innerHTML = `<img src="${user.photoURL || 'https://api.dicebear.com/7.x/avataaars/svg?seed=' + user.uid}"
+                style="width:35px;height:35px;border-radius:50%;border:2px solid #e50914;cursor:pointer;object-fit:cover;"
+                onclick="window.location.href='perfil.html'" title="${user.displayName || 'Perfil'}">`;
+        } else {
+            area.innerHTML = `<button onclick="window.location.href='login.html'"
+                style="background:#e50914;border:none;color:#fff;padding:8px 18px;border-radius:20px;cursor:pointer;font-weight:bold;">
+                Entrar</button>`;
+        }
+    });
+</script>
