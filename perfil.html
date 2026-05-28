@@ -158,7 +158,8 @@
 
         .modal-edit {
             background: #1f1f1f; border-radius: 12px;
-            width: 450px; max-width: 95%; padding: 30px; position: relative;
+            width: 480px; max-width: 95%; padding: 25px; position: relative;
+            max-height: 90vh; overflow-y: auto;
         }
 
         .modal-edit h3 { font-size: 1.3em; margin-bottom: 20px; }
@@ -182,7 +183,7 @@
             display: flex; gap: 10px; flex-wrap: wrap; margin-top: 8px; align-items: flex-start;
         }
         .avatar-op-edit {
-            width: 40px; height: 40px; border-radius: 50%;
+            width: 50px; height: 50px; border-radius: 50%;
             cursor: pointer; border: 2px solid transparent; transition: all 0.2s;
         }
         .avatar-op-edit:hover, .avatar-op-edit.selected { border-color: #e50914; }
@@ -284,18 +285,18 @@
 
     const IMG = 'https://image.tmdb.org/t/p/w185';
     const avatares = [
-        { style: 'adventurer',  seed: 'Felix',   label: '🧙 Aventureiro' },
-        { style: 'avataaars',   seed: 'Loki',    label: '🦸 Herói' },
-        { style: 'bottts',      seed: 'R2D2',    label: '🤖 Robô' },
-        { style: 'pixel-art',   seed: 'Link',    label: '👾 Pixel' },
-        { style: 'micah',       seed: 'Aurora',  label: '🎨 Arte' },
-        { style: 'lorelei',     seed: 'Zara',    label: '🎭 Cinema' },
-        { style: 'adventurer',  seed: 'Kira',    label: '⚔️ Guerreira' },
-        { style: 'avataaars',   seed: 'Nova',    label: '🚀 Espacial' },
-        { style: 'bottts',      seed: 'HAL',     label: '🔮 Mágico' },
-        { style: 'pixel-art',   seed: 'Mario',   label: '🎮 Gamer' },
-        { style: 'micah',       seed: 'Atlas',   label: '🌌 Cósmico' },
-        { style: 'lorelei',     seed: 'Phantom', label: '👻 Misterioso' },
+        { style: 'adventurer',  seed: 'hero1',   label: '🧙 Mago' },
+        { style: 'adventurer',  seed: 'hero2',   label: '⚔️ Guerreiro' },
+        { style: 'adventurer',  seed: 'hero3',   label: '🏹 Arqueira' },
+        { style: 'adventurer',  seed: 'hero4',   label: '🔮 Feiticeira' },
+        { style: 'bottts',      seed: 'bot1',    label: '🤖 Robô' },
+        { style: 'bottts',      seed: 'bot2',    label: '👾 Androide' },
+        { style: 'pixel-art',   seed: 'pix1',    label: '🎮 Pixel' },
+        { style: 'pixel-art',   seed: 'pix2',    label: '👾 Retrô' },
+        { style: 'micah',       seed: 'mic1',    label: '🎨 Arte' },
+        { style: 'micah',       seed: 'mic2',    label: '🌟 Estrela' },
+        { style: 'lorelei',     seed: 'lor1',    label: '🎭 Cinema' },
+        { style: 'lorelei',     seed: 'lor2',    label: '🎬 Diretor' },
     ];
 
     let usuarioAtual = null;
@@ -366,13 +367,20 @@
     async function carregarResenhas() {
         const lista = document.getElementById('lista-resenhas');
         try {
-            const q = query(collection(db, 'resenhas'), where('autorId', '==', perfilUID), orderBy('criadoEm', 'desc'));
+            const q = query(collection(db, 'resenhas'), where('autorId', '==', perfilUID));
             const snap = await getDocs(q);
-            document.getElementById('stat-resenhas').textContent = snap.size;
-            if (snap.empty) { lista.innerHTML = '<div class="empty-state">Nenhuma resenha ainda.</div>'; return; }
-            lista.innerHTML = snap.docs.map(d => renderResenha(d.id, d.data())).join('');
+            // Ordenar no cliente
+            const docs = snap.docs.sort((a,b) => {
+                const ta = a.data().criadoEm?.toMillis?.() || 0;
+                const tb = b.data().criadoEm?.toMillis?.() || 0;
+                return tb - ta;
+            });
+            document.getElementById('stat-resenhas').textContent = docs.length;
+            if (!docs.length) { lista.innerHTML = '<div class="empty-state">Nenhuma resenha ainda.</div>'; return; }
+            lista.innerHTML = docs.map(d => renderResenha(d.id, d.data())).join('');
         } catch(e) {
-            lista.innerHTML = '<div class="empty-state">Carregando resenhas...</div>';
+            console.error(e);
+            lista.innerHTML = '<div class="empty-state">Erro ao carregar resenhas.</div>';
         }
     }
 
