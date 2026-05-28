@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login — Casa dos Cinéfilos</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Arial', sans-serif;
+            background: #141414;
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background-image: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)),
+                url('https://image.tmdb.org/t/p/original/xJHokMbljvjADYdit5fK5VQsXEG.jpg');
+            background-size: cover;
+            background-position: center;
+        }
+
+        .logo {
+            font-size: 2em;
+            color: #e50914;
+            font-weight: bold;
+            margin-bottom: 30px;
+            cursor: pointer;
+        }
+
+        .card {
+            background: rgba(20,20,20,0.95);
+            border-radius: 12px;
+            padding: 40px;
+            width: 100%;
+            max-width: 420px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.8);
+        }
+
+        .tabs {
+            display: flex;
+            margin-bottom: 30px;
+            border-bottom: 2px solid #333;
+        }
+
+        .tab {
+            flex: 1;
+            padding: 12px;
+            text-align: center;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: bold;
+            color: #aaa;
+            transition: all 0.3s;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -2px;
+        }
+
+        .tab.active { color: #fff; border-bottom-color: #e50914; }
+
+        .form { display: none; }
+        .form.active { display: block; }
+
+        .field { margin-bottom: 20px; }
+
+        .field label {
+            display: block;
+            font-size: 0.85em;
+            color: #aaa;
+            margin-bottom: 6px;
+        }
+
+        .field input {
+            width: 100%;
+            background: #2a2a2a;
+            border: 1px solid #444;
+            color: #fff;
+            padding: 12px 15px;
+            border-radius: 8px;
+            font-size: 1em;
+            transition: border-color 0.3s;
+        }
+
+        .field input:focus {
+            outline: none;
+            border-color: #e50914;
+        }
+
+        .field input::placeholder { color: #666; }
+
+        .btn-primary {
+            width: 100%;
+            background: #e50914;
+            border: none;
+            color: #fff;
+            padding: 14px;
+            border-radius: 8px;
+            font-size: 1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 5px;
+        }
+
+        .btn-primary:hover { background: #b00610; }
+        .btn-primary:disabled { background: #555; cursor: not-allowed; }
+
+        .msg {
+            margin-top: 15px;
+            padding: 10px 15px;
+            border-radius: 8px;
+            font-size: 0.9em;
+            display: none;
+            text-align: center;
+        }
+
+        .msg.erro { background: rgba(229,9,20,0.2); border: 1px solid #e50914; color: #ff6b6b; display: block; }
+        .msg.sucesso { background: rgba(39,174,96,0.2); border: 1px solid #27ae60; color: #2ecc71; display: block; }
+
+        .avatar-preview {
+            width: 80px; height: 80px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid #e50914;
+            margin: 0 auto 15px;
+            display: block;
+        }
+
+        .avatar-opcoes {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .avatar-op {
+            width: 45px; height: 45px;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: all 0.2s;
+            object-fit: cover;
+        }
+
+        .avatar-op:hover, .avatar-op.selected { border-color: #e50914; transform: scale(1.1); }
+
+        .loading-spinner {
+            display: inline-block;
+            width: 16px; height: 16px;
+            border: 2px solid rgba(255,255,255,0.3);
+            border-top-color: #fff;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin-right: 8px;
+            vertical-align: middle;
+        }
+
+        @keyframes spin { to { transform: rotate(360deg); } }
+    </style>
+</head>
+<body>
+
+<div class="logo" onclick="window.location.href='index.html'">🎬 Casa dos Cinéfilos</div>
+
+<div class="card">
+    <div class="tabs">
+        <div class="tab active" onclick="trocarTab('login')">Entrar</div>
+        <div class="tab" onclick="trocarTab('cadastro')">Criar conta</div>
+    </div>
+
+    <!-- LOGIN -->
+    <div class="form active" id="form-login">
+        <div class="field">
+            <label>E-mail</label>
+            <input type="email" id="login-email" placeholder="seu@email.com">
+        </div>
+        <div class="field">
+            <label>Senha</label>
+            <input type="password" id="login-senha" placeholder="••••••••" onkeypress="if(event.key==='Enter') fazerLogin()">
+        </div>
+        <button class="btn-primary" onclick="fazerLogin()" id="btn-login">Entrar</button>
+        <div class="msg" id="msg-login"></div>
+    </div>
+
+    <!-- CADASTRO -->
+    <div class="form" id="form-cadastro">
+        <div class="field">
+            <label>Escolha seu avatar</label>
+            <img class="avatar-preview" id="avatar-preview" src="https://api.dicebear.com/7.x/avataaars/svg?seed=1" alt="avatar">
+            <div class="avatar-opcoes" id="avatar-opcoes"></div>
+        </div>
+        <div class="field">
+            <label>Nome de usuário</label>
+            <input type="text" id="cad-nome" placeholder="Como quer ser chamado?">
+        </div>
+        <div class="field">
+            <label>E-mail</label>
+            <input type="email" id="cad-email" placeholder="seu@email.com">
+        </div>
+        <div class="field">
+            <label>Senha</label>
+            <input type="password" id="cad-senha" placeholder="Mínimo 6 caracteres">
+        </div>
+        <div class="field">
+            <label>Bio (opcional)</label>
+            <input type="text" id="cad-bio" placeholder="Fã de cinema desde sempre...">
+        </div>
+        <button class="btn-primary" onclick="fazerCadastro()" id="btn-cadastro">Criar conta</button>
+        <div class="msg" id="msg-cadastro"></div>
+    </div>
+</div>
+
+<!-- Firebase -->
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+    import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, updateProfile } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+    import { getFirestore, doc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyDS0ZNDyRDiq4xOKTzbeMnIZIdR1dI1q6s",
+        authDomain: "casa-dos-cinefilos.firebaseapp.com",
+        projectId: "casa-dos-cinefilos",
+        storageBucket: "casa-dos-cinefilos.firebasestorage.app",
+        messagingSenderId: "77381886629",
+        appId: "1:77381886629:web:335bb10ba7cf83b86be34c"
+    };
+
+    const app  = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db   = getFirestore(app);
+
+    // Avatares
+    const seeds = ['Felix','Loki','Sasha','Milo','Bella','Luna','Max','Zoe','Charlie','Lily'];
+    let avatarSelecionado = `https://api.dicebear.com/7.x/avataaars/svg?seed=${seeds[0]}`;
+
+    const opcoes = document.getElementById('avatar-opcoes');
+    seeds.forEach((s, i) => {
+        const img = document.createElement('img');
+        img.className = 'avatar-op' + (i === 0 ? ' selected' : '');
+        img.src = `https://api.dicebear.com/7.x/avataaars/svg?seed=${s}`;
+        img.onclick = () => {
+            document.querySelectorAll('.avatar-op').forEach(a => a.classList.remove('selected'));
+            img.classList.add('selected');
+            avatarSelecionado = img.src;
+            document.getElementById('avatar-preview').src = img.src;
+        };
+        opcoes.appendChild(img);
+    });
+
+    // Tab
+    window.trocarTab = (tab) => {
+        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+        document.querySelectorAll('.form').forEach(f => f.classList.remove('active'));
+        document.querySelector(`.tab:${tab === 'login' ? 'first-child' : 'last-child'}`).classList.add('active');
+        document.getElementById(`form-${tab}`).classList.add('active');
+    };
+
+    function mostrarMsg(id, texto, tipo) {
+        const el = document.getElementById(id);
+        el.textContent = texto;
+        el.className = `msg ${tipo}`;
+    }
+
+    function setLoading(btnId, loading) {
+        const btn = document.getElementById(btnId);
+        btn.disabled = loading;
+        btn.innerHTML = loading ? '<span class="loading-spinner"></span> Aguarde...' : btn.dataset.texto;
+    }
+
+    document.getElementById('btn-login').dataset.texto    = 'Entrar';
+    document.getElementById('btn-cadastro').dataset.texto = 'Criar conta';
+
+    // LOGIN
+    window.fazerLogin = async () => {
+        const email = document.getElementById('login-email').value.trim();
+        const senha = document.getElementById('login-senha').value;
+        if (!email || !senha) { mostrarMsg('msg-login', 'Preencha todos os campos.', 'erro'); return; }
+        setLoading('btn-login', true);
+        try {
+            await signInWithEmailAndPassword(auth, email, senha);
+            mostrarMsg('msg-login', 'Login realizado! Redirecionando...', 'sucesso');
+            setTimeout(() => window.location.href = 'index.html', 1000);
+        } catch(e) {
+            const erros = {
+                'auth/user-not-found': 'Usuário não encontrado.',
+                'auth/wrong-password': 'Senha incorreta.',
+                'auth/invalid-credential': 'E-mail ou senha incorretos.',
+                'auth/too-many-requests': 'Muitas tentativas. Tente mais tarde.'
+            };
+            mostrarMsg('msg-login', erros[e.code] || 'Erro ao fazer login.', 'erro');
+        }
+        setLoading('btn-login', false);
+    };
+
+    // CADASTRO
+    window.fazerCadastro = async () => {
+        const nome  = document.getElementById('cad-nome').value.trim();
+        const email = document.getElementById('cad-email').value.trim();
+        const senha = document.getElementById('cad-senha').value;
+        const bio   = document.getElementById('cad-bio').value.trim();
+        if (!nome || !email || !senha) { mostrarMsg('msg-cadastro', 'Preencha nome, e-mail e senha.', 'erro'); return; }
+        if (senha.length < 6) { mostrarMsg('msg-cadastro', 'Senha deve ter pelo menos 6 caracteres.', 'erro'); return; }
+        setLoading('btn-cadastro', true);
+        try {
+            const cred = await createUserWithEmailAndPassword(auth, email, senha);
+            await updateProfile(cred.user, { displayName: nome, photoURL: avatarSelecionado });
+            await setDoc(doc(db, 'usuarios', cred.user.uid), {
+                uid: cred.user.uid,
+                nome,
+                email,
+                bio: bio || '',
+                avatar: avatarSelecionado,
+                seguidores: [],
+                seguindo: [],
+                criadoEm: serverTimestamp()
+            });
+            mostrarMsg('msg-cadastro', 'Conta criada! Redirecionando...', 'sucesso');
+            setTimeout(() => window.location.href = 'index.html', 1000);
+        } catch(e) {
+            const erros = {
+                'auth/email-already-in-use': 'Este e-mail já está em uso.',
+                'auth/invalid-email': 'E-mail inválido.',
+                'auth/weak-password': 'Senha muito fraca.'
+            };
+            mostrarMsg('msg-cadastro', erros[e.code] || 'Erro ao criar conta.', 'erro');
+        }
+        setLoading('btn-cadastro', false);
+    };
+</script>
+</body>
+</html>
