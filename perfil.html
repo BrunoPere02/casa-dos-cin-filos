@@ -179,7 +179,7 @@
         .edit-field input:focus, .edit-field textarea:focus { outline: none; border-color: #e50914; }
 
         .avatar-opcoes-edit {
-            display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px;
+            display: flex; gap: 10px; flex-wrap: wrap; margin-top: 8px; align-items: flex-start;
         }
         .avatar-op-edit {
             width: 40px; height: 40px; border-radius: 50%;
@@ -283,7 +283,20 @@
     const db   = getFirestore(app);
 
     const IMG = 'https://image.tmdb.org/t/p/w185';
-    const seeds = ['Felix','Loki','Sasha','Milo','Bella','Luna','Max','Zoe','Charlie','Lily'];
+    const avatares = [
+        { style: 'adventurer',  seed: 'Felix',   label: '🧙 Aventureiro' },
+        { style: 'avataaars',   seed: 'Loki',    label: '🦸 Herói' },
+        { style: 'bottts',      seed: 'R2D2',    label: '🤖 Robô' },
+        { style: 'pixel-art',   seed: 'Link',    label: '👾 Pixel' },
+        { style: 'micah',       seed: 'Aurora',  label: '🎨 Arte' },
+        { style: 'lorelei',     seed: 'Zara',    label: '🎭 Cinema' },
+        { style: 'adventurer',  seed: 'Kira',    label: '⚔️ Guerreira' },
+        { style: 'avataaars',   seed: 'Nova',    label: '🚀 Espacial' },
+        { style: 'bottts',      seed: 'HAL',     label: '🔮 Mágico' },
+        { style: 'pixel-art',   seed: 'Mario',   label: '🎮 Gamer' },
+        { style: 'micah',       seed: 'Atlas',   label: '🌌 Cósmico' },
+        { style: 'lorelei',     seed: 'Phantom', label: '👻 Misterioso' },
+    ];
 
     let usuarioAtual = null;
     let perfilUID    = null;
@@ -319,17 +332,25 @@
             acoes.innerHTML = `<button class="btn-editar" onclick="abrirEditar()">✏️ Editar perfil</button>`;
             // Pré-preenche avatares no modal
             const editOpcoes = document.getElementById('avatar-opcoes-edit');
-            seeds.forEach(s => {
+            avatares.forEach(av => {
+                const wrap = document.createElement('div');
+                wrap.style.cssText = 'display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer;';
                 const img = document.createElement('img');
                 img.className = 'avatar-op-edit';
-                img.src = `https://api.dicebear.com/7.x/avataaars/svg?seed=${s}`;
+                img.src = `https://api.dicebear.com/7.x/${av.style}/svg?seed=${av.seed}`;
+                img.title = av.label;
                 if (img.src === u.avatar) { img.classList.add('selected'); avatarEditSelecionado = img.src; }
-                img.onclick = () => {
+                const lbl = document.createElement('span');
+                lbl.textContent = av.label;
+                lbl.style.cssText = 'font-size:0.5em;color:#aaa;white-space:nowrap;';
+                wrap.appendChild(img);
+                wrap.appendChild(lbl);
+                wrap.onclick = () => {
                     document.querySelectorAll('.avatar-op-edit').forEach(a => a.classList.remove('selected'));
                     img.classList.add('selected');
                     avatarEditSelecionado = img.src;
                 };
-                editOpcoes.appendChild(img);
+                editOpcoes.appendChild(wrap);
             });
             document.getElementById('edit-nome').value = u.nome || '';
             document.getElementById('edit-bio').value  = u.bio  || '';
