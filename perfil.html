@@ -285,18 +285,26 @@
 
     const IMG = 'https://image.tmdb.org/t/p/w185';
     const avatares = [
-        { style: 'adventurer',  seed: 'hero1',   label: '🧙 Mago' },
-        { style: 'adventurer',  seed: 'hero2',   label: '⚔️ Guerreiro' },
-        { style: 'adventurer',  seed: 'hero3',   label: '🏹 Arqueira' },
-        { style: 'adventurer',  seed: 'hero4',   label: '🔮 Feiticeira' },
-        { style: 'bottts',      seed: 'bot1',    label: '🤖 Robô' },
-        { style: 'bottts',      seed: 'bot2',    label: '👾 Androide' },
-        { style: 'pixel-art',   seed: 'pix1',    label: '🎮 Pixel' },
-        { style: 'pixel-art',   seed: 'pix2',    label: '👾 Retrô' },
-        { style: 'micah',       seed: 'mic1',    label: '🎨 Arte' },
-        { style: 'micah',       seed: 'mic2',    label: '🌟 Estrela' },
-        { style: 'lorelei',     seed: 'lor1',    label: '🎭 Cinema' },
-        { style: 'lorelei',     seed: 'lor2',    label: '🎬 Diretor' },
+        { style: 'avataaars', seed: 'Felix' },
+        { style: 'avataaars', seed: 'Loki' },
+        { style: 'avataaars', seed: 'Sasha' },
+        { style: 'avataaars', seed: 'Milo' },
+        { style: 'avataaars', seed: 'Bella' },
+        { style: 'avataaars', seed: 'Luna' },
+        { style: 'avataaars', seed: 'Max' },
+        { style: 'avataaars', seed: 'Zoe' },
+        { style: 'avataaars', seed: 'Charlie' },
+        { style: 'avataaars', seed: 'Lily' },
+        { style: 'avataaars', seed: 'Thor' },
+        { style: 'avataaars', seed: 'Nova' },
+        { style: 'avataaars', seed: 'Kira' },
+        { style: 'avataaars', seed: 'Rex' },
+        { style: 'avataaars', seed: 'Aria' },
+        { style: 'avataaars', seed: 'Dex' },
+        { style: 'avataaars', seed: 'Maya' },
+        { style: 'avataaars', seed: 'Ash' },
+        { style: 'avataaars', seed: 'Quinn' },
+        { style: 'avataaars', seed: 'River' },
     ];
 
     let usuarioAtual = null;
@@ -334,24 +342,16 @@
             // Pré-preenche avatares no modal
             const editOpcoes = document.getElementById('avatar-opcoes-edit');
             avatares.forEach(av => {
-                const wrap = document.createElement('div');
-                wrap.style.cssText = 'display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer;';
                 const img = document.createElement('img');
                 img.className = 'avatar-op-edit';
                 img.src = `https://api.dicebear.com/7.x/${av.style}/svg?seed=${av.seed}`;
-                img.title = av.label;
                 if (img.src === u.avatar) { img.classList.add('selected'); avatarEditSelecionado = img.src; }
-                const lbl = document.createElement('span');
-                lbl.textContent = av.label;
-                lbl.style.cssText = 'font-size:0.5em;color:#aaa;white-space:nowrap;';
-                wrap.appendChild(img);
-                wrap.appendChild(lbl);
-                wrap.onclick = () => {
+                img.onclick = () => {
                     document.querySelectorAll('.avatar-op-edit').forEach(a => a.classList.remove('selected'));
                     img.classList.add('selected');
                     avatarEditSelecionado = img.src;
                 };
-                editOpcoes.appendChild(wrap);
+                editOpcoes.appendChild(img);
             });
             document.getElementById('edit-nome').value = u.nome || '';
             document.getElementById('edit-bio').value  = u.bio  || '';
