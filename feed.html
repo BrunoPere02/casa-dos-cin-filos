@@ -3,231 +3,1060 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Feed — Casa dos Cinéfilos</title>
+    <title>Casa dos Cinéfilos</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
+        
         body { font-family: 'Arial', sans-serif; background: #141414; color: #fff; }
 
         nav {
             background: rgba(0,0,0,0.95);
-            padding: 15px 40px;
-            display: flex; align-items: center; gap: 20px;
-            position: fixed; top: 0; width: 100%; z-index: 1000;
-        }
-        nav h1 { color: #e50914; font-size: 1.5em; font-weight: bold; cursor: pointer; }
-        .nav-right { margin-left: auto; display: flex; gap: 10px; align-items: center; }
-        .nav-btn { background: none; border: 1px solid #555; color: #fff; padding: 7px 15px; border-radius: 20px; cursor: pointer; transition: all 0.3s; }
-        .nav-btn:hover { border-color: #e50914; color: #e50914; }
-        .nav-avatar { width: 35px; height: 35px; border-radius: 50%; border: 2px solid #e50914; cursor: pointer; object-fit: cover; }
-
-        .layout { max-width: 1100px; margin: 0 auto; padding: 80px 20px 40px; display: grid; grid-template-columns: 1fr 340px; gap: 30px; }
-
-        .feed-header { margin-bottom: 20px; }
-        .feed-header h2 { font-size: 1.3em; border-left: 4px solid #e50914; padding-left: 10px; }
-        .feed-tabs { display: flex; gap: 5px; margin-bottom: 20px; }
-        .feed-tab { background: #2a2a2a; border: none; color: #aaa; padding: 8px 18px; border-radius: 20px; cursor: pointer; transition: all 0.3s; }
-        .feed-tab.active, .feed-tab:hover { background: #e50914; color: #fff; }
-
-        .resenha-card { background: #1f1f1f; border-radius: 12px; padding: 20px; margin-bottom: 15px; }
-        .resenha-header { display: flex; align-items: center; gap: 12px; margin-bottom: 15px; }
-        .resenha-avatar { width: 42px; height: 42px; border-radius: 50%; object-fit: cover; cursor: pointer; border: 2px solid #333; }
-        .resenha-avatar:hover { border-color: #e50914; }
-        .resenha-user-nome { font-weight: bold; cursor: pointer; }
-        .resenha-user-nome:hover { color: #e50914; }
-        .resenha-data { font-size: 0.75em; color: #aaa; }
-
-        .resenha-filme {
-            display: flex; gap: 12px; margin-bottom: 12px;
-            background: #2a2a2a; border-radius: 8px; padding: 10px;
-            cursor: pointer; transition: all 0.2s; border: 1px solid transparent;
+            padding: 20px 40px;
+            display: flex;
             align-items: center;
+            gap: 30px;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
         }
-        .resenha-filme:hover { background: #333; border-color: #e50914; transform: translateX(3px); }
-        .resenha-filme-arrow { margin-left: auto; color: #e50914; opacity: 0; transition: opacity 0.2s; font-size: 1.1em; }
-        .resenha-filme:hover .resenha-filme-arrow { opacity: 1; }
-        .resenha-poster { width: 45px; height: 65px; border-radius: 5px; object-fit: cover; flex-shrink: 0; }
-        .resenha-filme-titulo { font-weight: bold; font-size: 0.9em; }
-        .resenha-filme-ano { font-size: 0.75em; color: #aaa; }
-        .resenha-estrelas { color: #f5c518; font-size: 0.9em; margin-top: 3px; }
-        .resenha-texto { line-height: 1.6; color: #ddd; margin-bottom: 15px; }
 
-        /* AÇÕES */
-        .resenha-acoes { display: flex; gap: 15px; padding-top: 12px; border-top: 1px solid #2a2a2a; align-items: center; flex-wrap: wrap; }
+        nav h1 { color: #e50914; font-size: 1.8em; font-weight: bold; cursor: pointer; }
 
-        /* REAÇÕES */
-        .reacao-wrap { position: relative; }
+        .nav-links { display: flex; gap: 20px; }
 
-        .reacao-btn {
-            background: #2a2a2a; border: none; color: #ccc;
-            cursor: pointer; font-size: 0.9em;
-            display: flex; align-items: center; gap: 6px;
-            padding: 6px 12px; border-radius: 20px; transition: all 0.2s;
+        .nav-links button {
+            background: none; border: none; color: #fff;
+            font-size: 1em; cursor: pointer; padding: 5px 10px;
+            border-radius: 5px; transition: all 0.3s;
         }
-        .reacao-btn:hover { background: #333; color: #fff; }
-        .reacao-btn.reagido { border: 1px solid #e50914; color: #fff; }
 
-        .reacoes-menu {
-            position: absolute; bottom: calc(100% + 8px); left: 0;
-            background: #1a1a1a; border: 1px solid #444; border-radius: 30px;
-            padding: 8px 12px; display: flex; gap: 6px;
-            opacity: 0; pointer-events: none;
-            transform: scale(0.85) translateY(8px);
-            transition: all 0.2s cubic-bezier(0.34,1.56,0.64,1);
-            z-index: 500; box-shadow: 0 8px 25px rgba(0,0,0,0.6);
-            white-space: nowrap;
+        .nav-links button:hover, .nav-links button.active { background: #e50914; }
+
+        .nav-right { margin-left: auto; display: flex; gap: 10px; align-items: center; }
+
+        .search-bar { display: flex; gap: 10px; }
+
+        .search-bar input {
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.3);
+            color: #fff; padding: 8px 15px;
+            border-radius: 20px; width: 250px; font-size: 0.9em;
         }
-        .reacoes-menu.aberto { opacity: 1; pointer-events: all; transform: scale(1) translateY(0); }
 
-        .reacao-op { position: relative; display: flex; flex-direction: column; align-items: center; }
-        .reacao-emoji { font-size: 1.7em; cursor: pointer; transition: transform 0.15s; display: block; }
-        .reacao-emoji:hover { transform: scale(1.35) translateY(-4px); }
-        .reacao-label {
-            position: absolute; bottom: calc(100% + 4px);
-            background: #000; color: #fff; font-size: 0.65em;
-            padding: 2px 7px; border-radius: 8px; white-space: nowrap;
-            opacity: 0; pointer-events: none; transition: opacity 0.15s;
+        .search-bar input::placeholder { color: rgba(255,255,255,0.5); }
+
+        .search-bar button {
+            background: #e50914; border: none; color: #fff;
+            padding: 8px 20px; border-radius: 20px; cursor: pointer; font-weight: bold;
         }
-        .reacao-emoji:hover + .reacao-label,
-        .reacao-op:hover .reacao-label { opacity: 1; }
 
-        .reacoes-contadores { display: flex; gap: 5px; flex-wrap: wrap; align-items: center; }
-        .reacao-count {
-            background: #2a2a2a; border-radius: 12px; padding: 3px 9px;
-            font-size: 0.82em; cursor: pointer; transition: background 0.2s;
-            display: flex; align-items: center; gap: 3px;
+        .fav-btn-nav {
+            background: none; border: 2px solid #e50914;
+            color: #e50914; padding: 8px 15px;
+            border-radius: 20px; cursor: pointer; font-weight: bold;
+            transition: all 0.3s;
         }
-        .reacao-count:hover { background: #333; }
-        .reacao-count.minha { border: 1px solid #e50914; }
 
-        /* COMENTÁRIOS */
-        .acao-btn { background: #2a2a2a; border: none; color: #ccc; cursor: pointer; font-size: 0.9em; padding: 6px 12px; border-radius: 20px; transition: all 0.2s; display: flex; align-items: center; gap: 5px; }
-        .acao-btn:hover { background: #333; color: #fff; }
+        .fav-btn-nav:hover { background: #e50914; color: #fff; }
 
-        .comentarios-wrap { margin-top: 15px; display: none; }
-        .comentarios-wrap.show { display: block; }
-        .comentario { display: flex; gap: 10px; margin-bottom: 10px; padding: 10px; background: #2a2a2a; border-radius: 8px; }
-        .com-avatar { width: 30px; height: 30px; border-radius: 50%; object-fit: cover; flex-shrink: 0; }
-        .com-nome { font-weight: bold; font-size: 0.85em; margin-bottom: 2px; }
-        .com-texto { font-size: 0.85em; color: #ccc; }
+        .section { padding: 20px 40px; display: none; }
+        .section.active { display: block; }
 
-        /* FORM COMENTÁRIO */
-        .comentario-form { display: flex; gap: 8px; margin-top: 10px; align-items: center; position: relative; }
-        .comentario-input { flex: 1; background: #2a2a2a; border: 1px solid #444; color: #fff; padding: 8px 14px; border-radius: 20px; font-size: 0.9em; }
-        .comentario-input:focus { outline: none; border-color: #e50914; }
-        .emoji-toggle { background: #2a2a2a; border: 1px solid #444; color: #fff; width: 36px; height: 36px; border-radius: 50%; cursor: pointer; font-size: 1em; flex-shrink: 0; transition: all 0.2s; }
-        .emoji-toggle:hover { background: #444; }
-        .send-btn { background: #e50914; border: none; color: #fff; width: 36px; height: 36px; border-radius: 50%; cursor: pointer; font-size: 1em; flex-shrink: 0; transition: all 0.2s; }
-        .send-btn:hover { background: #b00610; }
-
-        .emoji-picker {
-            position: absolute; bottom: calc(100% + 10px); right: 0;
-            background: #1a1a1a; border: 1px solid #444; border-radius: 12px;
-            padding: 10px; display: none; flex-wrap: wrap; width: 270px;
-            gap: 4px; z-index: 500; box-shadow: 0 8px 25px rgba(0,0,0,0.6);
+        .section h2 {
+            font-size: 1.5em; margin-bottom: 15px; color: #fff;
+            border-left: 4px solid #e50914; padding-left: 10px;
         }
-        .emoji-picker.aberto { display: flex; }
-        .emoji-item { font-size: 1.4em; cursor: pointer; padding: 5px; border-radius: 6px; transition: all 0.15s; }
-        .emoji-item:hover { background: #333; transform: scale(1.2); }
 
-        /* SIDEBAR */
-        .sidebar-card { background: #1f1f1f; border-radius: 12px; padding: 20px; margin-bottom: 20px; }
-        .sidebar-card h3 { font-size: 1em; margin-bottom: 15px; color: #e50914; }
+        .filters {
+            display: flex; gap: 15px; margin-bottom: 20px;
+            flex-wrap: wrap; align-items: center;
+        }
 
-        .busca-filme-input { width: 100%; background: #2a2a2a; border: 1px solid #444; color: #fff; padding: 10px 12px; border-radius: 8px; font-size: 0.9em; margin-bottom: 10px; }
-        .busca-filme-input:focus { outline: none; border-color: #e50914; }
+        .filters select, .filters input {
+            background: #2a2a2a; border: 1px solid #444;
+            color: #fff; padding: 8px 15px; border-radius: 8px;
+            font-size: 0.9em; cursor: pointer;
+        }
 
-        .busca-resultado { background: #2a2a2a; border-radius: 8px; overflow: hidden; max-height: 200px; overflow-y: auto; margin-bottom: 10px; }
-        .busca-item { display: flex; gap: 10px; padding: 8px 12px; cursor: pointer; transition: background 0.2s; align-items: center; }
-        .busca-item:hover { background: #333; }
-        .busca-item img { width: 30px; height: 45px; object-fit: cover; border-radius: 3px; }
-        .busca-item-titulo { font-size: 0.85em; font-weight: bold; }
-        .busca-item-ano { font-size: 0.75em; color: #aaa; }
+        .filters button {
+            background: #e50914; border: none; color: #fff;
+            padding: 8px 20px; border-radius: 8px; cursor: pointer; font-weight: bold;
+        }
 
-        .filme-selecionado { display: none; background: #2a2a2a; border-radius: 8px; padding: 10px; margin-bottom: 10px; align-items: center; gap: 10px; }
-        .filme-selecionado.show { display: flex; }
-        .filme-selecionado img { width: 35px; height: 50px; object-fit: cover; border-radius: 3px; }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 15px;
+        }
 
-        .nota-select { display: flex; gap: 5px; margin-bottom: 10px; }
-        .nota-star { font-size: 1.8em; cursor: pointer; color: #555; transition: color 0.2s; }
-        .nota-star.ativo { color: #f5c518; }
+        .card {
+            background: #1f1f1f; border-radius: 8px; overflow: hidden;
+            cursor: pointer; transition: transform 0.3s, box-shadow 0.3s;
+            position: relative;
+        }
 
-        .resenha-textarea { width: 100%; background: #2a2a2a; border: 1px solid #444; color: #fff; padding: 10px 12px; border-radius: 8px; font-size: 0.9em; height: 100px; resize: none; margin-bottom: 10px; font-family: Arial; }
-        .resenha-textarea:focus { outline: none; border-color: #e50914; }
+        .card:hover { transform: scale(1.05); box-shadow: 0 8px 25px rgba(229,9,20,0.4); }
 
-        .btn-publicar { width: 100%; background: #e50914; border: none; color: #fff; padding: 10px; border-radius: 8px; font-weight: bold; cursor: pointer; }
-        .btn-publicar:hover { background: #b00610; }
-        .btn-publicar:disabled { background: #555; cursor: not-allowed; }
+        .card img { width: 100%; height: 270px; object-fit: cover; }
 
-        .usuario-item { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
-        .usuario-avatar { width: 38px; height: 38px; border-radius: 50%; object-fit: cover; cursor: pointer; }
-        .usuario-nome { font-size: 0.9em; font-weight: bold; flex: 1; cursor: pointer; }
-        .usuario-nome:hover { color: #e50914; }
-        .btn-seguir-mini { background: none; border: 1px solid #555; color: #aaa; padding: 4px 10px; border-radius: 12px; cursor: pointer; font-size: 0.8em; transition: all 0.2s; }
-        .btn-seguir-mini:hover { border-color: #e50914; color: #e50914; }
+        .card-info { padding: 10px; }
 
-        .loading { text-align: center; padding: 40px; color: #aaa; }
-        .empty-state { text-align: center; padding: 40px; color: #aaa; }
+        .card-title {
+            font-size: 0.85em; font-weight: bold; margin-bottom: 5px;
+            white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+        }
+
+        .card-date { font-size: 0.75em; color: #aaa; }
+        .stars { color: #f5c518; font-size: 0.8em; margin-top: 5px; }
+
+        .badge {
+            position: absolute; top: 10px; right: 10px;
+            background: #e50914; color: #fff;
+            padding: 3px 8px; border-radius: 5px; font-size: 0.7em; font-weight: bold;
+        }
+
+        .fav-icon {
+            position: absolute; top: 10px; left: 10px;
+            background: rgba(0,0,0,0.7); border: none; color: #f5c518;
+            width: 30px; height: 30px; border-radius: 50%;
+            cursor: pointer; font-size: 1em; display: flex;
+            align-items: center; justify-content: center;
+            transition: all 0.3s;
+        }
+
+        .fav-icon:hover { background: #e50914; color: #fff; }
+
+        .load-more {
+            display: block; margin: 30px auto; background: #e50914;
+            border: none; color: #fff; padding: 12px 40px;
+            border-radius: 25px; cursor: pointer; font-size: 1em;
+            font-weight: bold; transition: all 0.3s;
+        }
+
+        .load-more:hover { background: #b00610; transform: scale(1.05); }
+
+        .tabs { display: flex; gap: 5px; margin-bottom: 20px; flex-wrap: wrap; }
+
+        .tab-btn {
+            background: #2a2a2a; border: none; color: #aaa;
+            padding: 8px 20px; border-radius: 20px; cursor: pointer; transition: all 0.3s;
+        }
+
+        .tab-btn:hover, .tab-btn.active { background: #e50914; color: #fff; }
+
+        .loading { text-align: center; padding: 50px; color: #aaa; font-size: 1.2em; }
+
+        /* MODAL */
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.85); z-index: 2000;
+            display: none; justify-content: center; align-items: center;
+        }
+
+        .modal-overlay.show { display: flex; }
+
+        .modal {
+            background: #1f1f1f; border-radius: 12px;
+            width: 800px; max-width: 95%; max-height: 90vh; overflow-y: auto;
+            position: relative;
+        }
+
+        .modal-banner { width: 100%; height: 300px; object-fit: cover; border-radius: 12px 12px 0 0; }
+
+        .modal-body { padding: 25px; }
+        .modal-body h2 { font-size: 1.8em; margin-bottom: 10px; }
+
+        .modal-meta { display: flex; gap: 15px; margin-bottom: 15px; font-size: 0.85em; color: #aaa; flex-wrap: wrap; }
+        .modal-meta span { color: #f5c518; }
+
+        .modal-overview { line-height: 1.6; color: #ccc; margin-bottom: 20px; }
+
+        .modal-close {
+            position: absolute; top: 15px; right: 15px;
+            background: rgba(0,0,0,0.7); border: none; color: #fff;
+            width: 35px; height: 35px; border-radius: 50%;
+            cursor: pointer; font-size: 1.2em;
+        }
+
+        .modal-actions { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
+
+        .modal-actions button {
+            padding: 10px 20px; border: none; border-radius: 8px;
+            cursor: pointer; font-weight: bold; transition: all 0.3s;
+        }
+
+        .btn-trailer { background: #e50914; color: #fff; }
+        .btn-trailer:hover { background: #b00610; }
+
+        .btn-fav { background: #f5c518; color: #000; }
+        .btn-fav:hover { background: #d4a800; }
+
+        .btn-pagina { background: #2a2a2a; color: #fff; border: 1px solid #555 !important; }
+        .btn-pagina:hover { background: #444; }
+
+        .where-to-watch { margin-bottom: 20px; }
+        .where-to-watch h4 { margin-bottom: 10px; color: #fff; }
+
+        .streaming-logos { display: flex; gap: 10px; flex-wrap: wrap; }
+
+        .streaming-logo {
+            background: #2a2a2a; padding: 8px 15px; border-radius: 8px;
+            font-size: 0.85em; color: #fff; font-weight: bold;
+        }
+
+        .rating-section { margin-top: 15px; }
+        .rating-section h4 { margin-bottom: 10px; color: #fff; }
+
+        .star-rating { display: flex; gap: 5px; margin-bottom: 10px; }
+
+        .star-rating span {
+            font-size: 2em; cursor: pointer; color: #555; transition: color 0.2s;
+        }
+
+        .star-rating span.active { color: #f5c518; }
+
+        /* TRAILER */
+        .trailer-container {
+            position: relative; width: 100%; padding-bottom: 56.25%; margin-bottom: 20px;
+        }
+
+        .trailer-container iframe {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%; border-radius: 8px;
+        }
 
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: #141414; }
         ::-webkit-scrollbar-thumb { background: #e50914; border-radius: 3px; }
+
+        .empty-state { text-align: center; padding: 60px; color: #aaa; }
+        .empty-state p { font-size: 1.2em; margin-top: 15px; }
+
+        /* ===== PÁGINA INDIVIDUAL ===== */
+        #pagina-individual { padding: 0; }
+
+        .pagina-hero {
+            position: relative; height: 520px;
+            background-size: cover; background-position: center top;
+        }
+
+        .pagina-hero::before {
+            content: ''; position: absolute; inset: 0;
+            background: linear-gradient(to right, rgba(20,20,20,0.97) 35%, rgba(20,20,20,0.5) 70%, transparent 100%),
+                        linear-gradient(to top, #141414 0%, transparent 40%);
+        }
+
+        .pagina-hero-content {
+            position: relative; z-index: 2;
+            padding: 120px 60px 40px; max-width: 700px;
+        }
+
+        .pagina-badges { display: flex; gap: 10px; margin-bottom: 15px; flex-wrap: wrap; }
+
+        .pagina-badge {
+            background: #e50914; color: #fff;
+            padding: 4px 12px; border-radius: 5px; font-size: 0.8em; font-weight: bold;
+        }
+
+        .pagina-badge.genero { background: #2a2a2a; border: 1px solid #555; }
+
+        .pagina-titulo {
+            font-size: 3em; font-weight: 900; line-height: 1.1;
+            margin-bottom: 12px; text-shadow: 2px 2px 8px rgba(0,0,0,0.8);
+        }
+
+        .pagina-meta {
+            display: flex; gap: 20px; margin-bottom: 20px;
+            font-size: 0.9em; color: #ccc; flex-wrap: wrap; align-items: center;
+        }
+
+        .pagina-nota {
+            background: #f5c518; color: #000;
+            padding: 4px 10px; border-radius: 6px; font-weight: bold;
+        }
+
+        .pagina-sinopse {
+            font-size: 1em; line-height: 1.7; color: #ddd;
+            max-width: 600px; margin-bottom: 25px;
+        }
+
+        .pagina-acoes { display: flex; gap: 12px; flex-wrap: wrap; }
+
+        .pagina-acoes button {
+            padding: 12px 28px; border: none; border-radius: 8px;
+            cursor: pointer; font-weight: bold; font-size: 1em; transition: all 0.3s;
+        }
+
+        .pagina-btn-trailer { background: #e50914; color: #fff; }
+        .pagina-btn-trailer:hover { background: #b00610; }
+
+        .pagina-btn-fav { background: rgba(255,255,255,0.15); color: #fff; border: 1px solid rgba(255,255,255,0.3) !important; }
+        .pagina-btn-fav:hover { background: rgba(255,255,255,0.25); }
+
+        .pagina-btn-voltar { background: none; color: #aaa; border: 1px solid #555 !important; }
+        .pagina-btn-voltar:hover { color: #fff; border-color: #fff !important; }
+
+        .pagina-body { padding: 30px 60px 60px; }
+
+        .pagina-trailer-wrap {
+            display: none; position: relative; width: 100%;
+            padding-bottom: 56.25%; margin-bottom: 30px; border-radius: 12px; overflow: hidden;
+        }
+        .pagina-trailer-wrap.show { display: block; }
+        .pagina-trailer-wrap iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
+
+        .pagina-secao { margin-bottom: 40px; }
+        .pagina-secao h3 {
+            font-size: 1.3em; margin-bottom: 15px;
+            border-left: 4px solid #e50914; padding-left: 10px;
+        }
+
+        .pagina-streaming { display: flex; gap: 10px; flex-wrap: wrap; }
+        .pagina-streaming-item {
+            background: #2a2a2a; border: 1px solid #444;
+            padding: 10px 18px; border-radius: 10px;
+            font-size: 0.9em; font-weight: bold;
+        }
+
+        .elenco-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: 15px;
+        }
+
+        .ator-card { background: #1f1f1f; border-radius: 10px; overflow: hidden; text-align: center; transition: transform 0.2s; }
+        .ator-card:hover { transform: scale(1.05); }
+        .ator-card img { width: 100%; height: 150px; object-fit: cover; object-position: top; }
+        .ator-info { padding: 8px; }
+        .ator-nome { font-size: 0.8em; font-weight: bold; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .ator-personagem { font-size: 0.72em; color: #aaa; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-top: 3px; }
+
+        .detalhes-grid {
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 15px;
+        }
+        .detalhe-item { background: #1f1f1f; border-radius: 10px; padding: 15px; }
+        .detalhe-label { font-size: 0.75em; color: #aaa; margin-bottom: 5px; text-transform: uppercase; letter-spacing: 1px; }
+        .detalhe-valor { font-size: 1em; font-weight: bold; }
+
+        .nota-visual { display: flex; align-items: center; gap: 15px; margin-bottom: 20px; }
+        .nota-circulo {
+            width: 70px; height: 70px; border-radius: 50%;
+            border: 3px solid #f5c518;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.2em; font-weight: bold;
+        }
+        .nota-info { color: #aaa; font-size: 0.9em; }
+        .nota-info strong { display: block; color: #fff; font-size: 1.1em; }
+
+        .nota-barra-wrap { margin-bottom: 8px; }
+        .nota-barra-label { display: flex; justify-content: space-between; font-size: 0.8em; color: #aaa; margin-bottom: 4px; }
+        .nota-barra { height: 6px; background: #2a2a2a; border-radius: 3px; overflow: hidden; }
+        .nota-barra-fill { height: 100%; background: #f5c518; border-radius: 3px; }
+
+        .temporadas-list { display: flex; flex-direction: column; gap: 10px; }
+        .temporada-item {
+            background: #1f1f1f; border-radius: 10px; padding: 15px 20px;
+            display: flex; align-items: center; gap: 15px;
+        }
+        .temporada-num {
+            background: #e50914; color: #fff; width: 40px; height: 40px;
+            border-radius: 8px; display: flex; align-items: center;
+            justify-content: center; font-weight: bold; flex-shrink: 0;
+        }
+        .temporada-nome { font-weight: bold; margin-bottom: 3px; }
+        .temporada-ep { font-size: 0.8em; color: #aaa; }
+
+        .similares-grid {
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 12px;
+        }
     </style>
 </head>
 <body>
 
 <nav>
-    <h1 onclick="window.location.href='index.html'">🎬 Casa dos Cinéfilos</h1>
+    <h1 onclick="showSection('home')">🎬 Casa dos Cinéfilos</h1>
+    <div class="nav-links">
+        <button class="active" onclick="showSection('home')">Início</button>
+        <button onclick="showSection('filmes')">Filmes</button>
+        <button onclick="showSection('series')">Séries</button>
+        <button onclick="showSection('em-breve')">Em Breve</button>
+    </div>
     <div class="nav-right">
-        <button class="nav-btn" onclick="window.location.href='index.html'">🎬 Catálogo</button>
-        <img class="nav-avatar" id="nav-avatar" src="" onclick="window.location.href='perfil.html'">
-        <button class="nav-btn" onclick="sair()">Sair</button>
+        <button class="fav-btn-nav" onclick="showSection('favoritos')">❤️ Favoritos</button>
+        <button class="fav-btn-nav" onclick="window.location.href='feed.html'" style="border-color:#f5c518;color:#f5c518;">📰 Feed</button>
+        <div class="search-bar">
+            <input type="text" id="searchInput" placeholder="Buscar filmes e séries..."
+                   onkeypress="if(event.key==='Enter') buscar()">
+            <button onclick="buscar()">Buscar</button>
+        </div>
+        <div id="nav-user-area"></div>
     </div>
 </nav>
 
-<div class="layout">
-    <div>
-        <div class="feed-header"><h2>📰 Feed</h2></div>
-        <div class="feed-tabs">
-            <button class="feed-tab active" onclick="trocarFeed('global', this)">🌍 Global</button>
-            <button class="feed-tab" onclick="trocarFeed('seguindo', this)">👥 Seguindo</button>
-        </div>
-        <div id="feed-lista"><div class="loading">Carregando...</div></div>
+<div id="home" class="section active" style="padding-top: 140px;">
+    <h2>🔥 Tendências</h2>
+    <div class="tabs">
+        <button class="tab-btn active" onclick="carregarTendencias('all', event)">Tudo</button>
+        <button class="tab-btn" onclick="carregarTendencias('movie', event)">Filmes</button>
+        <button class="tab-btn" onclick="carregarTendencias('tv', event)">Séries</button>
     </div>
+    <div class="grid" id="tendencias-grid"><div class="loading">Carregando...</div></div>
 
-    <div>
-        <div class="sidebar-card">
-            <h3>✍️ Nova Resenha</h3>
-            <input class="busca-filme-input" id="busca-filme" placeholder="Buscar filme ou série..." oninput="buscarFilme()">
-            <div class="busca-resultado" id="busca-resultado" style="display:none;"></div>
-            <div class="filme-selecionado" id="filme-selecionado">
-                <img id="filme-sel-poster" src="" alt="">
-                <div>
-                    <div id="filme-sel-titulo" style="font-weight:bold;font-size:0.9em;"></div>
-                    <div id="filme-sel-ano" style="font-size:0.75em;color:#aaa;"></div>
+    <h2 style="margin-top:40px;">⭐ Mais Bem Avaliados</h2>
+    <div class="grid" id="top-grid"><div class="loading">Carregando...</div></div>
+</div>
+
+<div id="filmes" class="section" style="padding-top: 140px;">
+    <h2>🎬 Filmes</h2>
+    <div class="tabs" id="generos-filmes"></div>
+    <div class="filters">
+        <select id="filtro-ano-filmes"><option value="">Todos os anos</option></select>
+        <select id="filtro-nota-filmes">
+            <option value="">Qualquer nota</option>
+            <option value="9">9+ ⭐</option>
+            <option value="8">8+ ⭐</option>
+            <option value="7">7+ ⭐</option>
+            <option value="6">6+ ⭐</option>
+        </select>
+        <button onclick="aplicarFiltrosFilmes()">Filtrar</button>
+    </div>
+    <div class="grid" id="filmes-grid"><div class="loading">Carregando...</div></div>
+    <button class="load-more" id="load-more-filmes" onclick="carregarMaisFilmes()" style="display:none;">Carregar Mais</button>
+</div>
+
+<div id="series" class="section" style="padding-top: 140px;">
+    <h2>📺 Séries</h2>
+    <div class="tabs" id="generos-series"></div>
+    <div class="filters">
+        <select id="filtro-ano-series"><option value="">Todos os anos</option></select>
+        <select id="filtro-nota-series">
+            <option value="">Qualquer nota</option>
+            <option value="9">9+ ⭐</option>
+            <option value="8">8+ ⭐</option>
+            <option value="7">7+ ⭐</option>
+            <option value="6">6+ ⭐</option>
+        </select>
+        <button onclick="aplicarFiltrosSeries()">Filtrar</button>
+    </div>
+    <div class="grid" id="series-grid"><div class="loading">Carregando...</div></div>
+    <button class="load-more" id="load-more-series" onclick="carregarMaisSeries()" style="display:none;">Carregar Mais</button>
+</div>
+
+<div id="em-breve" class="section" style="padding-top: 140px;">
+    <h2>🗓️ Em Breve nos Cinemas</h2>
+    <div class="grid" id="embreve-grid"><div class="loading">Carregando...</div></div>
+</div>
+
+<div id="favoritos" class="section" style="padding-top: 140px;">
+    <h2>❤️ Meus Favoritos</h2>
+    <div class="grid" id="favoritos-grid"></div>
+</div>
+
+<div id="busca" class="section" style="padding-top: 140px;">
+    <h2>🔍 Resultados da Busca</h2>
+    <div class="grid" id="busca-grid"><div class="loading">Buscando...</div></div>
+</div>
+
+<!-- PÁGINA INDIVIDUAL -->
+<div id="pagina-individual" class="section">
+    <div id="pagina-conteudo"><div class="loading" style="padding-top:150px;">Carregando...</div></div>
+</div>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modalOverlay" onclick="fecharModal(event)">
+    <div class="modal" id="modal">
+        <button class="modal-close" onclick="fecharModal()">✕</button>
+        <img id="modal-banner" class="modal-banner" src="" alt="">
+        <div class="modal-body">
+            <h2 id="modal-title"></h2>
+            <div class="modal-meta">
+                <span id="modal-rating">⭐</span>
+                <span id="modal-date"></span>
+                <span id="modal-type"></span>
+                <span id="modal-runtime"></span>
+            </div>
+            <p class="modal-overview" id="modal-overview"></p>
+            <div class="modal-actions">
+                <button class="btn-trailer" id="btn-trailer" onclick="verTrailer()">▶ Ver Trailer</button>
+                <button class="btn-fav" id="btn-fav" onclick="toggleFavorito()">❤️ Favoritar</button>
+                <button class="btn-pagina" onclick="irParaPagina()">📄 Ver Página Completa</button>
+            </div>
+            <div id="trailer-container" style="display:none;" class="trailer-container">
+                <iframe id="trailer-iframe" src="" allowfullscreen></iframe>
+            </div>
+            <div class="where-to-watch" id="where-to-watch" style="display:none;">
+                <h4>📺 Onde Assistir:</h4>
+                <div class="streaming-logos" id="streaming-logos"></div>
+            </div>
+            <div class="rating-section">
+                <h4>Sua avaliação:</h4>
+                <div class="star-rating" id="starRating">
+                    <span onclick="avaliar(1)">★</span>
+                    <span onclick="avaliar(2)">★</span>
+                    <span onclick="avaliar(3)">★</span>
+                    <span onclick="avaliar(4)">★</span>
+                    <span onclick="avaliar(5)">★</span>
                 </div>
+                <p id="avaliacaoMsg" style="color:#aaa;font-size:0.85em;"></p>
             </div>
-            <div class="nota-select">
-                <span class="nota-star" onclick="selecionarNota(1)">★</span>
-                <span class="nota-star" onclick="selecionarNota(2)">★</span>
-                <span class="nota-star" onclick="selecionarNota(3)">★</span>
-                <span class="nota-star" onclick="selecionarNota(4)">★</span>
-                <span class="nota-star" onclick="selecionarNota(5)">★</span>
-            </div>
-            <textarea class="resenha-textarea" id="resenha-texto" placeholder="Escreva sua resenha..."></textarea>
-            <button class="btn-publicar" id="btn-publicar" onclick="publicarResenha()">Publicar</button>
-        </div>
-
-        <div class="sidebar-card">
-            <h3>👥 Cinéfilos para seguir</h3>
-            <div id="sugestoes-lista"><div class="loading">Carregando...</div></div>
         </div>
     </div>
 </div>
 
+<script>
+    const API_KEY = 'add4acf69f7d6a6cd5ba7278914fb58a';
+    const BASE = 'https://api.themoviedb.org/3';
+    const IMG = 'https://image.tmdb.org/t/p/w500';
+    const BANNER = 'https://image.tmdb.org/t/p/w1280';
+    const LANG = 'pt-BR';
+
+    let avaliacoes = JSON.parse(localStorage.getItem('avaliacoes') || '{}');
+    let favoritos = JSON.parse(localStorage.getItem('favoritos') || '[]');
+    let itemAtual = null;
+    let trailerKey = null;
+    let paginaFilmes = 1, paginaSeries = 1;
+    let generoFilmeAtual = '', generoSerieAtual = '';
+    let secaoAnterior = 'home';
+
+    // Anos para filtro
+    const anoAtual = new Date().getFullYear();
+    ['filtro-ano-filmes', 'filtro-ano-series'].forEach(id => {
+        const sel = document.getElementById(id);
+        for (let a = anoAtual; a >= 1990; a--) {
+            sel.innerHTML += `<option value="${a}">${a}</option>`;
+        }
+    });
+
+    async function fetchAPI(endpoint) {
+        const sep = endpoint.includes('?') ? '&' : '?';
+        const res = await fetch(`${BASE}${endpoint}${sep}api_key=${API_KEY}&language=${LANG}`);
+        return res.json();
+    }
+
+    function showSection(id) {
+        document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+        document.querySelectorAll('.nav-links button').forEach(b => b.classList.remove('active'));
+        document.getElementById(id).classList.add('active');
+        if (['home','filmes','series','em-breve','favoritos'].includes(id)) secaoAnterior = id;
+        if (id === 'home') { carregarTendencias('all'); carregarTop(); }
+        if (id === 'filmes') { paginaFilmes = 1; carregarFilmes(); }
+        if (id === 'series') { paginaSeries = 1; carregarSeries(); }
+        if (id === 'em-breve') carregarEmBreve();
+        if (id === 'favoritos') renderizarFavoritos();
+    }
+
+    function notaParaStars(nota) {
+        const n = parseFloat(nota);
+        if (isNaN(n)) return '☆☆☆☆☆';
+        const e = Math.round(n / 2);
+        return '★'.repeat(e) + '☆'.repeat(5 - e);
+    }
+
+    function ehFavorito(id) {
+        return favoritos.some(f => f.id === id);
+    }
+
+    function criarCard(item, tipo) {
+        const titulo = item.title || item.name;
+        const data = item.release_date || item.first_air_date || '';
+        const ano = data ? data.substring(0, 4) : 'N/A';
+        const poster = item.poster_path ? `${IMG}${item.poster_path}` :
+            'https://via.placeholder.com/180x270/1f1f1f/aaa?text=Sem+Poster';
+        const nota = item.vote_average ? item.vote_average.toFixed(1) : 'N/A';
+        const stars = notaParaStars(nota);
+        const badge = tipo === 'movie' ? 'FILME' : 'SÉRIE';
+        const favIcon = ehFavorito(item.id) ? '❤️' : '🤍';
+
+        return `
+            <div class="card" onclick="abrirModal(${item.id}, '${tipo}')">
+                <span class="badge">${badge}</span>
+                <button class="fav-icon" onclick="event.stopPropagation(); toggleFavCard(${item.id}, '${tipo}', '${titulo.replace(/'/g, "\\'")}', '${poster}', this)">
+                    ${favIcon}
+                </button>
+                <img src="${poster}" alt="${titulo}" loading="lazy">
+                <div class="card-info">
+                    <div class="card-title">${titulo}</div>
+                    <div class="card-date">${ano}</div>
+                    <div class="stars">${stars} ${nota}</div>
+                </div>
+            </div>
+        `;
+    }
+
+    function toggleFavCard(id, tipo, titulo, poster, btn) {
+        const idx = favoritos.findIndex(f => f.id === id);
+        if (idx === -1) {
+            favoritos.push({ id, tipo, titulo, poster });
+            btn.textContent = '❤️';
+        } else {
+            favoritos.splice(idx, 1);
+            btn.textContent = '🤍';
+        }
+        localStorage.setItem('favoritos', JSON.stringify(favoritos));
+    }
+
+    function renderizarFavoritos() {
+        const grid = document.getElementById('favoritos-grid');
+        if (favoritos.length === 0) {
+            grid.innerHTML = '<div class="empty-state"><p>🎬 Você ainda não favoritou nada!</p><p>Clique no ❤️ nos cards para favoritar.</p></div>';
+            return;
+        }
+        grid.innerHTML = favoritos.map(f => `
+            <div class="card" onclick="abrirModal(${f.id}, '${f.tipo}')">
+                <span class="badge">${f.tipo === 'movie' ? 'FILME' : 'SÉRIE'}</span>
+                <button class="fav-icon" onclick="event.stopPropagation(); removerFavorito(${f.id})">❤️</button>
+                <img src="${f.poster}" alt="${f.titulo}" loading="lazy">
+                <div class="card-info">
+                    <div class="card-title">${f.titulo}</div>
+                </div>
+            </div>
+        `).join('');
+    }
+
+    function removerFavorito(id) {
+        favoritos = favoritos.filter(f => f.id !== id);
+        localStorage.setItem('favoritos', JSON.stringify(favoritos));
+        renderizarFavoritos();
+    }
+
+    async function carregarTendencias(tipo, event) {
+        document.querySelectorAll('.tabs .tab-btn').forEach(b => b.classList.remove('active'));
+        if (event?.target) event.target.classList.add('active');
+        document.getElementById('tendencias-grid').innerHTML = '<div class="loading">Carregando...</div>';
+        const data = await fetchAPI(`/trending/${tipo}/week?`);
+        document.getElementById('tendencias-grid').innerHTML =
+            data.results.map(i => criarCard(i, i.media_type || tipo)).join('');
+    }
+
+    async function carregarTop() {
+        const data = await fetchAPI('/movie/top_rated?');
+        document.getElementById('top-grid').innerHTML =
+            data.results.slice(0, 12).map(i => criarCard(i, 'movie')).join('');
+    }
+
+    async function carregarFilmes(genero = generoFilmeAtual, pagina = 1) {
+        if (pagina === 1) document.getElementById('filmes-grid').innerHTML = '<div class="loading">Carregando...</div>';
+        const endpoint = genero
+            ? `/discover/movie?with_genres=${genero}&page=${pagina}`
+            : `/movie/popular?page=${pagina}`;
+        const data = await fetchAPI(endpoint);
+        const html = data.results.map(i => criarCard(i, 'movie')).join('');
+        if (pagina === 1) document.getElementById('filmes-grid').innerHTML = html;
+        else document.getElementById('filmes-grid').innerHTML += html;
+        document.getElementById('load-more-filmes').style.display = 'block';
+        if (pagina === 1) carregarGenerosFilmes();
+    }
+
+    function carregarMaisFilmes() { paginaFilmes++; carregarFilmes(generoFilmeAtual, paginaFilmes); }
+
+    async function aplicarFiltrosFilmes() {
+        const ano = document.getElementById('filtro-ano-filmes').value;
+        const nota = document.getElementById('filtro-nota-filmes').value;
+        document.getElementById('filmes-grid').innerHTML = '<div class="loading">Filtrando...</div>';
+        let endpoint = `/discover/movie?sort_by=popularity.desc&page=1`;
+        if (generoFilmeAtual) endpoint += `&with_genres=${generoFilmeAtual}`;
+        if (ano) endpoint += `&primary_release_year=${ano}`;
+        if (nota) endpoint += `&vote_average.gte=${nota}`;
+        const data = await fetchAPI(endpoint);
+        document.getElementById('filmes-grid').innerHTML =
+            data.results.map(i => criarCard(i, 'movie')).join('') ||
+            '<div class="loading">Nenhum resultado encontrado.</div>';
+    }
+
+    async function carregarGenerosFilmes() {
+        const data = await fetchAPI('/genre/movie/list?');
+        document.getElementById('generos-filmes').innerHTML =
+            `<button class="tab-btn active" onclick="selecionarGeneroFilme('', this)">Todos</button>` +
+            data.genres.slice(0, 8).map(g =>
+                `<button class="tab-btn" onclick="selecionarGeneroFilme(${g.id}, this)">${g.name}</button>`
+            ).join('');
+    }
+
+    function selecionarGeneroFilme(id, btn) {
+        document.querySelectorAll('#generos-filmes .tab-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        generoFilmeAtual = id; paginaFilmes = 1;
+        carregarFilmes(id, 1);
+    }
+
+    async function carregarSeries(genero = generoSerieAtual, pagina = 1) {
+        if (pagina === 1) document.getElementById('series-grid').innerHTML = '<div class="loading">Carregando...</div>';
+        const endpoint = genero
+            ? `/discover/tv?with_genres=${genero}&page=${pagina}`
+            : `/tv/popular?page=${pagina}`;
+        const data = await fetchAPI(endpoint);
+        const html = data.results.map(i => criarCard(i, 'tv')).join('');
+        if (pagina === 1) document.getElementById('series-grid').innerHTML = html;
+        else document.getElementById('series-grid').innerHTML += html;
+        document.getElementById('load-more-series').style.display = 'block';
+        if (pagina === 1) carregarGenerosSeries();
+    }
+
+    function carregarMaisSeries() { paginaSeries++; carregarSeries(generoSerieAtual, paginaSeries); }
+
+    async function aplicarFiltrosSeries() {
+        const ano = document.getElementById('filtro-ano-series').value;
+        const nota = document.getElementById('filtro-nota-series').value;
+        document.getElementById('series-grid').innerHTML = '<div class="loading">Filtrando...</div>';
+        let endpoint = `/discover/tv?sort_by=popularity.desc&page=1`;
+        if (generoSerieAtual) endpoint += `&with_genres=${generoSerieAtual}`;
+        if (ano) endpoint += `&first_air_date_year=${ano}`;
+        if (nota) endpoint += `&vote_average.gte=${nota}`;
+        const data = await fetchAPI(endpoint);
+        document.getElementById('series-grid').innerHTML =
+            data.results.map(i => criarCard(i, 'tv')).join('') ||
+            '<div class="loading">Nenhum resultado encontrado.</div>';
+    }
+
+    async function carregarGenerosSeries() {
+        const data = await fetchAPI('/genre/tv/list?');
+        document.getElementById('generos-series').innerHTML =
+            `<button class="tab-btn active" onclick="selecionarGeneroSerie('', this)">Todos</button>` +
+            data.genres.slice(0, 8).map(g =>
+                `<button class="tab-btn" onclick="selecionarGeneroSerie(${g.id}, this)">${g.name}</button>`
+            ).join('');
+    }
+
+    function selecionarGeneroSerie(id, btn) {
+        document.querySelectorAll('#generos-series .tab-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        generoSerieAtual = id; paginaSeries = 1;
+        carregarSeries(id, 1);
+    }
+
+    async function carregarEmBreve() {
+        document.getElementById('embreve-grid').innerHTML = '<div class="loading">Carregando...</div>';
+        const data = await fetchAPI('/movie/upcoming?');
+        document.getElementById('embreve-grid').innerHTML =
+            data.results.map(i => criarCard(i, 'movie')).join('');
+    }
+
+    async function buscar() {
+        const query = document.getElementById('searchInput').value.trim();
+        if (!query) return;
+        showSection('busca');
+        document.getElementById('busca-grid').innerHTML = '<div class="loading">Buscando...</div>';
+        const data = await fetchAPI(`/search/multi?query=${encodeURIComponent(query)}`);
+        const resultados = data.results.filter(i => i.media_type !== 'person');
+        document.getElementById('busca-grid').innerHTML = resultados.length > 0
+            ? resultados.map(i => criarCard(i, i.media_type)).join('')
+            : '<div class="loading">Nenhum resultado encontrado.</div>';
+    }
+
+    // ===== MODAL (igual ao GitHub, só adiciona botão "Ver Página Completa") =====
+    async function abrirModal(id, tipo) {
+        itemAtual = { id, tipo };
+        trailerKey = null;
+        document.getElementById('trailer-container').style.display = 'none';
+        document.getElementById('trailer-iframe').src = '';
+        document.getElementById('where-to-watch').style.display = 'none';
+
+        const endpoint = tipo === 'movie' ? `/movie/${id}?append_to_response=videos,watch/providers` : `/tv/${id}?append_to_response=videos,watch/providers`;
+        const data = await fetchAPI(endpoint);
+
+        const titulo = data.title || data.name;
+        const banner = data.backdrop_path ? `${BANNER}${data.backdrop_path}` :
+            data.poster_path ? `${IMG}${data.poster_path}` : '';
+        const overview = data.overview || 'Sinopse não disponível.';
+        const nota = data.vote_average ? data.vote_average.toFixed(1) : 'N/A';
+        const dataLanc = data.release_date || data.first_air_date || 'N/A';
+        const tipoLabel = tipo === 'movie' ? '🎬 Filme' : '📺 Série';
+        const runtime = data.runtime ? `⏱️ ${data.runtime} min` : data.episode_run_time?.[0] ? `⏱️ ${data.episode_run_time[0]} min/ep` : '';
+
+        document.getElementById('modal-banner').src = banner;
+        document.getElementById('modal-title').textContent = titulo;
+        document.getElementById('modal-rating').textContent = `⭐ ${nota}/10`;
+        document.getElementById('modal-date').textContent = `📅 ${dataLanc}`;
+        document.getElementById('modal-type').textContent = tipoLabel;
+        document.getElementById('modal-runtime').textContent = runtime;
+        document.getElementById('modal-overview').textContent = overview;
+
+        // Trailer — idêntico ao do GitHub
+        const videos = data.videos?.results || [];
+        const trailer = videos.find(v => v.type === 'Trailer' && v.site === 'YouTube') || videos[0];
+        if (trailer) {
+            trailerKey = trailer.key;
+            document.getElementById('btn-trailer').style.display = 'block';
+        } else {
+            document.getElementById('btn-trailer').style.display = 'none';
+        }
+
+        // Onde assistir
+        const providers = data['watch/providers']?.results?.BR;
+        if (providers) {
+            const plataformas = providers.flatrate || providers.rent || providers.buy || [];
+            if (plataformas.length > 0) {
+                document.getElementById('where-to-watch').style.display = 'block';
+                document.getElementById('streaming-logos').innerHTML = plataformas.map(p =>
+                    `<span class="streaming-logo">${p.provider_name}</span>`
+                ).join('');
+            }
+        }
+
+        // Favorito
+        const isFav = ehFavorito(id);
+        document.getElementById('btn-fav').textContent = isFav ? '💔 Desfavoritar' : '❤️ Favoritar';
+
+        // Avaliação
+        const minhaAvaliacao = avaliacoes[id];
+        atualizarStars(minhaAvaliacao || 0);
+        document.getElementById('avaliacaoMsg').textContent = minhaAvaliacao
+            ? `Você avaliou com ${minhaAvaliacao} estrela(s)` : 'Clique nas estrelas para avaliar';
+
+        document.getElementById('modalOverlay').classList.add('show');
+    }
+
+    function verTrailer() {
+        const container = document.getElementById('trailer-container');
+        if (container.style.display === 'none') {
+            document.getElementById('trailer-iframe').src = `https://www.youtube.com/embed/${trailerKey}?autoplay=1`;
+            container.style.display = 'block';
+        } else {
+            container.style.display = 'none';
+            document.getElementById('trailer-iframe').src = '';
+        }
+    }
+
+    function irParaPagina() {
+        if (!itemAtual) return;
+        fecharModal();
+        abrirPaginaIndividual(itemAtual.id, itemAtual.tipo);
+    }
+
+    function toggleFavorito() {
+        if (!itemAtual) return;
+        const { id, tipo } = itemAtual;
+        const titulo = document.getElementById('modal-title').textContent;
+        const poster = document.getElementById('modal-banner').src;
+        const idx = favoritos.findIndex(f => f.id === id);
+        if (idx === -1) {
+            favoritos.push({ id, tipo, titulo, poster });
+            document.getElementById('btn-fav').textContent = '💔 Desfavoritar';
+        } else {
+            favoritos.splice(idx, 1);
+            document.getElementById('btn-fav').textContent = '❤️ Favoritar';
+        }
+        localStorage.setItem('favoritos', JSON.stringify(favoritos));
+    }
+
+    function fecharModal(event) {
+        if (!event || event.target === document.getElementById('modalOverlay')) {
+            document.getElementById('modalOverlay').classList.remove('show');
+            document.getElementById('trailer-iframe').src = '';
+            document.getElementById('trailer-container').style.display = 'none';
+        }
+    }
+
+    function avaliar(nota) {
+        if (!itemAtual) return;
+        avaliacoes[itemAtual.id] = nota;
+        localStorage.setItem('avaliacoes', JSON.stringify(avaliacoes));
+        atualizarStars(nota);
+        document.getElementById('avaliacaoMsg').textContent = `Você avaliou com ${nota} estrela(s) ⭐`;
+    }
+
+    function atualizarStars(nota) {
+        document.querySelectorAll('#starRating span').forEach((s, i) => {
+            s.classList.toggle('active', i < nota);
+        });
+    }
+
+    // ===== PÁGINA INDIVIDUAL =====
+    async function abrirPaginaIndividual(id, tipo) {
+        document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+        document.getElementById('pagina-individual').classList.add('active');
+        document.getElementById('pagina-conteudo').innerHTML = '<div class="loading" style="padding-top:150px;">Carregando...</div>';
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+
+        const epBase = tipo === 'movie' ? `/movie/${id}` : `/tv/${id}`;
+        const [data, creditsData, similarData] = await Promise.all([
+            fetchAPI(`${epBase}?append_to_response=videos,watch/providers`),
+            fetchAPI(`${epBase}/credits?`),
+            fetchAPI(`${epBase}/similar?`)
+        ]);
+
+        const titulo   = data.title || data.name;
+        const banner   = data.backdrop_path ? `${BANNER}${data.backdrop_path}` : '';
+        const poster   = data.poster_path   ? `${IMG}${data.poster_path}` : '';
+        const overview = data.overview || 'Sinopse não disponível.';
+        const nota     = data.vote_average ? data.vote_average.toFixed(1) : 'N/A';
+        const dataLanc = data.release_date || data.first_air_date || 'N/A';
+        const runtime  = data.runtime ? `${data.runtime} min` : data.episode_run_time?.[0] ? `${data.episode_run_time[0]} min/ep` : 'N/A';
+        const generos  = (data.genres || []).map(g => g.name).join(', ');
+        const tipoLabel = tipo === 'movie' ? 'FILME' : 'SÉRIE';
+        const isFav    = ehFavorito(id);
+        const notaPct  = nota !== 'N/A' ? ((parseFloat(nota) / 10) * 100).toFixed(0) : 0;
+
+        // Trailer — mesma lógica do modal original
+        const videos  = data.videos?.results || [];
+        const trailer = videos.find(v => v.type === 'Trailer' && v.site === 'YouTube') || videos[0];
+        const tKey    = trailer ? trailer.key : null;
+
+        // Onde assistir
+        const providers   = data['watch/providers']?.results?.BR;
+        const plataformas = providers ? (providers.flatrate || providers.rent || providers.buy || []) : [];
+
+        // Elenco top 12
+        const elenco   = (creditsData.cast || []).slice(0, 12);
+        // Similares top 8
+        const similares = (similarData.results || []).slice(0, 8);
+
+        const orçamento  = tipo === 'movie' && data.budget  ? `$${data.budget.toLocaleString()}`  : null;
+        const bilheteria = tipo === 'movie' && data.revenue ? `$${data.revenue.toLocaleString()}` : null;
+        const temporadas = tipo === 'tv' ? (data.seasons || []) : null;
+
+        document.getElementById('pagina-conteudo').innerHTML = `
+            <div class="pagina-hero" style="background-image: url('${banner}')">
+                <div class="pagina-hero-content">
+                    <div class="pagina-badges">
+                        <span class="pagina-badge">${tipoLabel}</span>
+                        ${(data.genres || []).slice(0,3).map(g => `<span class="pagina-badge genero">${g.name}</span>`).join('')}
+                    </div>
+                    <h1 class="pagina-titulo">${titulo}</h1>
+                    <div class="pagina-meta">
+                        <span class="pagina-nota">⭐ ${nota}/10</span>
+                        <span>📅 ${dataLanc}</span>
+                        <span>⏱️ ${runtime}</span>
+                        ${tipo === 'tv' && data.number_of_seasons  ? `<span>📺 ${data.number_of_seasons} temporada(s)</span>` : ''}
+                        ${tipo === 'tv' && data.number_of_episodes ? `<span>🎬 ${data.number_of_episodes} episódios</span>` : ''}
+                    </div>
+                    <p class="pagina-sinopse">${overview}</p>
+                    <div class="pagina-acoes">
+                        ${tKey ? `<button class="pagina-btn-trailer" onclick="toggleTrailerPagina('${tKey}')">▶ Ver Trailer</button>` : ''}
+                        <button class="pagina-btn-fav" id="pagina-btn-fav" onclick="toggleFavPagina(${id}, '${tipo}', \`${titulo.replace(/`/g,'')}\`, '${poster}')">
+                            ${isFav ? '💔 Desfavoritar' : '❤️ Favoritar'}
+                        </button>
+                        <button class="pagina-btn-voltar" onclick="voltarDaPagina()">← Voltar</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pagina-body">
+
+                <div class="pagina-trailer-wrap" id="pagina-trailer-wrap">
+                    <iframe id="pagina-trailer-iframe" src="" allowfullscreen></iframe>
+                </div>
+
+                <div class="pagina-secao">
+                    <h3>📊 Avaliação do Público</h3>
+                    <div class="nota-visual">
+                        <div class="nota-circulo">${nota}</div>
+                        <div class="nota-info">
+                            <strong>${data.vote_count ? data.vote_count.toLocaleString() : '0'} avaliações</strong>
+                            no TMDB
+                        </div>
+                    </div>
+                    <div class="nota-barra-wrap">
+                        <div class="nota-barra-label"><span>Nota geral</span><span>${nota}/10</span></div>
+                        <div class="nota-barra"><div class="nota-barra-fill" style="width:${notaPct}%"></div></div>
+                    </div>
+                </div>
+
+                ${plataformas.length > 0 ? `
+                <div class="pagina-secao">
+                    <h3>📺 Onde Assistir no Brasil</h3>
+                    <div class="pagina-streaming">
+                        ${plataformas.map(p => `<div class="pagina-streaming-item">▶ ${p.provider_name}</div>`).join('')}
+                    </div>
+                </div>` : ''}
+
+                ${elenco.length > 0 ? `
+                <div class="pagina-secao">
+                    <h3>🎭 Elenco Principal</h3>
+                    <div class="elenco-grid">
+                        ${elenco.map(a => `
+                            <div class="ator-card">
+                                <img src="${a.profile_path ? `https://image.tmdb.org/t/p/w185${a.profile_path}` : 'https://via.placeholder.com/120x150/1f1f1f/aaa?text=Sem+Foto'}" alt="${a.name}" loading="lazy">
+                                <div class="ator-info">
+                                    <div class="ator-nome">${a.name}</div>
+                                    <div class="ator-personagem">${a.character || ''}</div>
+                                </div>
+                            </div>`).join('')}
+                    </div>
+                </div>` : ''}
+
+                ${temporadas && temporadas.length > 0 ? `
+                <div class="pagina-secao">
+                    <h3>🗂️ Temporadas</h3>
+                    <div class="temporadas-list">
+                        ${temporadas.filter(t => t.season_number > 0).map(t => `
+                            <div class="temporada-item">
+                                <div class="temporada-num">${t.season_number}</div>
+                                <div>
+                                    <div class="temporada-nome">${t.name}</div>
+                                    <div class="temporada-ep">${t.episode_count} episódios${t.air_date ? ' · ' + t.air_date.substring(0,4) : ''}</div>
+                                </div>
+                            </div>`).join('')}
+                    </div>
+                </div>` : ''}
+
+                <div class="pagina-secao">
+                    <h3>📋 Detalhes</h3>
+                    <div class="detalhes-grid">
+                        <div class="detalhe-item"><div class="detalhe-label">Título original</div><div class="detalhe-valor">${data.original_title || data.original_name || titulo}</div></div>
+                        <div class="detalhe-item"><div class="detalhe-label">Gêneros</div><div class="detalhe-valor">${generos || 'N/A'}</div></div>
+                        <div class="detalhe-item"><div class="detalhe-label">Idioma original</div><div class="detalhe-valor">${(data.original_language || 'N/A').toUpperCase()}</div></div>
+                        <div class="detalhe-item"><div class="detalhe-label">Status</div><div class="detalhe-valor">${data.status || 'N/A'}</div></div>
+                        ${orçamento  ? `<div class="detalhe-item"><div class="detalhe-label">Orçamento</div><div class="detalhe-valor">${orçamento}</div></div>`  : ''}
+                        ${bilheteria ? `<div class="detalhe-item"><div class="detalhe-label">Bilheteria</div><div class="detalhe-valor">${bilheteria}</div></div>` : ''}
+                        ${tipo === 'tv' && data.networks?.[0]    ? `<div class="detalhe-item"><div class="detalhe-label">Emissora</div><div class="detalhe-valor">${data.networks[0].name}</div></div>` : ''}
+                        ${tipo === 'tv' && data.created_by?.[0]  ? `<div class="detalhe-item"><div class="detalhe-label">Criador(a)</div><div class="detalhe-valor">${data.created_by.map(c=>c.name).join(', ')}</div></div>` : ''}
+                    </div>
+                </div>
+
+                ${similares.length > 0 ? `
+                <div class="pagina-secao">
+                    <h3>🎬 Você Também Pode Gostar</h3>
+                    <div class="similares-grid">
+                        ${similares.map(s => criarCard(s, tipo)).join('')}
+                    </div>
+                </div>` : ''}
+
+            </div>
+        `;
+    }
+
+    function toggleTrailerPagina(key) {
+        const wrap  = document.getElementById('pagina-trailer-wrap');
+        const iframe = document.getElementById('pagina-trailer-iframe');
+        if (!wrap.classList.contains('show')) {
+            iframe.src = `https://www.youtube.com/embed/${key}?autoplay=1`;
+            wrap.classList.add('show');
+            wrap.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        } else {
+            wrap.classList.remove('show');
+            iframe.src = '';
+        }
+    }
+
+    function toggleFavPagina(id, tipo, titulo, poster) {
+        const idx = favoritos.findIndex(f => f.id === id);
+        const btn = document.getElementById('pagina-btn-fav');
+        if (idx === -1) {
+            favoritos.push({ id, tipo, titulo, poster });
+            if (btn) btn.textContent = '💔 Desfavoritar';
+        } else {
+            favoritos.splice(idx, 1);
+            if (btn) btn.textContent = '❤️ Favoritar';
+        }
+        localStorage.setItem('favoritos', JSON.stringify(favoritos));
+    }
+
+    function voltarDaPagina() {
+        const iframe = document.getElementById('pagina-trailer-iframe');
+        if (iframe) iframe.src = '';
+        showSection(secaoAnterior || 'home');
+    }
+
+    carregarTendencias('all');
+    carregarTop();
+</script>
+</body>
+</html>
+
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-    import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-    import { getFirestore, collection, query, orderBy, limit, getDocs, addDoc, updateDoc, doc, getDoc, serverTimestamp, where } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 
     const firebaseConfig = {
         apiKey: "AIzaSyDS0ZNDyRDiq4xOKTzbeMnIZIdR1dI1q6s",
@@ -240,364 +1069,18 @@
 
     const app  = initializeApp(firebaseConfig);
     const auth = getAuth(app);
-    const db   = getFirestore(app);
 
-    const API_KEY = 'add4acf69f7d6a6cd5ba7278914fb58a';
-    const BASE    = 'https://api.themoviedb.org/3';
-
-    const REACOES = [
-        { key: 'amei',      emoji: '❤️', label: 'Amei' },
-        { key: 'curti',     emoji: '👍', label: 'Curti' },
-        { key: 'haha',      emoji: '😂', label: 'Hahaha' },
-        { key: 'triste',    emoji: '😢', label: 'Triste' },
-        { key: 'naogostei', emoji: '👎', label: 'Não gostei' },
-    ];
-
-    const EMOJIS = ['😂','🤣','😍','🥰','😎','🤩','😮','😱','😢','😭','😡','🤬','🥹','💀','🫠','😴','🤔','👀','🙌','👏','💪','🤙','👌','🤞','🫶','❤️','🧡','💛','💚','💙','💜','🖤','💔','❤️‍🔥','💯','⭐','🌟','✨','🔥','💥','🎬','🎥','🎭','🍿','🎞️','🏆','🎯','👑','🤯','😤','🫡','🥱','😏','😜','🤪','😇','🥳','🎉','🎊','👻','💩','🤡','👾','🤖','🦁','🐸','🦊','🌈','⚡','🌙','☀️','💫','🫧','🪄'];
-
-    let usuarioAtual = null;
-    let filmeSelecionado = null;
-    let notaSelecionada = 0;
-    let feedAtual = 'global';
-    let buscaTimeout = null;
-
-    onAuthStateChanged(auth, async (user) => {
-        if (!user) { window.location.href = 'login.html'; return; }
-        usuarioAtual = user;
-        document.getElementById('nav-avatar').src = user.photoURL || `https://api.dicebear.com/7.x/avataaars/svg?seed=${user.uid}`;
-        await carregarFeed('global');
-        await carregarSugestoes();
+    onAuthStateChanged(auth, (user) => {
+        const area = document.getElementById('nav-user-area');
+        if (!area) return;
+        if (user) {
+            area.innerHTML = `<img src="${user.photoURL || 'https://api.dicebear.com/7.x/avataaars/svg?seed=' + user.uid}"
+                style="width:35px;height:35px;border-radius:50%;border:2px solid #e50914;cursor:pointer;object-fit:cover;"
+                onclick="window.location.href='perfil.html'" title="${user.displayName || 'Perfil'}">`;
+        } else {
+            area.innerHTML = `<button onclick="window.location.href='login.html'"
+                style="background:#e50914;border:none;color:#fff;padding:8px 18px;border-radius:20px;cursor:pointer;font-weight:bold;">
+                Entrar</button>`;
+        }
     });
-
-    // ===== FEED =====
-    window.trocarFeed = async (tipo, btn) => {
-        document.querySelectorAll('.feed-tab').forEach(t => t.classList.remove('active'));
-        btn.classList.add('active');
-        feedAtual = tipo;
-        await carregarFeed(tipo);
-    };
-
-    async function carregarFeed(tipo) {
-        const lista = document.getElementById('feed-lista');
-        lista.innerHTML = '<div class="loading">Carregando...</div>';
-        try {
-            let q;
-            if (tipo === 'global') {
-                q = query(collection(db, 'resenhas'), orderBy('criadoEm', 'desc'), limit(30));
-            } else {
-                const snap = await getDoc(doc(db, 'usuarios', usuarioAtual.uid));
-                const seguindo = snap.data()?.seguindo || [];
-                if (!seguindo.length) {
-                    lista.innerHTML = '<div class="empty-state">Siga outros cinéfilos para ver o feed deles!</div>';
-                    return;
-                }
-                q = query(collection(db, 'resenhas'), where('autorId', 'in', seguindo.slice(0,10)), orderBy('criadoEm', 'desc'), limit(30));
-            }
-            const snap = await getDocs(q);
-            if (snap.empty) { lista.innerHTML = '<div class="empty-state">Nenhuma resenha ainda. Seja o primeiro!</div>'; return; }
-            lista.innerHTML = snap.docs.map(d => renderResenha(d.id, d.data())).join('');
-        } catch(e) {
-            console.error(e);
-            lista.innerHTML = '<div class="empty-state">Erro ao carregar feed.</div>';
-        }
-    }
-
-    function renderResenha(id, r) {
-        const estrelas = '★'.repeat(r.nota||0) + '☆'.repeat(5-(r.nota||0));
-        const data = r.criadoEm?.toDate ? r.criadoEm.toDate().toLocaleDateString('pt-BR') : '';
-        const reacoes = r.reacoes || {};
-        const tipoUrl = r.tipoFilme === 'filme' ? 'filme' : 'serie';
-
-        // Minha reação atual
-        let minhaReacao = null;
-        REACOES.forEach(rx => {
-            if ((reacoes[rx.key]||[]).includes(usuarioAtual?.uid)) minhaReacao = rx;
-        });
-
-        // Contadores
-        let contHTML = REACOES.map(rx => {
-            const lista = reacoes[rx.key] || [];
-            if (!lista.length) return '';
-            const minha = lista.includes(usuarioAtual?.uid);
-            return `<span class="reacao-count ${minha?'minha':''}" onclick="reagir('${id}','${rx.key}')">${rx.emoji} ${lista.length}</span>`;
-        }).join('');
-
-        // Menu de reações
-        const menuReacoes = REACOES.map(rx => `
-            <div class="reacao-op">
-                <span class="reacao-emoji" onclick="reagir('${id}','${rx.key}')">${rx.emoji}</span>
-                <span class="reacao-label">${rx.label}</span>
-            </div>`).join('');
-
-        return `
-        <div class="resenha-card" id="res-${id}">
-            <div class="resenha-header">
-                <img class="resenha-avatar" src="${r.autorAvatar||''}" onclick="window.location.href='perfil.html?uid=${r.autorId}'">
-                <div style="flex:1">
-                    <div class="resenha-user-nome" onclick="window.location.href='perfil.html?uid=${r.autorId}'">${r.autorNome||''}</div>
-                    <div class="resenha-data">${data}</div>
-                </div>
-            </div>
-
-            <div class="resenha-filme" onclick="window.location.href='index.html#${tipoUrl}/${r.filmeId}'">
-                <img class="resenha-poster" src="${r.filmePoster?'https://image.tmdb.org/t/p/w92'+r.filmePoster:''}" alt="">
-                <div style="flex:1">
-                    <div class="resenha-filme-titulo">${r.filmeTitulo||''}</div>
-                    <div class="resenha-filme-ano">${r.filmeAno||''}</div>
-                    <div class="resenha-estrelas">${estrelas}</div>
-                </div>
-                <span class="resenha-filme-arrow">→</span>
-            </div>
-
-            <p class="resenha-texto">${r.texto||''}</p>
-
-            <div class="resenha-acoes">
-                <div class="reacao-wrap">
-                    <button class="reacao-btn ${minhaReacao?'reagido':''}" onclick="toggleReacoes(event,'menu-${id}')">
-                        ${minhaReacao ? minhaReacao.emoji+' '+minhaReacao.label : '❤️ Reagir'}
-                    </button>
-                    <div class="reacoes-menu" id="menu-${id}">${menuReacoes}</div>
-                </div>
-                <div class="reacoes-contadores" id="cont-${id}">${contHTML}</div>
-                <button class="acao-btn" onclick="toggleComentarios('${id}')">💬 Comentários</button>
-            </div>
-
-            <div class="comentarios-wrap" id="coms-${id}">
-                <div id="lista-coms-${id}"></div>
-                <div class="comentario-form">
-                    <input class="comentario-input" type="text" placeholder="Comentar..." id="input-com-${id}" onkeypress="if(event.key==='Enter') comentar('${id}')">
-                    <button class="emoji-toggle" onclick="toggleEmoji(event,'emoji-${id}')">😊</button>
-                    <button class="send-btn" onclick="comentar('${id}')">→</button>
-                    <div class="emoji-picker" id="emoji-${id}">
-                        ${EMOJIS.map(e=>`<span class="emoji-item" onclick="inserirEmoji('input-com-${id}','emoji-${id}','${e}')">${e}</span>`).join('')}
-                    </div>
-                </div>
-            </div>
-        </div>`;
-    }
-
-    // ===== TOGGLE REAÇÕES =====
-    window.toggleReacoes = (e, menuId) => {
-        e.stopPropagation();
-        const menu = document.getElementById(menuId);
-        const aberto = menu.classList.contains('aberto');
-        document.querySelectorAll('.reacoes-menu').forEach(m => m.classList.remove('aberto'));
-        if (!aberto) menu.classList.add('aberto');
-    };
-
-    document.addEventListener('click', () => {
-        document.querySelectorAll('.reacoes-menu').forEach(m => m.classList.remove('aberto'));
-    });
-
-    // ===== REAÇÕES =====
-    window.reagir = async (resId, tipoReacao) => {
-        if (!usuarioAtual) return;
-        const ref  = doc(db, 'resenhas', resId);
-        const snap = await getDoc(ref);
-        if (!snap.exists()) return;
-
-        const reacoes = snap.data().reacoes || {};
-        const jaEra = (reacoes[tipoReacao]||[]).includes(usuarioAtual.uid);
-
-        // Remove usuário de todas as reações
-        REACOES.forEach(rx => {
-            reacoes[rx.key] = (reacoes[rx.key]||[]).filter(u => u !== usuarioAtual.uid);
-        });
-
-        // Adiciona na nova (se não era a mesma = toggle)
-        if (!jaEra) {
-            if (!reacoes[tipoReacao]) reacoes[tipoReacao] = [];
-            reacoes[tipoReacao].push(usuarioAtual.uid);
-        }
-
-        await updateDoc(ref, { reacoes });
-        document.querySelectorAll('.reacoes-menu').forEach(m => m.classList.remove('aberto'));
-
-        // Atualiza UI sem recarregar tudo
-        const snapNovo = await getDoc(ref);
-        const rNovo = snapNovo.data().reacoes || {};
-        let minhaReacao = null;
-        let contHTML = '';
-
-        REACOES.forEach(rx => {
-            const lista = rNovo[rx.key] || [];
-            if ((lista).includes(usuarioAtual.uid)) minhaReacao = rx;
-            if (lista.length) {
-                const minha = lista.includes(usuarioAtual.uid);
-                contHTML += `<span class="reacao-count ${minha?'minha':''}" onclick="reagir('${resId}','${rx.key}')">${rx.emoji} ${lista.length}</span>`;
-            }
-        });
-
-        document.getElementById(`cont-${resId}`).innerHTML = contHTML;
-        const card = document.getElementById(`res-${resId}`);
-        const btn  = card?.querySelector('.reacao-btn');
-        if (btn) {
-            btn.className = `reacao-btn ${minhaReacao?'reagido':''}`;
-            btn.innerHTML = minhaReacao ? `${minhaReacao.emoji} ${minhaReacao.label}` : '❤️ Reagir';
-        }
-    };
-
-    // ===== EMOJIS =====
-    window.toggleEmoji = (e, pickerId) => {
-        e.stopPropagation();
-        const picker = document.getElementById(pickerId);
-        const aberto = picker.classList.contains('aberto');
-        document.querySelectorAll('.emoji-picker').forEach(p => p.classList.remove('aberto'));
-        if (!aberto) picker.classList.add('aberto');
-    };
-
-    window.inserirEmoji = (inputId, pickerId, emoji) => {
-        const input = document.getElementById(inputId);
-        if (input) { input.value += emoji; input.focus(); }
-        document.getElementById(pickerId)?.classList.remove('aberto');
-    };
-
-    document.addEventListener('click', () => {
-        document.querySelectorAll('.emoji-picker').forEach(p => p.classList.remove('aberto'));
-    });
-
-    // ===== COMENTÁRIOS =====
-    window.toggleComentarios = async (id) => {
-        const wrap = document.getElementById(`coms-${id}`);
-        wrap.classList.toggle('show');
-        if (wrap.classList.contains('show')) await carregarComentarios(id);
-    };
-
-    async function carregarComentarios(resId) {
-        const lista = document.getElementById(`lista-coms-${resId}`);
-        try {
-            const q = query(collection(db, 'resenhas', resId, 'comentarios'), orderBy('criadoEm', 'asc'));
-            const snap = await getDocs(q);
-            lista.innerHTML = snap.docs.map(d => {
-                const c = d.data();
-                return `<div class="comentario">
-                    <img class="com-avatar" src="${c.autorAvatar||''}">
-                    <div><div class="com-nome">${c.autorNome}</div><div class="com-texto">${c.texto}</div></div>
-                </div>`;
-            }).join('') || '<div style="color:#aaa;font-size:0.85em;padding:8px;">Nenhum comentário ainda.</div>';
-        } catch(e) { console.error(e); }
-    }
-
-    window.comentar = async (resId) => {
-        const input = document.getElementById(`input-com-${resId}`);
-        const texto = input.value.trim();
-        if (!texto) return;
-        try {
-            await addDoc(collection(db, 'resenhas', resId, 'comentarios'), {
-                texto,
-                autorId:     usuarioAtual.uid,
-                autorNome:   usuarioAtual.displayName || 'Anônimo',
-                autorAvatar: usuarioAtual.photoURL    || '',
-                criadoEm:    serverTimestamp()
-            });
-            input.value = '';
-            await carregarComentarios(resId);
-        } catch(e) { console.error(e); }
-    };
-
-    // ===== BUSCA FILME =====
-    window.buscarFilme = () => {
-        clearTimeout(buscaTimeout);
-        const q = document.getElementById('busca-filme').value.trim();
-        if (!q) { document.getElementById('busca-resultado').style.display='none'; return; }
-        buscaTimeout = setTimeout(async () => {
-            const res  = await fetch(`${BASE}/search/multi?api_key=${API_KEY}&language=pt-BR&query=${encodeURIComponent(q)}`);
-            const data = await res.json();
-            const itens = (data.results||[]).filter(i=>i.media_type!=='person').slice(0,6);
-            const box = document.getElementById('busca-resultado');
-            if (!itens.length) { box.style.display='none'; return; }
-            box.style.display='block';
-            box.innerHTML = itens.map(i=>`
-                <div class="busca-item" onclick='selecionarFilme(${JSON.stringify(i)})'>
-                    <img src="${i.poster_path?'https://image.tmdb.org/t/p/w92'+i.poster_path:''}" alt="">
-                    <div>
-                        <div class="busca-item-titulo">${i.title||i.name}</div>
-                        <div class="busca-item-ano">${(i.release_date||i.first_air_date||'').substring(0,4)}</div>
-                    </div>
-                </div>`).join('');
-        }, 400);
-    };
-
-    window.selecionarFilme = (item) => {
-        filmeSelecionado = item;
-        document.getElementById('busca-resultado').style.display='none';
-        document.getElementById('busca-filme').value='';
-        const sel = document.getElementById('filme-selecionado');
-        sel.classList.add('show');
-        document.getElementById('filme-sel-poster').src = item.poster_path ? `https://image.tmdb.org/t/p/w92${item.poster_path}` : '';
-        document.getElementById('filme-sel-titulo').textContent = item.title||item.name;
-        document.getElementById('filme-sel-ano').textContent = (item.release_date||item.first_air_date||'').substring(0,4);
-    };
-
-    window.selecionarNota = (n) => {
-        notaSelecionada = n;
-        document.querySelectorAll('.nota-star').forEach((s,i) => s.classList.toggle('ativo', i<n));
-    };
-
-    // ===== PUBLICAR =====
-    window.publicarResenha = async () => {
-        const texto = document.getElementById('resenha-texto').value.trim();
-        if (!filmeSelecionado) { alert('Selecione um filme ou série!'); return; }
-        if (!texto) { alert('Escreva sua resenha!'); return; }
-        const btn = document.getElementById('btn-publicar');
-        btn.disabled=true; btn.textContent='Publicando...';
-        try {
-            await addDoc(collection(db,'resenhas'), {
-                filmeId:     filmeSelecionado.id,
-                filmeTitulo: filmeSelecionado.title||filmeSelecionado.name,
-                filmePoster: filmeSelecionado.poster_path||'',
-                filmeAno:    (filmeSelecionado.release_date||filmeSelecionado.first_air_date||'').substring(0,4),
-                tipoFilme:   filmeSelecionado.media_type==='movie' ? 'filme' : 'serie',
-                texto, nota: notaSelecionada,
-                autorId:     usuarioAtual.uid,
-                autorNome:   usuarioAtual.displayName||'Anônimo',
-                autorAvatar: usuarioAtual.photoURL||'',
-                reacoes:     {},
-                criadoEm:    serverTimestamp()
-            });
-            document.getElementById('resenha-texto').value='';
-            document.getElementById('filme-selecionado').classList.remove('show');
-            filmeSelecionado=null; notaSelecionada=0;
-            document.querySelectorAll('.nota-star').forEach(s=>s.classList.remove('ativo'));
-            await carregarFeed(feedAtual);
-        } catch(e) { console.error(e); alert('Erro ao publicar.'); }
-        btn.disabled=false; btn.textContent='Publicar';
-    };
-
-    // ===== SUGESTÕES =====
-    async function carregarSugestoes() {
-        const lista = document.getElementById('sugestoes-lista');
-        try {
-            const snap  = await getDocs(query(collection(db,'usuarios'), limit(5)));
-            const outros = snap.docs.filter(d=>d.id!==usuarioAtual.uid).slice(0,4);
-            if (!outros.length) { lista.innerHTML='<div style="color:#aaa;font-size:0.85em;">Nenhum usuário ainda.</div>'; return; }
-            lista.innerHTML = outros.map(d => {
-                const u = d.data();
-                return `<div class="usuario-item">
-                    <img class="usuario-avatar" src="${u.avatar||''}" onclick="window.location.href='perfil.html?uid=${d.id}'">
-                    <div class="usuario-nome" onclick="window.location.href='perfil.html?uid=${d.id}'">${u.nome||'Anônimo'}</div>
-                    <button class="btn-seguir-mini" onclick="seguirUsuario('${d.id}',this)">+ Seguir</button>
-                </div>`;
-            }).join('');
-        } catch(e) { lista.innerHTML=''; }
-    }
-
-    window.seguirUsuario = async (uid, btn) => {
-        const ref  = doc(db,'usuarios',uid);
-        const snap = await getDoc(ref);
-        const segs = snap.data()?.seguidores||[];
-        if (!segs.includes(usuarioAtual.uid)) {
-            segs.push(usuarioAtual.uid);
-            await updateDoc(ref,{seguidores:segs});
-            const meRef  = doc(db,'usuarios',usuarioAtual.uid);
-            const meSnap = await getDoc(meRef);
-            const seg = meSnap.data()?.seguindo||[];
-            if (!seg.includes(uid)) { seg.push(uid); await updateDoc(meRef,{seguindo:seg}); }
-            btn.textContent='✓ Seguindo'; btn.style.color='#2ecc71';
-        }
-    };
-
-    window.sair = async () => { await signOut(auth); window.location.href='login.html'; };
 </script>
-</body>
-</html>
