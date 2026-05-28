@@ -193,6 +193,9 @@
         .btn-fav { background: #f5c518; color: #000; }
         .btn-fav:hover { background: #d4a800; }
 
+        .btn-pagina { background: #2a2a2a; color: #fff; border: 1px solid #555 !important; }
+        .btn-pagina:hover { background: #444; }
+
         .where-to-watch { margin-bottom: 20px; }
         .where-to-watch h4 { margin-bottom: 10px; color: #fff; }
 
@@ -229,6 +232,144 @@
 
         .empty-state { text-align: center; padding: 60px; color: #aaa; }
         .empty-state p { font-size: 1.2em; margin-top: 15px; }
+
+        /* ===== PÁGINA INDIVIDUAL ===== */
+        #pagina-individual { padding: 0; }
+
+        .pagina-hero {
+            position: relative; height: 520px;
+            background-size: cover; background-position: center top;
+        }
+
+        .pagina-hero::before {
+            content: ''; position: absolute; inset: 0;
+            background: linear-gradient(to right, rgba(20,20,20,0.97) 35%, rgba(20,20,20,0.5) 70%, transparent 100%),
+                        linear-gradient(to top, #141414 0%, transparent 40%);
+        }
+
+        .pagina-hero-content {
+            position: relative; z-index: 2;
+            padding: 120px 60px 40px; max-width: 700px;
+        }
+
+        .pagina-badges { display: flex; gap: 10px; margin-bottom: 15px; flex-wrap: wrap; }
+
+        .pagina-badge {
+            background: #e50914; color: #fff;
+            padding: 4px 12px; border-radius: 5px; font-size: 0.8em; font-weight: bold;
+        }
+
+        .pagina-badge.genero { background: #2a2a2a; border: 1px solid #555; }
+
+        .pagina-titulo {
+            font-size: 3em; font-weight: 900; line-height: 1.1;
+            margin-bottom: 12px; text-shadow: 2px 2px 8px rgba(0,0,0,0.8);
+        }
+
+        .pagina-meta {
+            display: flex; gap: 20px; margin-bottom: 20px;
+            font-size: 0.9em; color: #ccc; flex-wrap: wrap; align-items: center;
+        }
+
+        .pagina-nota {
+            background: #f5c518; color: #000;
+            padding: 4px 10px; border-radius: 6px; font-weight: bold;
+        }
+
+        .pagina-sinopse {
+            font-size: 1em; line-height: 1.7; color: #ddd;
+            max-width: 600px; margin-bottom: 25px;
+        }
+
+        .pagina-acoes { display: flex; gap: 12px; flex-wrap: wrap; }
+
+        .pagina-acoes button {
+            padding: 12px 28px; border: none; border-radius: 8px;
+            cursor: pointer; font-weight: bold; font-size: 1em; transition: all 0.3s;
+        }
+
+        .pagina-btn-trailer { background: #e50914; color: #fff; }
+        .pagina-btn-trailer:hover { background: #b00610; }
+
+        .pagina-btn-fav { background: rgba(255,255,255,0.15); color: #fff; border: 1px solid rgba(255,255,255,0.3) !important; }
+        .pagina-btn-fav:hover { background: rgba(255,255,255,0.25); }
+
+        .pagina-btn-voltar { background: none; color: #aaa; border: 1px solid #555 !important; }
+        .pagina-btn-voltar:hover { color: #fff; border-color: #fff !important; }
+
+        .pagina-body { padding: 30px 60px 60px; }
+
+        .pagina-trailer-wrap {
+            display: none; position: relative; width: 100%;
+            padding-bottom: 56.25%; margin-bottom: 30px; border-radius: 12px; overflow: hidden;
+        }
+        .pagina-trailer-wrap.show { display: block; }
+        .pagina-trailer-wrap iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
+
+        .pagina-secao { margin-bottom: 40px; }
+        .pagina-secao h3 {
+            font-size: 1.3em; margin-bottom: 15px;
+            border-left: 4px solid #e50914; padding-left: 10px;
+        }
+
+        .pagina-streaming { display: flex; gap: 10px; flex-wrap: wrap; }
+        .pagina-streaming-item {
+            background: #2a2a2a; border: 1px solid #444;
+            padding: 10px 18px; border-radius: 10px;
+            font-size: 0.9em; font-weight: bold;
+        }
+
+        .elenco-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: 15px;
+        }
+
+        .ator-card { background: #1f1f1f; border-radius: 10px; overflow: hidden; text-align: center; transition: transform 0.2s; }
+        .ator-card:hover { transform: scale(1.05); }
+        .ator-card img { width: 100%; height: 150px; object-fit: cover; object-position: top; }
+        .ator-info { padding: 8px; }
+        .ator-nome { font-size: 0.8em; font-weight: bold; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .ator-personagem { font-size: 0.72em; color: #aaa; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-top: 3px; }
+
+        .detalhes-grid {
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 15px;
+        }
+        .detalhe-item { background: #1f1f1f; border-radius: 10px; padding: 15px; }
+        .detalhe-label { font-size: 0.75em; color: #aaa; margin-bottom: 5px; text-transform: uppercase; letter-spacing: 1px; }
+        .detalhe-valor { font-size: 1em; font-weight: bold; }
+
+        .nota-visual { display: flex; align-items: center; gap: 15px; margin-bottom: 20px; }
+        .nota-circulo {
+            width: 70px; height: 70px; border-radius: 50%;
+            border: 3px solid #f5c518;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.2em; font-weight: bold;
+        }
+        .nota-info { color: #aaa; font-size: 0.9em; }
+        .nota-info strong { display: block; color: #fff; font-size: 1.1em; }
+
+        .nota-barra-wrap { margin-bottom: 8px; }
+        .nota-barra-label { display: flex; justify-content: space-between; font-size: 0.8em; color: #aaa; margin-bottom: 4px; }
+        .nota-barra { height: 6px; background: #2a2a2a; border-radius: 3px; overflow: hidden; }
+        .nota-barra-fill { height: 100%; background: #f5c518; border-radius: 3px; }
+
+        .temporadas-list { display: flex; flex-direction: column; gap: 10px; }
+        .temporada-item {
+            background: #1f1f1f; border-radius: 10px; padding: 15px 20px;
+            display: flex; align-items: center; gap: 15px;
+        }
+        .temporada-num {
+            background: #e50914; color: #fff; width: 40px; height: 40px;
+            border-radius: 8px; display: flex; align-items: center;
+            justify-content: center; font-weight: bold; flex-shrink: 0;
+        }
+        .temporada-nome { font-weight: bold; margin-bottom: 3px; }
+        .temporada-ep { font-size: 0.8em; color: #aaa; }
+
+        .similares-grid {
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 12px;
+        }
     </style>
 </head>
 <body>
@@ -268,9 +409,7 @@
     <h2>🎬 Filmes</h2>
     <div class="tabs" id="generos-filmes"></div>
     <div class="filters">
-        <select id="filtro-ano-filmes">
-            <option value="">Todos os anos</option>
-        </select>
+        <select id="filtro-ano-filmes"><option value="">Todos os anos</option></select>
         <select id="filtro-nota-filmes">
             <option value="">Qualquer nota</option>
             <option value="9">9+ ⭐</option>
@@ -281,18 +420,14 @@
         <button onclick="aplicarFiltrosFilmes()">Filtrar</button>
     </div>
     <div class="grid" id="filmes-grid"><div class="loading">Carregando...</div></div>
-    <button class="load-more" id="load-more-filmes" onclick="carregarMaisFilmes()" style="display:none;">
-        Carregar Mais
-    </button>
+    <button class="load-more" id="load-more-filmes" onclick="carregarMaisFilmes()" style="display:none;">Carregar Mais</button>
 </div>
 
 <div id="series" class="section" style="padding-top: 80px;">
     <h2>📺 Séries</h2>
     <div class="tabs" id="generos-series"></div>
     <div class="filters">
-        <select id="filtro-ano-series">
-            <option value="">Todos os anos</option>
-        </select>
+        <select id="filtro-ano-series"><option value="">Todos os anos</option></select>
         <select id="filtro-nota-series">
             <option value="">Qualquer nota</option>
             <option value="9">9+ ⭐</option>
@@ -303,9 +438,7 @@
         <button onclick="aplicarFiltrosSeries()">Filtrar</button>
     </div>
     <div class="grid" id="series-grid"><div class="loading">Carregando...</div></div>
-    <button class="load-more" id="load-more-series" onclick="carregarMaisSeries()" style="display:none;">
-        Carregar Mais
-    </button>
+    <button class="load-more" id="load-more-series" onclick="carregarMaisSeries()" style="display:none;">Carregar Mais</button>
 </div>
 
 <div id="em-breve" class="section" style="padding-top: 80px;">
@@ -321,6 +454,11 @@
 <div id="busca" class="section" style="padding-top: 80px;">
     <h2>🔍 Resultados da Busca</h2>
     <div class="grid" id="busca-grid"><div class="loading">Buscando...</div></div>
+</div>
+
+<!-- PÁGINA INDIVIDUAL -->
+<div id="pagina-individual" class="section">
+    <div id="pagina-conteudo"><div class="loading" style="padding-top:150px;">Carregando...</div></div>
 </div>
 
 <!-- MODAL -->
@@ -340,6 +478,7 @@
             <div class="modal-actions">
                 <button class="btn-trailer" id="btn-trailer" onclick="verTrailer()">▶ Ver Trailer</button>
                 <button class="btn-fav" id="btn-fav" onclick="toggleFavorito()">❤️ Favoritar</button>
+                <button class="btn-pagina" onclick="irParaPagina()">📄 Ver Página Completa</button>
             </div>
             <div id="trailer-container" style="display:none;" class="trailer-container">
                 <iframe id="trailer-iframe" src="" allowfullscreen></iframe>
@@ -376,6 +515,7 @@
     let trailerKey = null;
     let paginaFilmes = 1, paginaSeries = 1;
     let generoFilmeAtual = '', generoSerieAtual = '';
+    let secaoAnterior = 'home';
 
     // Anos para filtro
     const anoAtual = new Date().getFullYear();
@@ -396,6 +536,7 @@
         document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
         document.querySelectorAll('.nav-links button').forEach(b => b.classList.remove('active'));
         document.getElementById(id).classList.add('active');
+        if (['home','filmes','series','em-breve','favoritos'].includes(id)) secaoAnterior = id;
         if (id === 'home') { carregarTendencias('all'); carregarTop(); }
         if (id === 'filmes') { paginaFilmes = 1; carregarFilmes(); }
         if (id === 'series') { paginaSeries = 1; carregarSeries(); }
@@ -499,19 +640,13 @@
             : `/movie/popular?page=${pagina}`;
         const data = await fetchAPI(endpoint);
         const html = data.results.map(i => criarCard(i, 'movie')).join('');
-        if (pagina === 1) {
-            document.getElementById('filmes-grid').innerHTML = html;
-        } else {
-            document.getElementById('filmes-grid').innerHTML += html;
-        }
+        if (pagina === 1) document.getElementById('filmes-grid').innerHTML = html;
+        else document.getElementById('filmes-grid').innerHTML += html;
         document.getElementById('load-more-filmes').style.display = 'block';
         if (pagina === 1) carregarGenerosFilmes();
     }
 
-    function carregarMaisFilmes() {
-        paginaFilmes++;
-        carregarFilmes(generoFilmeAtual, paginaFilmes);
-    }
+    function carregarMaisFilmes() { paginaFilmes++; carregarFilmes(generoFilmeAtual, paginaFilmes); }
 
     async function aplicarFiltrosFilmes() {
         const ano = document.getElementById('filtro-ano-filmes').value;
@@ -539,8 +674,7 @@
     function selecionarGeneroFilme(id, btn) {
         document.querySelectorAll('#generos-filmes .tab-btn').forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
-        generoFilmeAtual = id;
-        paginaFilmes = 1;
+        generoFilmeAtual = id; paginaFilmes = 1;
         carregarFilmes(id, 1);
     }
 
@@ -551,19 +685,13 @@
             : `/tv/popular?page=${pagina}`;
         const data = await fetchAPI(endpoint);
         const html = data.results.map(i => criarCard(i, 'tv')).join('');
-        if (pagina === 1) {
-            document.getElementById('series-grid').innerHTML = html;
-        } else {
-            document.getElementById('series-grid').innerHTML += html;
-        }
+        if (pagina === 1) document.getElementById('series-grid').innerHTML = html;
+        else document.getElementById('series-grid').innerHTML += html;
         document.getElementById('load-more-series').style.display = 'block';
         if (pagina === 1) carregarGenerosSeries();
     }
 
-    function carregarMaisSeries() {
-        paginaSeries++;
-        carregarSeries(generoSerieAtual, paginaSeries);
-    }
+    function carregarMaisSeries() { paginaSeries++; carregarSeries(generoSerieAtual, paginaSeries); }
 
     async function aplicarFiltrosSeries() {
         const ano = document.getElementById('filtro-ano-series').value;
@@ -591,8 +719,7 @@
     function selecionarGeneroSerie(id, btn) {
         document.querySelectorAll('#generos-series .tab-btn').forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
-        generoSerieAtual = id;
-        paginaSeries = 1;
+        generoSerieAtual = id; paginaSeries = 1;
         carregarSeries(id, 1);
     }
 
@@ -615,6 +742,7 @@
             : '<div class="loading">Nenhum resultado encontrado.</div>';
     }
 
+    // ===== MODAL (igual ao GitHub, só adiciona botão "Ver Página Completa") =====
     async function abrirModal(id, tipo) {
         itemAtual = { id, tipo };
         trailerKey = null;
@@ -642,7 +770,7 @@
         document.getElementById('modal-runtime').textContent = runtime;
         document.getElementById('modal-overview').textContent = overview;
 
-        // Trailer
+        // Trailer — idêntico ao do GitHub
         const videos = data.videos?.results || [];
         const trailer = videos.find(v => v.type === 'Trailer' && v.site === 'YouTube') || videos[0];
         if (trailer) {
@@ -688,6 +816,12 @@
         }
     }
 
+    function irParaPagina() {
+        if (!itemAtual) return;
+        fecharModal();
+        abrirPaginaIndividual(itemAtual.id, itemAtual.tipo);
+    }
+
     function toggleFavorito() {
         if (!itemAtual) return;
         const { id, tipo } = itemAtual;
@@ -724,6 +858,193 @@
         document.querySelectorAll('#starRating span').forEach((s, i) => {
             s.classList.toggle('active', i < nota);
         });
+    }
+
+    // ===== PÁGINA INDIVIDUAL =====
+    async function abrirPaginaIndividual(id, tipo) {
+        document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+        document.getElementById('pagina-individual').classList.add('active');
+        document.getElementById('pagina-conteudo').innerHTML = '<div class="loading" style="padding-top:150px;">Carregando...</div>';
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+
+        const epBase = tipo === 'movie' ? `/movie/${id}` : `/tv/${id}`;
+        const [data, creditsData, similarData] = await Promise.all([
+            fetchAPI(`${epBase}?append_to_response=videos,watch/providers`),
+            fetchAPI(`${epBase}/credits?`),
+            fetchAPI(`${epBase}/similar?`)
+        ]);
+
+        const titulo   = data.title || data.name;
+        const banner   = data.backdrop_path ? `${BANNER}${data.backdrop_path}` : '';
+        const poster   = data.poster_path   ? `${IMG}${data.poster_path}` : '';
+        const overview = data.overview || 'Sinopse não disponível.';
+        const nota     = data.vote_average ? data.vote_average.toFixed(1) : 'N/A';
+        const dataLanc = data.release_date || data.first_air_date || 'N/A';
+        const runtime  = data.runtime ? `${data.runtime} min` : data.episode_run_time?.[0] ? `${data.episode_run_time[0]} min/ep` : 'N/A';
+        const generos  = (data.genres || []).map(g => g.name).join(', ');
+        const tipoLabel = tipo === 'movie' ? 'FILME' : 'SÉRIE';
+        const isFav    = ehFavorito(id);
+        const notaPct  = nota !== 'N/A' ? ((parseFloat(nota) / 10) * 100).toFixed(0) : 0;
+
+        // Trailer — mesma lógica do modal original
+        const videos  = data.videos?.results || [];
+        const trailer = videos.find(v => v.type === 'Trailer' && v.site === 'YouTube') || videos[0];
+        const tKey    = trailer ? trailer.key : null;
+
+        // Onde assistir
+        const providers   = data['watch/providers']?.results?.BR;
+        const plataformas = providers ? (providers.flatrate || providers.rent || providers.buy || []) : [];
+
+        // Elenco top 12
+        const elenco   = (creditsData.cast || []).slice(0, 12);
+        // Similares top 8
+        const similares = (similarData.results || []).slice(0, 8);
+
+        const orçamento  = tipo === 'movie' && data.budget  ? `$${data.budget.toLocaleString()}`  : null;
+        const bilheteria = tipo === 'movie' && data.revenue ? `$${data.revenue.toLocaleString()}` : null;
+        const temporadas = tipo === 'tv' ? (data.seasons || []) : null;
+
+        document.getElementById('pagina-conteudo').innerHTML = `
+            <div class="pagina-hero" style="background-image: url('${banner}')">
+                <div class="pagina-hero-content">
+                    <div class="pagina-badges">
+                        <span class="pagina-badge">${tipoLabel}</span>
+                        ${(data.genres || []).slice(0,3).map(g => `<span class="pagina-badge genero">${g.name}</span>`).join('')}
+                    </div>
+                    <h1 class="pagina-titulo">${titulo}</h1>
+                    <div class="pagina-meta">
+                        <span class="pagina-nota">⭐ ${nota}/10</span>
+                        <span>📅 ${dataLanc}</span>
+                        <span>⏱️ ${runtime}</span>
+                        ${tipo === 'tv' && data.number_of_seasons  ? `<span>📺 ${data.number_of_seasons} temporada(s)</span>` : ''}
+                        ${tipo === 'tv' && data.number_of_episodes ? `<span>🎬 ${data.number_of_episodes} episódios</span>` : ''}
+                    </div>
+                    <p class="pagina-sinopse">${overview}</p>
+                    <div class="pagina-acoes">
+                        ${tKey ? `<button class="pagina-btn-trailer" onclick="toggleTrailerPagina('${tKey}')">▶ Ver Trailer</button>` : ''}
+                        <button class="pagina-btn-fav" id="pagina-btn-fav" onclick="toggleFavPagina(${id}, '${tipo}', \`${titulo.replace(/`/g,'')}\`, '${poster}')">
+                            ${isFav ? '💔 Desfavoritar' : '❤️ Favoritar'}
+                        </button>
+                        <button class="pagina-btn-voltar" onclick="voltarDaPagina()">← Voltar</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pagina-body">
+
+                <div class="pagina-trailer-wrap" id="pagina-trailer-wrap">
+                    <iframe id="pagina-trailer-iframe" src="" allowfullscreen></iframe>
+                </div>
+
+                <div class="pagina-secao">
+                    <h3>📊 Avaliação do Público</h3>
+                    <div class="nota-visual">
+                        <div class="nota-circulo">${nota}</div>
+                        <div class="nota-info">
+                            <strong>${data.vote_count ? data.vote_count.toLocaleString() : '0'} avaliações</strong>
+                            no TMDB
+                        </div>
+                    </div>
+                    <div class="nota-barra-wrap">
+                        <div class="nota-barra-label"><span>Nota geral</span><span>${nota}/10</span></div>
+                        <div class="nota-barra"><div class="nota-barra-fill" style="width:${notaPct}%"></div></div>
+                    </div>
+                </div>
+
+                ${plataformas.length > 0 ? `
+                <div class="pagina-secao">
+                    <h3>📺 Onde Assistir no Brasil</h3>
+                    <div class="pagina-streaming">
+                        ${plataformas.map(p => `<div class="pagina-streaming-item">▶ ${p.provider_name}</div>`).join('')}
+                    </div>
+                </div>` : ''}
+
+                ${elenco.length > 0 ? `
+                <div class="pagina-secao">
+                    <h3>🎭 Elenco Principal</h3>
+                    <div class="elenco-grid">
+                        ${elenco.map(a => `
+                            <div class="ator-card">
+                                <img src="${a.profile_path ? `https://image.tmdb.org/t/p/w185${a.profile_path}` : 'https://via.placeholder.com/120x150/1f1f1f/aaa?text=Sem+Foto'}" alt="${a.name}" loading="lazy">
+                                <div class="ator-info">
+                                    <div class="ator-nome">${a.name}</div>
+                                    <div class="ator-personagem">${a.character || ''}</div>
+                                </div>
+                            </div>`).join('')}
+                    </div>
+                </div>` : ''}
+
+                ${temporadas && temporadas.length > 0 ? `
+                <div class="pagina-secao">
+                    <h3>🗂️ Temporadas</h3>
+                    <div class="temporadas-list">
+                        ${temporadas.filter(t => t.season_number > 0).map(t => `
+                            <div class="temporada-item">
+                                <div class="temporada-num">${t.season_number}</div>
+                                <div>
+                                    <div class="temporada-nome">${t.name}</div>
+                                    <div class="temporada-ep">${t.episode_count} episódios${t.air_date ? ' · ' + t.air_date.substring(0,4) : ''}</div>
+                                </div>
+                            </div>`).join('')}
+                    </div>
+                </div>` : ''}
+
+                <div class="pagina-secao">
+                    <h3>📋 Detalhes</h3>
+                    <div class="detalhes-grid">
+                        <div class="detalhe-item"><div class="detalhe-label">Título original</div><div class="detalhe-valor">${data.original_title || data.original_name || titulo}</div></div>
+                        <div class="detalhe-item"><div class="detalhe-label">Gêneros</div><div class="detalhe-valor">${generos || 'N/A'}</div></div>
+                        <div class="detalhe-item"><div class="detalhe-label">Idioma original</div><div class="detalhe-valor">${(data.original_language || 'N/A').toUpperCase()}</div></div>
+                        <div class="detalhe-item"><div class="detalhe-label">Status</div><div class="detalhe-valor">${data.status || 'N/A'}</div></div>
+                        ${orçamento  ? `<div class="detalhe-item"><div class="detalhe-label">Orçamento</div><div class="detalhe-valor">${orçamento}</div></div>`  : ''}
+                        ${bilheteria ? `<div class="detalhe-item"><div class="detalhe-label">Bilheteria</div><div class="detalhe-valor">${bilheteria}</div></div>` : ''}
+                        ${tipo === 'tv' && data.networks?.[0]    ? `<div class="detalhe-item"><div class="detalhe-label">Emissora</div><div class="detalhe-valor">${data.networks[0].name}</div></div>` : ''}
+                        ${tipo === 'tv' && data.created_by?.[0]  ? `<div class="detalhe-item"><div class="detalhe-label">Criador(a)</div><div class="detalhe-valor">${data.created_by.map(c=>c.name).join(', ')}</div></div>` : ''}
+                    </div>
+                </div>
+
+                ${similares.length > 0 ? `
+                <div class="pagina-secao">
+                    <h3>🎬 Você Também Pode Gostar</h3>
+                    <div class="similares-grid">
+                        ${similares.map(s => criarCard(s, tipo)).join('')}
+                    </div>
+                </div>` : ''}
+
+            </div>
+        `;
+    }
+
+    function toggleTrailerPagina(key) {
+        const wrap  = document.getElementById('pagina-trailer-wrap');
+        const iframe = document.getElementById('pagina-trailer-iframe');
+        if (!wrap.classList.contains('show')) {
+            iframe.src = `https://www.youtube.com/embed/${key}?autoplay=1`;
+            wrap.classList.add('show');
+            wrap.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        } else {
+            wrap.classList.remove('show');
+            iframe.src = '';
+        }
+    }
+
+    function toggleFavPagina(id, tipo, titulo, poster) {
+        const idx = favoritos.findIndex(f => f.id === id);
+        const btn = document.getElementById('pagina-btn-fav');
+        if (idx === -1) {
+            favoritos.push({ id, tipo, titulo, poster });
+            if (btn) btn.textContent = '💔 Desfavoritar';
+        } else {
+            favoritos.splice(idx, 1);
+            if (btn) btn.textContent = '❤️ Favoritar';
+        }
+        localStorage.setItem('favoritos', JSON.stringify(favoritos));
+    }
+
+    function voltarDaPagina() {
+        const iframe = document.getElementById('pagina-trailer-iframe');
+        if (iframe) iframe.src = '';
+        showSection(secaoAnterior || 'home');
     }
 
     carregarTendencias('all');
